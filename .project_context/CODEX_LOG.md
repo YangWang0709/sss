@@ -1,3 +1,37 @@
+Stage 4A-7.11 Stage 4A-7.9 bounded tiny BC dry-run actions:
+
+- Added `sim_explorer/run_stage4a711_stage4a79_bounded_tiny_bc_dry_run.py`.
+- Added `sim_explorer/test_stage4a711_stage4a79_bounded_tiny_bc_dry_run.py`.
+- Ran the bounded tiny BC dry-run on:
+  `/home/ubuntu22/sc_explorer_ws/outputs/stage4a79_stage4a714_compatible_no_training_import/stage4a79_stage4a714_compatible_expanded_dataset_55.npz`.
+- Generated output:
+  `/home/ubuntu22/sc_explorer_ws/outputs/stage4a711_stage4a79_bounded_tiny_bc_dry_run`.
+- Used `SimExpertBCDataset` and `CandidateMLPPolicy`.
+- Config:
+  CPU only, hidden_dim `64`, batch_size `8`, max optimizer steps `8`,
+  Adam lr `1e-3`, no model save, no checkpoint, no runtime, no RL.
+- Tiny dry-run result:
+  decision `tiny_bc_dry_run_passed_no_checkpoint`, samples `55`,
+  tensor shape `[55, 64, 16]`, train/val/test `39/10/6`,
+  optimizer steps `8`, backward calls `8`.
+- Metrics:
+  initial tiny train loss `4.128443241119385`, final tiny train loss
+  `4.098636150360107`, eval-all top1/top3/top5 `0.455/0.709/0.800`,
+  imported Stage 4A-7.14 top1/top3/top5 `0.640/0.800/0.960`.
+- Safety:
+  checkpoint-like output files `[]`, `torch.save` not used, model saved `false`,
+  checkpoint created `false`.
+- Validator:
+  `sim_explorer/test_stage4a711_stage4a79_bounded_tiny_bc_dry_run.py`
+  passed with `all_passed=true`.
+- Important boundary:
+  this stage did run a bounded tiny in-memory BC dry-run with optimizer steps,
+  but it did not run full training, did not save weights/checkpoints, did not
+  start Isaac, did not run map_predict, did not execute rollout/runtime, and
+  did not run RL/GDPO/PPO. Lambda48 remained shadow/baseline only.
+
+---
+
 Stage 4A-7.10 Stage 4A-7.9 no-training QA/readiness actions:
 
 - Added `sim_explorer/generate_stage4a710_stage4a79_no_training_qa_readiness.py`.

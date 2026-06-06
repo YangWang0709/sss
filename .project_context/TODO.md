@@ -1,3 +1,32 @@
+# TODO - Stage 4A-7.11 Bounded Tiny BC Dry-Run Complete
+
+Review the Stage 4A-7.11 tiny BC dry-run packet:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a711_stage4a79_bounded_tiny_bc_dry_run/stage4a711_stage4a79_tiny_bc_dry_run_summary.md`.
+
+Open the visual metrics HTML:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a711_stage4a79_bounded_tiny_bc_dry_run/stage4a711_stage4a79_tiny_bc_dry_run_index.html`.
+
+Key files:
+- Summary JSON: `/home/ubuntu22/sc_explorer_ws/outputs/stage4a711_stage4a79_bounded_tiny_bc_dry_run/stage4a711_stage4a79_tiny_bc_dry_run_summary.json`.
+- Tiny train metrics: `/home/ubuntu22/sc_explorer_ws/outputs/stage4a711_stage4a79_bounded_tiny_bc_dry_run/tiny_train_metrics.csv`.
+- Eval metrics: `/home/ubuntu22/sc_explorer_ws/outputs/stage4a711_stage4a79_bounded_tiny_bc_dry_run/eval_metrics.csv`.
+- Safety no-checkpoint report: `/home/ubuntu22/sc_explorer_ws/outputs/stage4a711_stage4a79_bounded_tiny_bc_dry_run/safety_no_checkpoint_report.json`.
+- Readiness decision: `/home/ubuntu22/sc_explorer_ws/outputs/stage4a711_stage4a79_bounded_tiny_bc_dry_run/stage4a711_readiness_decision.json`.
+
+Current result:
+- Decision: `tiny_bc_dry_run_passed_no_checkpoint`.
+- Tiny dry-run optimizer steps: `8`.
+- Full training: `false`.
+- Model saved: `false`.
+- Checkpoint created: `false`.
+- Runtime/rollout/RL: `false`.
+- Validator blockers: `[]`.
+
+Next faithful step:
+Stage 4A-7.12 should be a review/readiness decision packet. It should decide whether the tiny dry-run evidence is enough to request a separately approved checkpointed BC experiment, more manual review, or another no-checkpoint diagnostic. Do not jump directly to checkpointed training, runtime, medium rollout, or RL/GDPO/PPO.
+
+---
+
 # TODO - Stage 4A-7.10 No-Training QA Readiness Complete
 
 Review the Stage 4A-7.10 QA/readiness packet:

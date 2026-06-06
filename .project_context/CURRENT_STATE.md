@@ -1,3 +1,43 @@
+# Current State - Stage 4A-7.11 Stage 4A-7.9 Bounded Tiny BC Dry-Run Complete
+
+Stage 4A-7.11 bounded tiny BC dry-run gate has been executed on the Stage 4A-7.9 compatible expanded artifact.
+
+Output:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a711_stage4a79_bounded_tiny_bc_dry_run`.
+
+Main HTML:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a711_stage4a79_bounded_tiny_bc_dry_run/stage4a711_stage4a79_tiny_bc_dry_run_index.html`.
+
+Summary:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a711_stage4a79_bounded_tiny_bc_dry_run/stage4a711_stage4a79_tiny_bc_dry_run_summary.md`.
+
+Result:
+- Decision: `tiny_bc_dry_run_passed_no_checkpoint`.
+- Input artifact: Stage 4A-7.9 compatible expanded dataset.
+- Sample count: `55`.
+- Candidate tensor shape: `[55, 64, 16]`.
+- Train/val/test split counts: `39/10/6`.
+- Optimizer steps: `8`.
+- Backward calls: `8`.
+- Max optimizer steps: `8`.
+- Initial tiny train loss: `4.128443241119385`.
+- Final tiny train loss: `4.098636150360107`.
+- Eval all top1/top3/top5: `0.455/0.709/0.800`.
+- Imported Stage 4A-7.14 top1/top3/top5: `0.640/0.800/0.960`.
+- Checkpoint-like output files: `[]`.
+- Blockers: `[]`.
+
+Validator:
+`sim_explorer/test_stage4a711_stage4a79_bounded_tiny_bc_dry_run.py`
+passed with `all_passed=true`.
+
+Important boundary: Stage 4A-7.11 did perform a tiny in-memory BC dry-run with 8 optimizer steps. It did not perform full BC training, did not save model weights, did not create a checkpoint, did not start Isaac, did not run map_predict, did not execute rollout/runtime, and did not run RL/GDPO/PPO. Lambda48 remains shadow/baseline only and labels were not recomputed from lambda48.
+
+Next faithful step:
+Stage 4A-7.12 should be a review/readiness decision packet before any checkpointed BC training, runtime use, medium rollout, or RL/GDPO/PPO.
+
+---
+
 # Current State - Stage 4A-7.10 Stage 4A-7.9 No-Training QA Readiness Complete
 
 Stage 4A-7.10 no-training QA/readiness packet has been generated for the Stage 4A-7.9 compatible import artifact.
