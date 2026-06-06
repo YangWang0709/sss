@@ -1,3 +1,43 @@
+# Current State - Stage 4A-7.10 Stage 4A-7.9 No-Training QA Readiness Complete
+
+Stage 4A-7.10 no-training QA/readiness packet has been generated for the Stage 4A-7.9 compatible import artifact.
+
+Output:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a710_stage4a79_no_training_qa_readiness`.
+
+Main HTML:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a710_stage4a79_no_training_qa_readiness/stage4a710_stage4a79_readiness_index.html`.
+
+Summary:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a710_stage4a79_no_training_qa_readiness/stage4a710_stage4a79_no_training_qa_readiness_summary.md`.
+
+Row QA:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a710_stage4a79_no_training_qa_readiness/stage4a710_stage4a79_row_qa.csv`.
+
+Result:
+- Readiness decision: `ready_for_tiny_bc_dry_run_consideration`.
+- Original Stage 4A-7.0 rows: `30`.
+- Stage 4A-7.14 imported rows: `25`.
+- Compatible expanded rows: `55`.
+- Adapter `candidate_features_model` shape: `[25, 64, 16]`.
+- Expanded `candidate_features_model` shape: `[55, 64, 16]`.
+- Expanded `candidate_features_raw` shape: `[55, 64, 91]`.
+- Old dataset prefix unchanged: `true`.
+- Adapter matches expanded suffix: `true`.
+- Blockers: `[]`.
+- Warnings: `13` close-distance review warnings.
+
+Validator:
+`sim_explorer/test_stage4a710_stage4a79_no_training_qa_readiness.py`
+passed with `all_passed=true`.
+
+Important boundary: Stage 4A-7.10 was offline QA/readiness only. It did not train, did not save a model/checkpoint, did not start Isaac, did not run map_predict, did not execute rollout, did not promote labels, and did not run RL/GDPO/PPO. Lambda48 remains shadow/baseline only and labels were not recomputed from lambda48.
+
+Next faithful step:
+If accepted, request a separate bounded Stage 4A-7.11 tiny BC dry-run design/execution gate using the Stage 4A-7.9 compatible artifact. Training/checkpoint/RL must still remain outside this QA packet.
+
+---
+
 # Current State - Stage 4A-7.9 Stage 4A-7.14 Compatible No-Training Import Complete
 
 Stage 4A-7.9 compatible no-training import has been generated for the Stage 4A-7.14 manually reviewed clean candidates.

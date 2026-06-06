@@ -1,3 +1,38 @@
+Stage 4A-7.10 Stage 4A-7.9 no-training QA/readiness actions:
+
+- Added `sim_explorer/generate_stage4a710_stage4a79_no_training_qa_readiness.py`.
+- Added `sim_explorer/test_stage4a710_stage4a79_no_training_qa_readiness.py`.
+- Generated QA/readiness output:
+  `/home/ubuntu22/sc_explorer_ws/outputs/stage4a710_stage4a79_no_training_qa_readiness`.
+- Produced the main visual QA HTML:
+  `stage4a710_stage4a79_readiness_index.html`, with 25 cards linking each
+  imported row back to its Stage 4A-7.14 2D map and RGB camera image.
+- Produced row QA and distribution reports:
+  `stage4a710_stage4a79_row_qa.csv/json` and
+  `stage4a710_stage4a79_distribution_report.json`.
+- QA result:
+  readiness decision `ready_for_tiny_bc_dry_run_consideration`, blockers `[]`,
+  warnings `13` close-distance review warnings, and `0` very-close imported rows.
+- Compatibility result:
+  adapter `candidate_features_model` shape `[25, 64, 16]`, expanded
+  `candidate_features_model` shape `[55, 64, 16]`, expanded
+  `candidate_features_raw` shape `[55, 64, 91]`.
+- Preservation checks:
+  old Stage 4A-7.0 dataset prefix unchanged and adapter rows match the
+  expanded artifact suffix.
+- Label checks:
+  all primary labels are in range and valid under candidate masks; lambda48
+  remains shadow/baseline only and labels were not recomputed from lambda48.
+- Validator:
+  `sim_explorer/test_stage4a710_stage4a79_no_training_qa_readiness.py`
+  passed with `all_passed=true`.
+- Important boundary:
+  no training, no checkpoint/model save, no optimizer step, no Isaac startup,
+  no map_predict, no rollout, no label promotion, no source dataset overwrite,
+  and no RL/GDPO/PPO occurred.
+
+---
+
 Stage 4A-7.9 Stage 4A-7.14 compatible no-training import actions:
 
 - Added `sim_explorer/generate_stage4a79_stage4a714_compatible_no_training_import.py`.
