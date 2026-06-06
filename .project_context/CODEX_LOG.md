@@ -1,3 +1,35 @@
+Stage 4A-7.9 Stage 4A-7.14 compatible no-training import actions:
+
+- Added `sim_explorer/generate_stage4a79_stage4a714_compatible_no_training_import.py`.
+- Added `sim_explorer/test_stage4a79_stage4a714_compatible_no_training_import.py`.
+- Generated compatible import output:
+  `/home/ubuntu22/sc_explorer_ws/outputs/stage4a79_stage4a714_compatible_no_training_import`.
+- Consumed the Stage 4A-7.8 planned import manifest:
+  `25` clean candidates, with the `3` very-close distance recheck rows still held out.
+- Materialized a compact_v1 adapter dataset:
+  `stage4a79_stage4a714_adapter_dataset_25.npz`.
+- Materialized a versioned compatible expanded artifact:
+  `stage4a79_stage4a714_compatible_expanded_dataset_55.npz`.
+- Compatibility result:
+  original Stage 4A-7.0 primary rows `30`, imported rows `25`, expanded rows `55`,
+  expanded `candidate_features_model` shape `[55, 64, 16]`, and expanded
+  `candidate_features_raw` shape `[55, 64, 91]`.
+- Source safety:
+  the existing Stage 4A-7.0 primary BC dataset was not overwritten.
+- Label lineage:
+  the new import policy is
+  `stage4a714_uncertainty_bonus_executed_clean_candidate_compatible_import`;
+  lambda48 remained shadow/baseline only and labels were not recomputed from lambda48.
+- Validator:
+  `sim_explorer/test_stage4a79_stage4a714_compatible_no_training_import.py`
+  passed with `all_passed=true`.
+- Important boundary:
+  no training, no checkpoint/model save, no Isaac startup, no map_predict, no rollout,
+  no optimizer step, no label promotion, no source dataset overwrite, and no
+  RL/GDPO/PPO occurred.
+
+---
+
 Stage 4A-7.8 Stage 4A-7.14 no-training import design actions:
 
 - Added `sim_explorer/generate_stage4a78_stage4a714_no_training_import_design.py`.

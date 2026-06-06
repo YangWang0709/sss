@@ -1,3 +1,43 @@
+# Current State - Stage 4A-7.9 Stage 4A-7.14 Compatible No-Training Import Complete
+
+Stage 4A-7.9 compatible no-training import has been generated for the Stage 4A-7.14 manually reviewed clean candidates.
+
+Output:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a79_stage4a714_compatible_no_training_import`.
+
+Adapter dataset:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a79_stage4a714_compatible_no_training_import/stage4a79_stage4a714_adapter_dataset_25.npz`.
+
+Compatible expanded dataset:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a79_stage4a714_compatible_no_training_import/stage4a79_stage4a714_compatible_expanded_dataset_55.npz`.
+
+Manifest:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a79_stage4a714_compatible_no_training_import/stage4a79_stage4a714_compatible_import_manifest.csv`.
+
+Summary:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a79_stage4a714_compatible_no_training_import/stage4a79_stage4a714_compatible_import_summary.md`.
+
+Result:
+- Original Stage 4A-7.0 primary rows: `30`.
+- Stage 4A-7.14 clean compatible import rows: `25`.
+- Compatible expanded rows: `55`.
+- Adapter `candidate_features_model` shape: `[25, 64, 16]`.
+- Expanded `candidate_features_model` shape: `[55, 64, 16]`.
+- Expanded `candidate_features_raw` shape: `[55, 64, 91]`.
+- Primary labels valid: `true`.
+- Blockers: `[]`.
+
+Validator:
+`sim_explorer/test_stage4a79_stage4a714_compatible_no_training_import.py`
+passed with `all_passed=true`.
+
+Important boundary: Stage 4A-7.9 created versioned offline compatible import artifacts only. It did not overwrite the existing Stage 4A-7.0 primary BC dataset, did not train, did not save a model/checkpoint, did not start Isaac, did not run map_predict, did not execute rollout, and did not run RL/GDPO/PPO. Lambda48 remains shadow/baseline only, labels were not recomputed from lambda48, and the new primary import policy is `stage4a714_uncertainty_bonus_executed_clean_candidate_compatible_import`.
+
+Next faithful step:
+Run a no-training QA/readiness packet for this compatible artifact before any separate BC dry-run decision. Actual training, checkpoint creation, runtime, or RL/GDPO/PPO still require a separate explicit gate.
+
+---
+
 # Current State - Stage 4A-7.8 Stage 4A-7.14 No-Training Import Design Complete
 
 Stage 4A-7.8 no-training import design has been generated for the Stage 4A-7.14 manually reviewed clean candidates.

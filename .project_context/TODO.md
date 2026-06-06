@@ -1,3 +1,29 @@
+# TODO - Stage 4A-7.9 Compatible No-Training Import Complete
+
+Review the Stage 4A-7.9 compatible import packet:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a79_stage4a714_compatible_no_training_import/stage4a79_stage4a714_compatible_import_summary.md`.
+
+Key files:
+- Adapter dataset: `/home/ubuntu22/sc_explorer_ws/outputs/stage4a79_stage4a714_compatible_no_training_import/stage4a79_stage4a714_adapter_dataset_25.npz`.
+- Compatible expanded dataset: `/home/ubuntu22/sc_explorer_ws/outputs/stage4a79_stage4a714_compatible_no_training_import/stage4a79_stage4a714_compatible_expanded_dataset_55.npz`.
+- Compatible import manifest: `/home/ubuntu22/sc_explorer_ws/outputs/stage4a79_stage4a714_compatible_no_training_import/stage4a79_stage4a714_compatible_import_manifest.csv`.
+- Integrity report: `/home/ubuntu22/sc_explorer_ws/outputs/stage4a79_stage4a714_compatible_no_training_import/stage4a79_stage4a714_integrity_report.json`.
+- Label lineage report: `/home/ubuntu22/sc_explorer_ws/outputs/stage4a79_stage4a714_compatible_no_training_import/stage4a79_stage4a714_label_lineage_report.json`.
+
+Current result:
+- `25` clean Stage 4A-7.14 candidates were materialized into a compatible compact_v1 adapter artifact.
+- Expanded compatible artifact now contains `55` rows: `30` existing Stage 4A-7.0 primary rows plus `25` imported rows.
+- Expanded `candidate_features_model` shape is `[55, 64, 16]`.
+- Existing Stage 4A-7.0 primary dataset was not overwritten.
+- Lambda48 remains shadow/baseline only.
+
+Next faithful step:
+Run a no-training QA/readiness packet for the Stage 4A-7.9 compatible artifact, then decide separately whether to allow any bounded BC dry-run. Actual BC training, checkpoint/model save, runtime, or RL/GDPO/PPO must remain separate explicit approvals.
+
+No training, checkpoint, Isaac startup, map_predict, rollout, label promotion, source dataset overwrite, or RL/GDPO/PPO occurred.
+
+---
+
 # TODO - Stage 4A-7.8 No-Training Import Design Complete
 
 Review the Stage 4A-7.8 design packet:
