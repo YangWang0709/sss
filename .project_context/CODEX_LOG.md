@@ -6172,3 +6172,11 @@ Stage 4A-7.6 Stage 4A-7.2 manual topdown review packet result:
 - Added generator `sim_explorer/upgrade_stage4a76_review_export_controls.py` and validator `sim_explorer/test_stage4a76_review_export_controls.py`; validation passed in `logs/stage4a76c_review_export_controls_test.log`.
 - No promotion, training, checkpoint, Isaac startup, map_predict, rollout, or RL/GDPO/PPO occurred. Lambda48 remains shadow/baseline only.
 
+## 2026-06-06 07:25:55 UTC - Stage 4A-7.7 manual review import audit
+
+- Imported user-provided `stage4a72_manual_review_export.json` into `/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a77_manual_review_import_audit`.
+- Validated 30 rows: approve=18, reject=11, unsure=1; human requested promote=yes count=17.
+- Recorded one warning: `stage4a72_start000_step000` is approve/promote=yes but reason is `unsafe_outside_stuck_revisit`; future promotion decision must inspect this row.
+- Added `sim_explorer/import_stage4a77_manual_review_audit.py` and `sim_explorer/test_stage4a77_manual_review_import_audit.py`; validation passed in `logs/stage4a77_manual_review_import_audit_test.log`.
+- No expert_action_index_primary creation, label promotion, training, checkpoint, Isaac startup, map_predict, rollout, or RL/GDPO/PPO occurred. Lambda48 remains shadow/baseline only.
+
