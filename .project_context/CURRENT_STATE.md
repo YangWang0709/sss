@@ -1,3 +1,35 @@
+# Current State - Stage 4A-7.8 Stage 4A-7.14 No-Training Import Design Complete
+
+Stage 4A-7.8 no-training import design has been generated for the Stage 4A-7.14 manually reviewed clean candidates.
+
+Output:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a78_stage4a714_no_training_import_design`.
+
+Summary:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a78_stage4a714_no_training_import_design/stage4a78_stage4a714_no_training_import_design_summary.md`.
+
+Planned import manifest:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a78_stage4a714_no_training_import_design/stage4a78_stage4a714_planned_import_manifest.csv`.
+
+Schema report:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a78_stage4a714_no_training_import_design/stage4a78_stage4a714_schema_compatibility_report.md`.
+
+Result:
+- Planned clean imports: `25`.
+- Held distance recheck rows: `3`.
+- Direct NPZ concat allowed: `false`.
+- Adapter required: `true`.
+- Existing primary BC `candidate_features_model` shape: `[30, 64, 16]`.
+- Stage 4A-7.14 runtime `candidate_features` shape: `[60, 64, 13]`.
+- Blockers: `[]`.
+
+Interpretation:
+Stage 4A-7.8 prepared the future import plan but did not apply it. The 25 clean candidates are only `planned_not_applied` rows because the Stage 4A-7.14 runtime feature schema is not directly compatible with the existing Stage 4A-7.0 compact_v1 BC model feature schema. A future Stage 4A-7.9 no-training import implementation would need to materialize the documented compact_v1 adapter before creating any expanded import artifact.
+
+Important boundary: this was a design/preparation packet only. It did not promote labels, did not modify datasets, did not create an expanded NPZ, did not create `expert_action_index_primary`, did not train, did not create checkpoints, did not start Isaac, did not run map_predict, did not execute rollout, and did not run RL/GDPO/PPO. Lambda48 remains shadow/baseline only and labels were not recomputed from lambda48.
+
+---
+
 # Current State - Stage 4A-7.7 Stage 4A-7.14 Manual Review Promotion Gate Complete
 
 Stage 4A-7.7 gate has been generated from the completed Stage 4A-7.14 2D manual review export.

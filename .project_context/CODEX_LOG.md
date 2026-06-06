@@ -1,3 +1,32 @@
+Stage 4A-7.8 Stage 4A-7.14 no-training import design actions:
+
+- Added `sim_explorer/generate_stage4a78_stage4a714_no_training_import_design.py`.
+- Added `sim_explorer/test_stage4a78_stage4a714_no_training_import_design.py`.
+- Generated design output:
+  `/home/ubuntu22/sc_explorer_ws/outputs/stage4a78_stage4a714_no_training_import_design`.
+- Input was the Stage 4A-7.7 gate output:
+  `25` clean candidates, `3` distance recheck candidates, `29` rejected rows.
+- Produced planned import manifest:
+  `stage4a78_stage4a714_planned_import_manifest.csv/json/jsonl`.
+- Produced schema compatibility report:
+  direct NPZ concat is disallowed, adapter is required.
+- Schema finding:
+  existing Stage 4A-7.0 primary BC `candidate_features_model` shape is
+  `[30, 64, 16]`, while Stage 4A-7.14 runtime `candidate_features` shape is
+  `[60, 64, 13]`.
+- The design documents a future compact_v1 adapter mapping using Stage 4A-7.14
+  runtime NPZ and per-sample `candidate_features.csv` files.
+- Validator:
+  `sim_explorer/test_stage4a78_stage4a714_no_training_import_design.py`
+  passed with `all_passed=true`.
+- Important boundary:
+  no label promotion, no dataset modification, no expanded NPZ creation, no
+  `expert_action_index_primary` creation, no training, no checkpoint, no Isaac
+  startup, no map_predict, no rollout, and no RL/GDPO/PPO occurred. Lambda48
+  remained shadow/baseline only.
+
+---
+
 Stage 4A-7.7 Stage 4A-7.14 manual review promotion gate actions:
 
 - Added `sim_explorer/generate_stage4a77_stage4a714_manual_review_promotion_gate.py`.

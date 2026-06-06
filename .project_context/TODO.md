@@ -1,3 +1,26 @@
+# TODO - Stage 4A-7.8 No-Training Import Design Complete
+
+Review the Stage 4A-7.8 design packet:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a78_stage4a714_no_training_import_design/stage4a78_stage4a714_no_training_import_design_summary.md`.
+
+Key files:
+- Planned import manifest: `/home/ubuntu22/sc_explorer_ws/outputs/stage4a78_stage4a714_no_training_import_design/stage4a78_stage4a714_planned_import_manifest.csv`.
+- Schema compatibility report: `/home/ubuntu22/sc_explorer_ws/outputs/stage4a78_stage4a714_no_training_import_design/stage4a78_stage4a714_schema_compatibility_report.md`.
+- Label policy: `/home/ubuntu22/sc_explorer_ws/outputs/stage4a78_stage4a714_no_training_import_design/stage4a78_stage4a714_label_policy.json`.
+
+Current result:
+- `25` clean candidates are planned for future import.
+- `3` very-close promote-yes candidates remain held for manual recheck.
+- Direct NPZ concat is disallowed.
+- A compact_v1 adapter is required because Stage 4A-7.14 runtime features are `[60, 64, 13]` while existing primary BC model features are `[30, 64, 16]`.
+
+Next faithful step:
+Stage 4A-7.9 no-training import implementation may build a versioned import artifact from the `25` planned rows after materializing and validating the compact_v1 adapter. Actual BC training, checkpoint/model save, runtime, or RL/GDPO/PPO must remain separate.
+
+No label promotion, dataset modification, expanded NPZ creation, training, checkpoint, Isaac startup, map_predict, rollout, or RL/GDPO/PPO occurred.
+
+---
+
 # TODO - Stage 4A-7.7 Stage 4A-7.14 Promotion Gate Complete
 
 Review the Stage 4A-7.7 gate packet:
