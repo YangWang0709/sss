@@ -1,3 +1,14 @@
+# Current State - Stage 4A-7.6c Review Export Controls Complete
+
+Stage 4A-7.6c manual review export controls are complete. The reviewer should open:
+`/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a76_stage4a72_manual_topdown_review_packet/stage4a72_action_story_review_index.html`.
+
+The page now has per-sample controls for `human_review_status`, `human_review_reason`, `promote_candidate_yes_no`, and `human_comment`, plus buttons to mark all unreviewed, export review JSON, copy review JSON, download review CSV, and show a completion summary. Exported JSON/CSV should be returned for future Stage 4A-7.7 import.
+
+No label promotion, BC training, checkpoint creation, Isaac startup, map_predict, rollout, or RL/GDPO/PPO occurred. Stage 4A-7.2 remains candidate expansion/manual review only, and lambda48 remains shadow/baseline only.
+
+---
+
 # Current State - Stage 4A-7.6 Visual Action Story Review Upgrade Complete
 
 Stage 4A-7.6 manual topdown review now has a more intuitive action-by-action review entry point:

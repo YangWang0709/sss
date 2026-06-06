@@ -1,3 +1,14 @@
+# TODO - Stage 4A-7.6c Manual Review Export
+
+Open:
+`/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a76_stage4a72_manual_topdown_review_packet/stage4a72_action_story_review_index.html`.
+
+Select review statuses for the 30 action cards, optionally set reasons/comments/promote_candidate_yes_no, then export JSON or CSV. Return the exported file for future Stage 4A-7.7 import. Human approval does not automatically promote labels; Stage 4A-7.7 must make a separate promotion decision.
+
+Do not train, checkpoint, promote labels, run Isaac/map_predict/rollout, or run RL/GDPO/PPO from this packet.
+
+---
+
 # TODO - Stage 4A-7.2 Visual Action Review
 
 Use the visual action story review page first:

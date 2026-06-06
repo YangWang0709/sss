@@ -6165,3 +6165,10 @@ Stage 4A-7.6 Stage 4A-7.2 manual topdown review packet result:
 - Preserved scope: no Isaac startup, no new capture, no map_predict, no rollout, no BC training, no checkpoint, no label promotion, no RL/GDPO/PPO. Lambda48 remains shadow-only.
 - Validation passed with `/home/ubuntu22/sc_explorer_ws/sim_explorer/test_stage4a76_action_story_visual_upgrade.py`; log: `/home/ubuntu22/sc_explorer_ws/logs/stage4a76_action_story_visual_upgrade_test.log`.
 
+## 2026-06-06 06:22:03 UTC - Stage 4A-7.6c review export controls
+
+- Upgraded `/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a76_stage4a72_manual_topdown_review_packet/stage4a72_action_story_review_index.html` with explicit human review controls for 30 action cards.
+- Added JSON/CSV export, clipboard copy, mark-all-unreviewed, completion summary, browser validation for promote=yes only with approve, and offline save instructions at `stage4a72_human_review_how_to_save.md`.
+- Added generator `sim_explorer/upgrade_stage4a76_review_export_controls.py` and validator `sim_explorer/test_stage4a76_review_export_controls.py`; validation passed in `logs/stage4a76c_review_export_controls_test.log`.
+- No promotion, training, checkpoint, Isaac startup, map_predict, rollout, or RL/GDPO/PPO occurred. Lambda48 remains shadow/baseline only.
+
