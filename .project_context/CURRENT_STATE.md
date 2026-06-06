@@ -1,3 +1,46 @@
+# Current State - Stage 4A-7.7 Stage 4A-7.14 Manual Review Promotion Gate Complete
+
+Stage 4A-7.7 gate has been generated from the completed Stage 4A-7.14 2D manual review export.
+
+Output:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a77_stage4a714_manual_review_promotion_gate`.
+
+Summary:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a77_stage4a714_manual_review_promotion_gate/stage4a77_stage4a714_promotion_gate_summary.md`.
+
+Clean candidates:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a77_stage4a714_manual_review_promotion_gate/stage4a77_stage4a714_clean_promotion_candidates.csv`.
+
+Distance manual recheck rows:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a77_stage4a714_manual_review_promotion_gate/stage4a77_stage4a714_distance_manual_recheck_rows.csv`.
+
+Result:
+- Input review rows: `60`.
+- Human approve: `31`.
+- Human reject: `29`.
+- Human promote yes: `28`.
+- Clean promotion candidates: `25`.
+- Distance manual recheck candidates: `3`.
+- Approved no-promote rows: `3`.
+- Rejected rows: `29`.
+- Blockers: `[]`.
+
+Distance recheck candidates held out of the clean set:
+- `start_002_step_002`.
+- `start_004_step_001`.
+- `start_005_step_000`.
+
+Policy:
+- `very_close <0.25m` promote-yes rows are held for manual recheck.
+- `close <0.50m` rows are warning-only and can remain clean candidates if otherwise approved.
+- Lambda48 remains shadow/baseline only.
+- The gate does not recompute labels from lambda48.
+- No `expert_action_index_primary` was created.
+
+Important boundary: this was a no-training gate/decision packet only. It did not promote labels, did not modify datasets, did not create `expert_action_index_primary`, did not train, did not create checkpoints, did not start Isaac, did not run map_predict, did not execute rollout, and did not run RL/GDPO/PPO.
+
+---
+
 # Current State - Stage 4A-7.14e Manual Review Complete And Distance Review Cues Added
 
 The latest uploaded Stage 4A-7.14 2D manual review export has been audited and is complete.

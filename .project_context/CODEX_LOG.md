@@ -1,3 +1,30 @@
+Stage 4A-7.7 Stage 4A-7.14 manual review promotion gate actions:
+
+- Added `sim_explorer/generate_stage4a77_stage4a714_manual_review_promotion_gate.py`.
+- Added `sim_explorer/test_stage4a77_stage4a714_manual_review_promotion_gate.py`.
+- Generated gate output:
+  `/home/ubuntu22/sc_explorer_ws/outputs/stage4a77_stage4a714_manual_review_promotion_gate`.
+- Input review was the completed Stage 4A-7.14 manual review export:
+  `60` rows, `31` approve, `29` reject, `28` promote yes, `0` unreviewed.
+- Gate policy:
+  approved promote-yes rows become clean candidates unless they are
+  `very_close <0.25m`, have a negative review reason, or lack source records.
+  `close <0.50m` remains warning-only.
+- Gate result:
+  `25` clean promotion candidates, `3` distance manual-recheck candidates,
+  `3` approved no-promote rows, and `29` rejected rows.
+- Held-out very-close promote-yes rows:
+  `start_002_step_002`, `start_004_step_001`, and `start_005_step_000`.
+- Validator:
+  `sim_explorer/test_stage4a77_stage4a714_manual_review_promotion_gate.py`
+  passed with `all_passed=true`.
+- Important boundary:
+  no label promotion, no dataset modification, no `expert_action_index_primary`
+  creation, no training, no checkpoint, no Isaac startup, no map_predict, no
+  rollout, and no RL/GDPO/PPO occurred. Lambda48 remained shadow/baseline only.
+
+---
+
 Stage 4A-7.14e manual review completion and action-distance cue actions:
 
 - Received the user's updated exported review file:

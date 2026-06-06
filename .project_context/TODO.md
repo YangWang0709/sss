@@ -1,3 +1,27 @@
+# TODO - Stage 4A-7.7 Stage 4A-7.14 Promotion Gate Complete
+
+Review the Stage 4A-7.7 gate packet:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a77_stage4a714_manual_review_promotion_gate/stage4a77_stage4a714_promotion_gate_summary.md`.
+
+Key files:
+- Clean candidates: `/home/ubuntu22/sc_explorer_ws/outputs/stage4a77_stage4a714_manual_review_promotion_gate/stage4a77_stage4a714_clean_promotion_candidates.csv`.
+- Distance manual recheck rows: `/home/ubuntu22/sc_explorer_ws/outputs/stage4a77_stage4a714_manual_review_promotion_gate/stage4a77_stage4a714_distance_manual_recheck_rows.csv`.
+- All rows with gate decisions: `/home/ubuntu22/sc_explorer_ws/outputs/stage4a77_stage4a714_manual_review_promotion_gate/stage4a77_stage4a714_all_review_rows_with_gate.csv`.
+
+Current gate result:
+- `25` clean candidates.
+- `3` distance manual-recheck candidates.
+- `29` rejected rows.
+- `3` approved no-promote rows.
+- Blockers: `[]`.
+
+Next faithful step:
+Stage 4A-7.8 no-training import design can consume the `25` clean candidates and keep the `3` very-close promote-yes rows held for manual recheck. Actual dataset modification, training, checkpointing, or RL must remain a separate explicit gate.
+
+No label promotion, dataset modification, training, checkpoint, Isaac startup, map_predict, rollout, or RL/GDPO/PPO occurred.
+
+---
+
 # TODO - Stage 4A-7.14e Manual Review Complete
 
 Latest Stage 4A-7.14 2D manual review audit:
