@@ -27,6 +27,43 @@
 Codex Log
 Updated: 2026-06-06
 
+Stage 4A-7.14 medium runtime blocker audit actions:
+
+- Executed the bounded medium expert rollout after Stage 4A-7.13 preflight passed,
+  using the Stage 4A-7.14 adapter and close guard scope.
+- Runtime output:
+  `/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a714_medium_bounded_expert_rollout_runtime`.
+- Generated artifacts:
+  `10` starts, `60` executed actions, `60` decision frames, `70` captures,
+  `60` primary uncertainty-bonus decisions, HTML review index, MP4 flythrough,
+  dataset NPZ, manifest, quality audits, and safety audits.
+- Gate result:
+  blocked, not Pre-RL ready. Expert data quality, uncertainty-bonus runtime
+  quality, prediction safety, and uncertainty safety passed, but the legacy
+  rollout safety audit still enforces the previous short `3 step / 30 action`
+  envelope. This made rollout safety and dataset integrity fail and left the
+  finalization sentinel unsafe.
+- Shutdown handling:
+  `simulation_app.close()` hung after required outputs were finalized. The close
+  guard/controller was no longer supervising the child process, so the exact
+  remaining Stage 4A-7.14 child process group was manually terminated and
+  documented in
+  `/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a714_medium_bounded_expert_rollout_runtime/manual_process_termination_report.json`.
+- Audit packet created:
+  `/home/ubuntu22/sc_explorer_ws/outputs/autonomous_pre_rl_bridge/stage4a714_medium_runtime_blocker_audit`.
+- Negative scope:
+  no BC training, optimizer step, checkpoint/model save, label promotion,
+  replay-buffer learning, long rollout, or RL/GDPO/PPO occurred. Lambda48
+  remains shadow/baseline only; primary lineage remains
+  `stage4a613_uncertainty_bonus_executed_primary` from
+  `uncertainty_bonus_composite_beta8`.
+- Next:
+  Stage 4A-7.14b source-only medium postrun safety validator/audit update, then
+  regenerate a Pre-RL readiness packet. Do not start RL or checkpoint training
+  from the current blocked packet.
+
+---
+
 
 Stage 4A-7.2 second bounded short rollout data-expansion design actions:
 

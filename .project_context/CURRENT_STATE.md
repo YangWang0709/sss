@@ -1,3 +1,22 @@
+# Current State - Stage 4A-7.14 Medium Runtime Blocker Audit Complete
+
+Stage 4A-7.14 medium bounded expert rollout runtime generated the intended bounded review artifacts under:
+`/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a714_medium_bounded_expert_rollout_runtime`.
+
+Audit packet:
+`/home/ubuntu22/sc_explorer_ws/outputs/autonomous_pre_rl_bridge/stage4a714_medium_runtime_blocker_audit`.
+
+Runtime counts: `10` starts, `60` executed actions, `60` decision frames, `70` captures, and `60` primary uncertainty-bonus decisions. Review artifacts include:
+`short_rollout_uncertainty_bonus_index.html` and `short_rollout_flythrough.mp4`.
+
+Gate result: blocked, not Pre-RL ready. Expert data quality, uncertainty-bonus runtime quality, prediction safety, and uncertainty safety passed, but the legacy rollout safety audit is still hard-coded to the prior short `3 step / 30 action` envelope. That caused `rollout_safety_audit.passed=false`, `dataset_integrity_report.passed=false`, `stage_finalized_before_isaac_close.audit_checks_passed=false`, and `safe_to_terminate_after_close_timeout=false`. `simulation_app.close()` hung after output finalization, and the exact Stage 4A-7.14 child process group was manually terminated after required files were already finalized.
+
+No BC training, optimizer step, checkpoint/model save, label promotion, replay-buffer learning, long rollout, or RL/GDPO/PPO occurred. Lambda48 remains shadow/baseline only; primary lineage remains Stage 4A-6.13 `stage4a613_uncertainty_bonus_executed_primary` from `uncertainty_bonus_composite_beta8`.
+
+Next faithful step: Stage 4A-7.14b source-only medium postrun safety validator/audit update, then regenerate a Pre-RL readiness packet. Do not start RL/GDPO/PPO or checkpoint training from the current blocked packet.
+
+---
+
 # Current State - Stage 4A-7.13 Medium Expert Rollout Design Preflight Passed
 
 Stage 4A-7.13 medium expert rollout design/preflight is complete. Output directory:
