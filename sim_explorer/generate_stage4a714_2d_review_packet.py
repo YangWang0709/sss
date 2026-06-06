@@ -15,7 +15,7 @@ import html
 import json
 import math
 import os
-from collections import defaultdict
+from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -35,6 +35,8 @@ DEFAULT_ROLLOUT_DIR = WORKSPACE / "outputs/isaac_stage4a714_medium_bounded_exper
 DEFAULT_MANIFEST = DEFAULT_ROLLOUT_DIR / "short_rollout_manifest.jsonl"
 DEFAULT_SCENE_METADATA = WORKSPACE / "outputs/isaac_stage4a66c_usd_camera_pose_fix/scene_metadata.json"
 DEFAULT_OUTPUT_DIR = WORKSPACE / "outputs/stage4a714_2d_review_packet"
+VERY_CLOSE_ACTION_DISTANCE_M = 0.25
+CLOSE_ACTION_DISTANCE_M = 0.50
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -226,12 +228,24 @@ def build_records(manifest: Path) -> list[dict[str, Any]]:
         pose_path = Path(row["source_pose_file"])
         start = row["start_variant_id"]
         step = row["step_id"]
+        sx, sy, sz = row["source_pose_xyz"]
+        ax, ay, az = row["action_world_xyz"]
+        distance_xy = math.hypot(float(ax) - float(sx), float(ay) - float(sy))
+        distance_3d = math.sqrt((float(ax) - float(sx)) ** 2 + (float(ay) - float(sy)) ** 2 + (float(az) - float(sz)) ** 2)
         sample_dir = DEFAULT_ROLLOUT_DIR / "samples" / f"start_{start:03d}"
         row["observed_state_reference"] = str(sample_dir / f"step_{step:03d}_observed_state.npy")
         row["map_image"] = f"maps/start_{start:03d}_step_{step:03d}_2d_review.png"
         row["overview_image"] = f"maps/start_{start:03d}_overview_2d_review.png"
         row["relative_rgb"] = rel_to_output(row["rgb"], DEFAULT_OUTPUT_DIR)
         row["relative_pose"] = rel_to_output(pose_path, DEFAULT_OUTPUT_DIR)
+        row["source_to_action_distance_m"] = float(distance_xy)
+        row["source_to_action_distance_3d_m"] = float(distance_3d)
+        if distance_xy < VERY_CLOSE_ACTION_DISTANCE_M:
+            row["action_distance_flag"] = "very_close"
+        elif distance_xy < CLOSE_ACTION_DISTANCE_M:
+            row["action_distance_flag"] = "close"
+        else:
+            row["action_distance_flag"] = "normal"
     return records
 
 
@@ -258,6 +272,9 @@ def write_index_html(path: Path, records: list[dict[str, Any]], summary: dict[st
                 "observed_after": round(float(row["observed_ratio_after_current_capture"]), 6),
                 "newly_observed_xy_cells": int(row.get("newly_observed_xy_cells", 0)),
                 "historical_observed_xy_cells": int(row.get("historical_observed_xy_cells", 0)),
+                "source_to_action_distance_m": round(float(row["source_to_action_distance_m"]), 4),
+                "source_to_action_distance_3d_m": round(float(row["source_to_action_distance_3d_m"]), 4),
+                "action_distance_flag": row["action_distance_flag"],
             }
         )
     json_data = json.dumps(data, ensure_ascii=False)
@@ -302,6 +319,10 @@ def write_index_html(path: Path, records: list[dict[str, Any]], summary: dict[st
     .status-reject {{ background: #fee2e2; color: #991b1b; }}
     .status-unsure {{ background: #fef9c3; color: #854d0e; }}
     .status-needs_closer_inspection {{ background: #ffedd5; color: #9a3412; }}
+    .distance-chip {{ display: inline-block; border-radius: 999px; padding: 3px 8px; font-size: 12px; font-weight: 750; background: #e2e8f0; color: #334155; }}
+    .distance-normal {{ background: #dcfce7; color: #166534; }}
+    .distance-close {{ background: #fef9c3; color: #854d0e; }}
+    .distance-very_close {{ background: #fee2e2; color: #991b1b; }}
     .export-box {{ width: 100%; min-height: 170px; box-sizing: border-box; border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 12px; }}
     table {{ width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; }}
     th, td {{ border: 1px solid #e5e7eb; padding: 6px 7px; text-align: left; vertical-align: top; }}
@@ -352,6 +373,7 @@ def write_index_html(path: Path, records: list[dict[str, Any]], summary: dict[st
           <h2 id="title" style="font-size:17px;margin:0 0 8px;"></h2>
           <div class="review-card">
             <h3>Human decision <span id="statusChip" class="status-chip">unreviewed</span></h3>
+            <p class="hint">Action distance <span id="distanceChip" class="distance-chip">--</span></p>
             <div class="review-grid">
               <div class="review-field">
                 <label for="human_review_status">human_review_status</label>
@@ -482,6 +504,9 @@ def write_index_html(path: Path, records: list[dict[str, Any]], summary: dict[st
         ['capture index', row.capture],
         ['source pose xyz', row.source.join(', ')],
         ['action target xyz', row.action.join(', ')],
+        ['source -> action distance xy (m)', row.source_to_action_distance_m],
+        ['source -> action distance 3d (m)', row.source_to_action_distance_3d_m],
+        ['action distance flag', row.action_distance_flag],
         ['source yaw rad', row.source_yaw_rad],
         ['action yaw rad', row.action_yaw_rad],
         ['observed ratio before', row.observed_before],
@@ -508,10 +533,17 @@ def write_index_html(path: Path, records: list[dict[str, Any]], summary: dict[st
       const chip = document.getElementById('statusChip');
       chip.textContent = statusEl.value;
       chip.className = 'status-chip status-' + statusEl.value;
+      const distanceChip = document.getElementById('distanceChip');
+      distanceChip.textContent = `${{row.source_to_action_distance_m}} m / ${{row.action_distance_flag}}`;
+      distanceChip.className = 'distance-chip distance-' + row.action_distance_flag;
       document.getElementById('validationHint').textContent =
-        statusEl.value === 'approve'
-          ? 'Only approved samples may set promote_candidate_yes_no=yes. Promotion still requires a separate Stage 4A-7.7 import decision.'
-          : 'promote_candidate_yes_no=yes is disabled unless human_review_status=approve.';
+        row.action_distance_flag === 'very_close'
+          ? 'Very close action target (<0.25 m). Consider reject/poor_path_choice unless the camera change clearly adds useful view.'
+          : (row.action_distance_flag === 'close'
+            ? 'Close action target (<0.50 m). Check whether this is useful viewpoint refinement or local jitter.'
+            : (statusEl.value === 'approve'
+              ? 'Only approved samples may set promote_candidate_yes_no=yes. Promotion still requires a separate Stage 4A-7.7 import decision.'
+              : 'promote_candidate_yes_no=yes is disabled unless human_review_status=approve.'));
     }}
     function exportPayload() {{
       return {{
@@ -647,6 +679,9 @@ def write_csv(path: Path, records: list[dict[str, Any]]) -> None:
         "observed_ratio_after_current_capture",
         "historical_observed_xy_cells",
         "newly_observed_xy_cells",
+        "source_to_action_distance_m",
+        "source_to_action_distance_3d_m",
+        "action_distance_flag",
         "map_image",
         "rgb",
     ]
@@ -671,8 +706,43 @@ def write_csv(path: Path, records: list[dict[str, Any]]) -> None:
                     "observed_ratio_after_current_capture": row["observed_ratio_after_current_capture"],
                     "historical_observed_xy_cells": row.get("historical_observed_xy_cells", 0),
                     "newly_observed_xy_cells": row.get("newly_observed_xy_cells", 0),
+                    "source_to_action_distance_m": row["source_to_action_distance_m"],
+                    "source_to_action_distance_3d_m": row["source_to_action_distance_3d_m"],
+                    "action_distance_flag": row["action_distance_flag"],
                     "map_image": row["map_image"],
                     "rgb": row["relative_rgb"],
+                }
+            )
+
+
+def write_distance_audit_csv(path: Path, records: list[dict[str, Any]]) -> None:
+    fields = [
+        "review_id",
+        "sample_id",
+        "start_variant_id",
+        "step_id",
+        "source_to_action_distance_m",
+        "source_to_action_distance_3d_m",
+        "action_distance_flag",
+        "newly_observed_xy_cells",
+        "historical_observed_xy_cells",
+    ]
+    sorted_rows = sorted(records, key=lambda row: float(row["source_to_action_distance_m"]))
+    with path.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=fields)
+        writer.writeheader()
+        for row in sorted_rows:
+            writer.writerow(
+                {
+                    "review_id": f"stage4a714_s{row['start_variant_id']:03d}_step{row['step_id']:03d}",
+                    "sample_id": f"start_{row['start_variant_id']:03d}_step_{row['step_id']:03d}",
+                    "start_variant_id": row["start_variant_id"],
+                    "step_id": row["step_id"],
+                    "source_to_action_distance_m": row["source_to_action_distance_m"],
+                    "source_to_action_distance_3d_m": row["source_to_action_distance_3d_m"],
+                    "action_distance_flag": row["action_distance_flag"],
+                    "newly_observed_xy_cells": row.get("newly_observed_xy_cells", 0),
+                    "historical_observed_xy_cells": row.get("historical_observed_xy_cells", 0),
                 }
             )
 
@@ -709,6 +779,13 @@ def generate_packet(args: argparse.Namespace) -> dict[str, Any]:
             overview_png = maps_dir / f"start_{start:03d}_overview_2d_review.png"
             render_start_overview(overview_png, footprints, bounds, rows, final_obs)
 
+    distances = np.array([float(row["source_to_action_distance_m"]) for row in records], dtype=np.float64)
+    distance_counts = Counter(row["action_distance_flag"] for row in records)
+    very_close_rows = [
+        f"start_{row['start_variant_id']:03d}_step_{row['step_id']:03d}"
+        for row in sorted(records, key=lambda item: float(item["source_to_action_distance_m"]))
+        if row["action_distance_flag"] == "very_close"
+    ]
     summary = {
         "stage": "Stage 4A-7.14 2D rollout review packet",
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
@@ -728,6 +805,23 @@ def generate_packet(args: argparse.Namespace) -> dict[str, Any]:
         "coordinate_contract": "3D world xyz projects to 2D as (world_x, world_y), with z ignored only for top-down display.",
         "history_layer": "historical observed/swept xy cells from observed_state != -1 across z",
         "new_layer": "newly observed xy cells compared with previous saved step within the same start; step0 uses its saved state as baseline",
+        "action_distance_thresholds_m": {
+            "very_close_lt": VERY_CLOSE_ACTION_DISTANCE_M,
+            "close_lt": CLOSE_ACTION_DISTANCE_M,
+        },
+        "action_distance_counts": {
+            "very_close": int(distance_counts.get("very_close", 0)),
+            "close": int(distance_counts.get("close", 0)),
+            "normal": int(distance_counts.get("normal", 0)),
+        },
+        "action_distance_stats_m": {
+            "min": round(float(distances.min()), 6),
+            "median": round(float(np.median(distances)), 6),
+            "mean": round(float(distances.mean()), 6),
+            "max": round(float(distances.max()), 6),
+        },
+        "very_close_action_rows": very_close_rows,
+        "distance_review_note": "Very close source-to-action distances are review warnings only, not automatic rejection or label promotion.",
         "runtime_scope": "offline_existing_artifact_visualization_only_no_isaac_no_rollout_no_map_predict_no_training_no_checkpoint_no_rl",
         "negative_scope": {
             "isaac_startup": False,
@@ -745,6 +839,7 @@ def generate_packet(args: argparse.Namespace) -> dict[str, Any]:
     (output_dir / "stage4a714_2d_rollout_review_summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     (output_dir / "stage4a714_2d_rollout_review_records.json").write_text(json.dumps(records, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     write_csv(output_dir / "stage4a714_2d_rollout_review_records.csv", records)
+    write_distance_audit_csv(output_dir / "stage4a714_2d_action_distance_audit.csv", records)
     write_index_html(output_dir / "stage4a714_2d_rollout_review_index.html", records, summary)
     write_how_to_save(output_dir / "stage4a714_2d_human_review_how_to_save.md")
     md = [
@@ -758,6 +853,9 @@ def generate_packet(args: argparse.Namespace) -> dict[str, Any]:
         f"- Start overviews: `{len(by_start)}`",
         f"- Coordinate contract: `{summary['coordinate_contract']}`",
         f"- Runtime scope: `{summary['runtime_scope']}`",
+        f"- Action distance thresholds: very_close `<{VERY_CLOSE_ACTION_DISTANCE_M}m`, close `<{CLOSE_ACTION_DISTANCE_M}m`.",
+        f"- Action distance counts: `{summary['action_distance_counts']}`.",
+        f"- Action distance stats meters: `{summary['action_distance_stats_m']}`.",
         "",
         "## Human Review Meaning",
         "- Blue wash: all historically observed/swept x/y cells through the selected step.",
@@ -767,6 +865,7 @@ def generate_packet(args: argparse.Namespace) -> dict[str, Any]:
         "- Green arrow: current source pose to current action target.",
         "- Human decision controls: `human_review_status`, `human_review_reason`, `promote_candidate_yes_no`, `human_comment`.",
         "- Export controls: `Export review JSON`, `Copy review JSON to clipboard`, `Download review JSON`, `Download review CSV`, `Show review completion summary`.",
+        "- Action distance warnings are review cues only; a close move can still be valid when it creates a useful viewpoint change.",
         "- Human approval does not automatically promote labels; future Stage 4A-7.7 must import this review and make a separate promotion decision.",
         "",
         "## Negative Scope",

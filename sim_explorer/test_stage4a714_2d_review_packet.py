@@ -21,6 +21,7 @@ def main() -> int:
     html_path = OUT / "stage4a714_2d_rollout_review_index.html"
     csv_path = OUT / "stage4a714_2d_rollout_review_records.csv"
     how_to_save_path = OUT / "stage4a714_2d_human_review_how_to_save.md"
+    distance_csv_path = OUT / "stage4a714_2d_action_distance_audit.csv"
     checks: dict[str, bool] = {
         "output_dir_exists": OUT.is_dir(),
         "summary_exists": summary_path.is_file(),
@@ -28,6 +29,7 @@ def main() -> int:
         "html_exists": html_path.is_file(),
         "csv_exists": csv_path.is_file(),
         "how_to_save_exists": how_to_save_path.is_file(),
+        "distance_csv_exists": distance_csv_path.is_file(),
     }
 
     summary = json.loads(summary_path.read_text(encoding="utf-8")) if summary_path.is_file() else {}
@@ -44,10 +46,20 @@ def main() -> int:
             "overview_count_10": int(summary.get("start_overview_count", -1)) == 10 and len(overview_maps) == 10,
             "coordinate_contract_present": "world_x, world_y" in str(summary.get("coordinate_contract", "")),
             "history_layer_present": "observed_state != -1" in str(summary.get("history_layer", "")),
+            "distance_thresholds_present": summary.get("action_distance_thresholds_m", {}).get("very_close_lt") == 0.25
+            and summary.get("action_distance_thresholds_m", {}).get("close_lt") == 0.5,
+            "distance_counts_present": summary.get("action_distance_counts", {}).get("very_close") == 9
+            and summary.get("action_distance_counts", {}).get("close") == 30
+            and summary.get("action_distance_counts", {}).get("normal") == 21,
+            "distance_stats_present": abs(float(summary.get("action_distance_stats_m", {}).get("min", 9.0)) - 0.1) < 1e-6
+            and float(summary.get("action_distance_stats_m", {}).get("median", 0.0)) > 0.42,
             "html_has_start_controls": 'id="starts"' in html,
             "html_has_step_controls": 'id="steps"' in html,
             "html_has_map_image": 'id="map"' in html,
             "html_has_rgb_image": 'id="rgb"' in html,
+            "html_has_distance_chip": 'id="distanceChip"' in html
+            and "source -> action distance xy (m)" in html
+            and "Very close action target" in html,
             "html_has_review_card": 'class="review-card"' in html,
             "html_has_human_review_status": 'id="human_review_status"' in html
             and "human_review_status" in html
@@ -98,6 +110,9 @@ def main() -> int:
             checks[f"record_{idx}_has_rgb_ref"] = bool(row.get("relative_rgb"))
             checks[f"record_{idx}_has_source_xyz"] = len(row.get("source_pose_xyz", [])) == 3
             checks[f"record_{idx}_has_action_xyz"] = len(row.get("action_world_xyz", [])) == 3
+            checks[f"record_{idx}_has_action_distance"] = float(row.get("source_to_action_distance_m", -1.0)) >= 0.0 and row.get(
+                "action_distance_flag"
+            ) in {"very_close", "close", "normal"}
             checks[f"record_{idx}_has_observed_counts"] = int(row.get("historical_observed_xy_cells", -1)) >= 0 and int(
                 row.get("newly_observed_xy_cells", -1)
             ) >= 0

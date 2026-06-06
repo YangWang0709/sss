@@ -1,3 +1,44 @@
+Stage 4A-7.14e manual review completion and action-distance cue actions:
+
+- Received the user's updated exported review file:
+  `E:/inter_install/stage4a714_2d_manual_review_export(1).json`.
+- Replaced the canonical audit input:
+  `/home/ubuntu22/sc_explorer_ws/outputs/stage4a714_2d_manual_review_import_audit/stage4a714_2d_manual_review_export.json`.
+- Reran `sim_explorer/audit_stage4a714_2d_manual_review_export.py`.
+- Updated `sim_explorer/test_stage4a714_2d_manual_review_export_audit.py`
+  for the latest completed review counts.
+- Latest review audit:
+  `60` rows, `31` approved, `29` rejected, `0` unreviewed,
+  `28` approved rows with `promote_candidate_yes_no=yes`, `0` illegal
+  promote-yes rows, blockers `[]`.
+- After the user observed that some action targets are too close to the current
+  camera/source pose, refreshed
+  `sim_explorer/generate_stage4a714_2d_review_packet.py` and
+  `sim_explorer/test_stage4a714_2d_review_packet.py` with source-to-action
+  distance fields and HTML distance cues.
+- Distance thresholds:
+  `very_close <0.25m`, `close <0.50m`.
+- Distance counts:
+  `9` very_close, `30` close, `21` normal.
+- Distance stats meters:
+  min `0.1`, median `0.424264`, mean `0.445992`, max `0.948683`.
+- Very-close rows:
+  `start_004_step_001`, `start_008_step_004`, `start_009_step_001`,
+  `start_002_step_002`, `start_006_step_001`, `start_002_step_004`,
+  `start_006_step_003`, `start_004_step_003`, and `start_005_step_000`.
+- Regenerated the offline Stage 4A-7.14 2D review packet and synced the updated
+  local Windows HTML/CSV packet.
+- Validators passed:
+  `sim_explorer/test_stage4a714_2d_review_packet.py` and
+  `sim_explorer/test_stage4a714_2d_manual_review_export_audit.py` both
+  returned `all_passed=true`.
+- Important boundary:
+  no label promotion, no `expert_action_index_primary` creation, no dataset
+  modification, no training, no checkpoint, no Isaac startup, no map_predict,
+  no rollout, and no RL/GDPO/PPO occurred.
+
+---
+
 Stage 4A-7.14d manual review export audit actions:
 
 - Received the user's exported review file:

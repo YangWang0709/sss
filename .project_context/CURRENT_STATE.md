@@ -1,3 +1,49 @@
+# Current State - Stage 4A-7.14e Manual Review Complete And Distance Review Cues Added
+
+The latest uploaded Stage 4A-7.14 2D manual review export has been audited and is complete.
+
+Latest input export:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a714_2d_manual_review_import_audit/stage4a714_2d_manual_review_export.json`.
+
+Latest audit:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a714_2d_manual_review_import_audit/stage4a714_2d_manual_review_import_audit.md`.
+
+Result:
+- Total rows: `60`.
+- Approved: `31`.
+- Rejected: `29`.
+- Unreviewed: `0`.
+- `promote_candidate_yes_no=yes`: `28`, all legally attached to approved rows.
+- Illegal promote yes rows: `0`.
+- Manual review complete: `true`.
+- Promotion/import readiness audit: `true`.
+- Blockers: `[]`.
+
+The Stage 4A-7.14 2D review packet was also refreshed with action-distance cues after the user observed that some move targets are too close to the current camera/source pose.
+
+Distance UX:
+- Main HTML: `/home/ubuntu22/sc_explorer_ws/outputs/stage4a714_2d_review_packet/stage4a714_2d_rollout_review_index.html`.
+- Distance audit CSV: `/home/ubuntu22/sc_explorer_ws/outputs/stage4a714_2d_review_packet/stage4a714_2d_action_distance_audit.csv`.
+- `very_close`: source-to-action distance `<0.25m`.
+- `close`: source-to-action distance `<0.50m`.
+- Counts: `9` very_close, `30` close, `21` normal.
+- Distance stats meters: min `0.1`, median `0.424264`, mean `0.445992`, max `0.948683`.
+
+Very close rows:
+- `start_004_step_001`.
+- `start_008_step_004`.
+- `start_009_step_001`.
+- `start_002_step_002`.
+- `start_006_step_001`.
+- `start_002_step_004`.
+- `start_006_step_003`.
+- `start_004_step_003`.
+- `start_005_step_000`.
+
+Important boundary: this was review UX plus import-readiness audit only. It did not promote labels, did not create `expert_action_index_primary`, did not modify datasets, did not train, did not create checkpoints, did not start Isaac, did not run map_predict, did not execute rollout, and did not run RL/GDPO/PPO.
+
+---
+
 # Current State - Stage 4A-7.14d Manual Review Export Audit Complete
 
 The uploaded manual review export was copied into the project and audited.
