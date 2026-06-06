@@ -6216,3 +6216,38 @@ Stage 4A-7.6 Stage 4A-7.2 manual topdown review packet result:
   rollout, or RL/GDPO/PPO occurred. Prior datasets were not modified.
 - Recommended next:
   Stage 4A-7.10 expanded dataset QA, not training yet.
+
+## 2026-06-06 09:02:00 UTC - Stage 4A-7.10 expanded dataset QA
+
+- Created `/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a710_expanded_dataset_qa`.
+- Ran multi-agent QA/audit structure with reports under
+  `/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a710_expanded_dataset_qa/subagent_reports`.
+- Validated Stage 4A-7.9 expanded primary BC dataset:
+  `/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a79_no_training_promotion_implementation/expanded_primary_bc_dataset.npz`.
+- Dataset QA passed:
+  expanded samples `47`, original primary samples `30`, promoted Stage
+  4A-7.2 samples `17`, candidate count `64`, `D_model=16`, required keys
+  present, model features finite, all primary labels in range, and
+  `candidate_valid_mask` true at every primary label.
+- Lineage QA passed:
+  first `30` samples preserve Stage 4A-7.0 / Stage 4A-6.13 primary lineage;
+  promoted `17` samples match Stage 4A-7.8 clean candidates and use Stage
+  4A-7.3 `candidate_action_index_uncertainty_bonus_executed`. Rejected,
+  unsure, and conflict rows promoted: `0/0/0`. Lambda48 remains
+  shadow/baseline only.
+- Forbidden-field QA passed:
+  no target/ground-truth/future/reward/policy-logit/replay-buffer/optimizer/
+  training-state/class-prob forbidden keys in the expanded NPZ.
+- Loader/smoke QA passed:
+  `SimExpertBCDataset` loaded `47` samples. Optional forward-only
+  `CandidateMLPPolicy` smoke produced logits shape `[8, 64]` and CE loss only;
+  no backward, optimizer step, training loop, model save, or checkpoint.
+- Added `sim_explorer/generate_stage4a710_expanded_dataset_qa.py` and
+  `sim_explorer/test_stage4a710_expanded_dataset_qa.py`; validation passed in
+  `/home/ubuntu22/sc_explorer_ws/logs/stage4a710_expanded_dataset_qa_test.log`.
+- No BC training, optimizer step, checkpoint, Isaac startup, map_predict,
+  rollout, or RL/GDPO/PPO occurred. Prior datasets and the Stage 4A-7.9
+  expanded dataset were not modified in place.
+- Recommended next:
+  Stage 4A-7.11 tiny no-checkpoint evaluation on the expanded dataset, not
+  full training, only if explicitly approved by the user.

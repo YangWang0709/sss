@@ -4088,3 +4088,46 @@ Stage 4A-7.9 no-training promotion implementation result:
   `/home/ubuntu22/sc_explorer_ws/logs/stage4a79_no_training_promotion_implementation_test.log`.
 - Current recommended next small task:
   Stage 4A-7.10 expanded dataset QA, not training yet.
+
+Stage 4A-7.10 expanded dataset QA result:
+
+- Output:
+  `/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a710_expanded_dataset_qa`.
+- QA scope:
+  audit / load-validation only. No new dataset was created, and the Stage
+  4A-7.9 expanded dataset was not modified in place.
+- Expanded dataset checked:
+  `/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a79_no_training_promotion_implementation/expanded_primary_bc_dataset.npz`.
+- Counts:
+  expanded primary samples `47`, original primary samples `30`, promoted
+  Stage 4A-7.2 samples `17`, candidate count `64`, `D_model=16`.
+- Label validity:
+  all primary labels are in range and
+  `candidate_valid_mask[i, expert_action_index_primary[i]]` is true for all
+  `47` samples.
+- Lineage audit:
+  first `30` samples retain Stage 4A-7.0 / Stage 4A-6.13 primary lineage;
+  promoted `17` samples match Stage 4A-7.8 clean candidates and Stage 4A-7.3
+  adapter `candidate_action_index_uncertainty_bonus_executed`. Rejected,
+  unsure, and conflict rows promoted: `0/0/0`. Lambda48 remains
+  shadow/baseline only and was not used as primary.
+- Forbidden field audit:
+  passed. No `target_lr`, `target_hr`, `ground_truth`, `gt`,
+  `future_observed`, `reward`, `policy_logits`, `replay_buffer`,
+  `optimizer`, `training_state`, or `class_prob` fields are present in the
+  expanded NPZ keys.
+- Loader / smoke:
+  `SimExpertBCDataset` loaded the expanded dataset with length `47`.
+  Optional forward-only `CandidateMLPPolicy` smoke ran under no-grad/inference
+  conditions, produced logits shape `[8, 64]`, and computed CE loss only.
+  No backward, optimizer step, model save, or checkpoint occurred.
+- Validation:
+  `/home/ubuntu22/sc_explorer_ws/sim_explorer/test_stage4a710_expanded_dataset_qa.py`
+  passed with all checks true; log:
+  `/home/ubuntu22/sc_explorer_ws/logs/stage4a710_expanded_dataset_qa_test.log`.
+- Negative scope:
+  no BC training, optimizer step, checkpoint, Isaac startup, map_predict,
+  rollout, or RL/GDPO/PPO occurred.
+- Current recommended next small task:
+  Stage 4A-7.11 tiny no-checkpoint evaluation on the expanded dataset, not
+  full training, only if explicitly approved by the user.

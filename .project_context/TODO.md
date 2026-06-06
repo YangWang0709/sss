@@ -3074,3 +3074,26 @@ Stage 4A-7.9 result / current next:
 - Next faithful task:
   Stage 4A-7.10 expanded dataset QA only, before any BC dry-run or training
   discussion.
+
+Stage 4A-7.10 result / current next:
+
+- Stage 4A-7.10 expanded dataset QA is complete:
+  `/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a710_expanded_dataset_qa`.
+- Validated expanded Stage 4A-7.9 dataset:
+  `/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a79_no_training_promotion_implementation/expanded_primary_bc_dataset.npz`.
+- Counts:
+  expanded primary samples `47`; original primary samples `30`; promoted
+  Stage 4A-7.2 samples `17`; candidate count `64`; `D_model=16`.
+- QA result:
+  required keys present, model features finite, all primary labels valid,
+  `candidate_valid_mask` true at every primary label, forbidden field audit
+  passed, lineage audit passed, and `SimExpertBCDataset` load passed.
+- Optional smoke:
+  forward-only `CandidateMLPPolicy` CE loss calculation ran with no backward,
+  optimizer step, model save, or checkpoint.
+- Negative scope:
+  no training, optimizer step, checkpoint, Isaac startup, map_predict,
+  rollout, or RL/GDPO/PPO occurred.
+- Next faithful task:
+  Stage 4A-7.11 tiny no-checkpoint evaluation on the expanded dataset, not
+  full training, only if explicitly approved.
