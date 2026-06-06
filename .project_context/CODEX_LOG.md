@@ -6294,3 +6294,24 @@ Stage 4A-7.6 Stage 4A-7.2 manual topdown review packet result:
   checkpointless deeper BC, controlled BC checkpoint experiment, or medium
   bounded expert rollout for more data. Do not jump directly to long rollout
   or RL.
+
+## 2026-06-06T10:25:15.034079+00:00 - Stage 4A-7.12 pre-RL direction decision packet
+
+- Created `/home/ubuntu22/sc_explorer_ws/outputs/autonomous_pre_rl_bridge/stage4a712_pre_rl_direction_decision_packet`.
+- Verified Stage 4A-7.11 evidence: samples `47`, top1 `0.15166666805744172`, top3 `0.3700000062584877`, MRR `0.2998319737613201`, zero-top1 folds `5`.
+- Decision: Option C, medium bounded expert rollout design/preflight, because current data volume is below checkpoint readiness and the tiny evaluation remains weak.
+- No runtime, training, optimizer step, checkpoint, model save, label promotion, replay-buffer training, or RL/GDPO/PPO occurred. Lambda48 remains shadow/baseline only.
+
+## 2026-06-06T10:28:30.075006+00:00 - Stage 4A-7.13 medium expert rollout design/preflight
+
+- Created `/home/ubuntu22/sc_explorer_ws/outputs/autonomous_pre_rl_bridge/stage4a713_medium_expert_rollout_design_preflight`.
+- Designed medium bounded expert rollout envelope: starts `10`, steps per start `6`, max actions `60`, max decision frames `60`, terminal capture per start `true`.
+- Preflight blocked runtime because `stale_isaac_or_runtime_process_detected`.
+- No Isaac startup, capture, map_predict, action execution, rollout, training, optimizer step, model save, checkpoint, label promotion, replay-buffer learning, or RL/GDPO/PPO occurred. Lambda48 remains shadow/baseline only.
+
+## 2026-06-06T10:29:19.228555+00:00 - Stage 4A-7.13 medium expert rollout design/preflight
+
+- Created `/home/ubuntu22/sc_explorer_ws/outputs/autonomous_pre_rl_bridge/stage4a713_medium_expert_rollout_design_preflight`.
+- Designed medium bounded expert rollout envelope: starts `10`, steps per start `6`, max actions `60`, max decision frames `60`, terminal capture per start `true`.
+- Preflight blocked runtime because `current_uncertainty_bonus_runner_is_hard_gated_to_short_3_step_30_action_40_capture_envelope`.
+- No Isaac startup, capture, map_predict, action execution, rollout, training, optimizer step, model save, checkpoint, label promotion, replay-buffer learning, or RL/GDPO/PPO occurred. Lambda48 remains shadow/baseline only.

@@ -1,3 +1,23 @@
+# TODO - Stage 4A-7.13 Medium Expert Rollout Design Preflight Complete - Runtime Blocked
+
+Review:
+`/home/ubuntu22/sc_explorer_ws/outputs/autonomous_pre_rl_bridge/stage4a713_medium_expert_rollout_design_preflight/stage4a713_medium_expert_rollout_design_preflight_summary.md`.
+
+Blocked next step: implement or review a medium-capable uncertainty-bonus expert rollout runner/adapter that preserves `uncertainty_bonus_composite_beta8`, close guard, terminal finalization sentinel, lambda48 shadow-only behavior, and no-training/no-checkpoint/no-RL scope. Then rerun Stage 4A-7.13 preflight before any Stage 4A-7.14 runtime.
+
+---
+
+# TODO - Stage 4A-7.12 Pre-RL Direction Decision Packet Complete
+
+Open:
+`/home/ubuntu22/sc_explorer_ws/outputs/autonomous_pre_rl_bridge/stage4a712_pre_rl_direction_decision_packet/stage4a712_pre_rl_direction_decision_index.html`.
+
+Selected next faithful task: Stage 4A-7.13 medium bounded expert rollout design/preflight. Do not start runtime until preflight passes. Do not run full BC training, checkpoint training, long rollout, or RL/GDPO/PPO.
+
+Important implementation note: the existing Stage 4A-6.13/7.2 rollout runner is hard-gated for the previous short `3 step / 30 action / 40 capture` envelope, so Stage 4A-7.13 must verify whether a safe medium runner/adaptation exists before Stage 4A-7.14 runtime.
+
+---
+
 # TODO - After Stage 4A-7.8 Decision Packet
 
 Review:

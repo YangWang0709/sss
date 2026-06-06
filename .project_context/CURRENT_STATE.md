@@ -1,3 +1,27 @@
+# Current State - Stage 4A-7.13 Medium Expert Rollout Design Preflight Complete - Runtime Blocked
+
+Stage 4A-7.13 medium expert rollout design/preflight is complete. Output directory:
+`/home/ubuntu22/sc_explorer_ws/outputs/autonomous_pre_rl_bridge/stage4a713_medium_expert_rollout_design_preflight`.
+
+Preflight result: blocked for runtime. The desired medium envelope is `10` starts x `6` steps (`60` actions, `60` decision frames, terminal captures enabled), but the current uncertainty-bonus runner is hard-gated to the previous short `3 step / 30 action / 40 capture` envelope. Stage 4A-7.14 runtime must not start until a reviewed medium-capable runner or adapter exists and this preflight is rerun to pass.
+
+No Isaac startup, capture, map_predict, action execution, rollout, BC training, optimizer step, model save, checkpoint, label promotion, replay-buffer learning, or RL/GDPO/PPO occurred. Lambda48 remains shadow/baseline only and is not the primary label source.
+
+---
+
+# Current State - Stage 4A-7.12 Pre-RL Direction Decision Packet Complete
+
+Stage 4A-7.12 decision-only packet is complete. Output directory:
+`/home/ubuntu22/sc_explorer_ws/outputs/autonomous_pre_rl_bridge/stage4a712_pre_rl_direction_decision_packet`.
+
+Decision: choose Option C, medium bounded expert rollout design/preflight, because Stage 4A-7.11 showed only a weak tiny no-checkpoint signal on `47` primary samples. The selected next step is Stage 4A-7.13 design/preflight, not runtime yet.
+
+No Isaac startup, capture, map_predict, action execution, rollout, BC training, optimizer step, model save, checkpoint, label promotion, replay-buffer learning, or RL/GDPO/PPO occurred. Lambda48 remains shadow/baseline only and is not the primary label source.
+
+Next: run Stage 4A-7.13 medium expert rollout design/preflight. Runtime may start only if the preflight passes and remains bounded to the approved medium expert rollout scope.
+
+---
+
 # Current State - Stage 4A-7.8 Promotion Candidate Decision Packet Complete
 
 Stage 4A-7.8 no-training promotion-candidate decision packet is complete. Output directory:
