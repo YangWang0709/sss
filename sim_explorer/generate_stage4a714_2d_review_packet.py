@@ -238,8 +238,12 @@ def build_records(manifest: Path) -> list[dict[str, Any]]:
 def write_index_html(path: Path, records: list[dict[str, Any]], summary: dict[str, Any]) -> None:
     data = []
     for row in records:
+        review_id = f"stage4a714_s{row['start_variant_id']:03d}_step{row['step_id']:03d}"
+        sample_id = f"start_{row['start_variant_id']:03d}_step_{row['step_id']:03d}"
         data.append(
             {
+                "review_id": review_id,
+                "sample_id": sample_id,
                 "start": row["start_variant_id"],
                 "step": row["step_id"],
                 "capture": row["capture_index"],
@@ -280,9 +284,25 @@ def write_index_html(path: Path, records: list[dict[str, Any]], summary: dict[st
     .step-grid {{ grid-template-columns: repeat(3, 1fr); }}
     button {{ border: 1px solid #cbd5e1; background: #f8fafc; border-radius: 6px; padding: 7px 8px; cursor: pointer; font-size: 13px; }}
     button.active {{ background: #1d4ed8; color: white; border-color: #1d4ed8; }}
+    button.primary {{ background: #0f766e; color: white; border-color: #0f766e; }}
+    button.danger {{ background: #991b1b; color: white; border-color: #991b1b; }}
+    button:disabled {{ opacity: 0.45; cursor: not-allowed; }}
     .panel {{ display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.55fr); gap: 14px; align-items: start; }}
     img {{ max-width: 100%; height: auto; border: 1px solid #cbd5e1; background: white; }}
     .meta {{ background: white; border: 1px solid #d1d5db; border-radius: 8px; padding: 12px; }}
+    .review-card {{ background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px; margin: 0 0 12px; }}
+    .review-card h3 {{ margin: 0 0 8px; font-size: 15px; }}
+    .review-grid {{ display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }}
+    .review-field label {{ display: block; font-size: 12px; color: #334155; font-weight: 650; margin-bottom: 4px; }}
+    .review-field select, .review-field input, .review-field textarea {{ width: 100%; box-sizing: border-box; border: 1px solid #cbd5e1; border-radius: 6px; padding: 7px 8px; font: inherit; font-size: 13px; background: white; }}
+    .review-field textarea {{ min-height: 70px; resize: vertical; }}
+    .review-actions {{ display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }}
+    .status-chip {{ display: inline-block; min-width: 78px; text-align: center; border-radius: 999px; padding: 3px 8px; font-size: 12px; font-weight: 700; background: #e2e8f0; color: #334155; }}
+    .status-approve {{ background: #dcfce7; color: #166534; }}
+    .status-reject {{ background: #fee2e2; color: #991b1b; }}
+    .status-unsure {{ background: #fef9c3; color: #854d0e; }}
+    .status-needs_closer_inspection {{ background: #ffedd5; color: #9a3412; }}
+    .export-box {{ width: 100%; min-height: 170px; box-sizing: border-box; border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 12px; }}
     table {{ width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; }}
     th, td {{ border: 1px solid #e5e7eb; padding: 6px 7px; text-align: left; vertical-align: top; }}
     th {{ background: #f1f5f9; width: 42%; }}
@@ -296,9 +316,27 @@ def write_index_html(path: Path, records: list[dict[str, Any]], summary: dict[st
     <h1>Stage 4A-7.14 2D Rollout Review</h1>
     <p class="hint">USD world x/y meters are preserved. Blue = historical camera poses, pink x = action targets, blue wash = historical observed/swept area, cyan = newly observed since previous saved step.</p>
     <p class="hint warning">Review-only packet. No label promotion, no training, no checkpoint, no Isaac/runtime, no RL/GDPO/PPO.</p>
+    <p class="hint warning">Human approval does not automatically promote labels. Future Stage 4A-7.7 must import this review and make a separate promotion decision.</p>
   </header>
   <div class="shell">
     <aside>
+      <div class="review-card">
+        <h3>Review export</h3>
+        <div class="review-field">
+          <label for="reviewer">reviewer_name</label>
+          <input id="reviewer" placeholder="optional" />
+        </div>
+        <div class="review-actions">
+          <button id="markAllUnreviewed" class="danger" type="button">Mark all unreviewed</button>
+          <button id="showSummary" type="button">Show review completion summary</button>
+          <button id="exportJson" class="primary" type="button">Export review JSON</button>
+          <button id="copyJson" type="button">Copy review JSON to clipboard</button>
+          <button id="downloadJson" type="button">Download review JSON</button>
+          <button id="downloadCsv" type="button">Download review CSV</button>
+        </div>
+        <p id="completionSummary" class="hint"></p>
+        <textarea id="exportText" class="export-box" spellcheck="false" placeholder="Exported review JSON appears here."></textarea>
+      </div>
       <strong>Start</strong>
       <div id="starts" class="start-grid"></div>
       <strong>Step</strong>
@@ -312,6 +350,52 @@ def write_index_html(path: Path, records: list[dict[str, Any]], summary: dict[st
         </section>
         <section class="meta">
           <h2 id="title" style="font-size:17px;margin:0 0 8px;"></h2>
+          <div class="review-card">
+            <h3>Human decision <span id="statusChip" class="status-chip">unreviewed</span></h3>
+            <div class="review-grid">
+              <div class="review-field">
+                <label for="human_review_status">human_review_status</label>
+                <select id="human_review_status">
+                  <option value="unreviewed">unreviewed</option>
+                  <option value="approve">approve</option>
+                  <option value="reject">reject</option>
+                  <option value="unsure">unsure</option>
+                  <option value="needs_closer_inspection">needs_closer_inspection</option>
+                </select>
+              </div>
+              <div class="review-field">
+                <label for="human_review_reason">human_review_reason</label>
+                <select id="human_review_reason">
+                  <option value=""></option>
+                  <option value="local_jitter_acceptable">local_jitter_acceptable</option>
+                  <option value="local_jitter_unacceptable">local_jitter_unacceptable</option>
+                  <option value="unsafe_outside_stuck_revisit">unsafe_outside_stuck_revisit</option>
+                  <option value="poor_uncertainty_choice">poor_uncertainty_choice</option>
+                  <option value="poor_path_choice">poor_path_choice</option>
+                  <option value="visual_mismatch">visual_mismatch</option>
+                  <option value="good_exploration_choice">good_exploration_choice</option>
+                  <option value="other">other</option>
+                </select>
+              </div>
+              <div class="review-field">
+                <label for="promote_candidate_yes_no">promote_candidate_yes_no</label>
+                <select id="promote_candidate_yes_no">
+                  <option value=""></option>
+                  <option value="yes">yes</option>
+                  <option value="no">no</option>
+                </select>
+              </div>
+              <div class="review-field">
+                <label for="currentReviewId">review_id</label>
+                <input id="currentReviewId" readonly />
+              </div>
+            </div>
+            <div class="review-field" style="margin-top:10px;">
+              <label for="human_comment">human_comment</label>
+              <textarea id="human_comment" placeholder="optional note for future Stage 4A-7.7 import"></textarea>
+            </div>
+            <p id="validationHint" class="hint warning"></p>
+          </div>
           <img id="rgb" alt="camera RGB" />
           <table id="details"></table>
           <p class="hint"><a id="overview" href="#">Open start overview</a></p>
@@ -321,6 +405,39 @@ def write_index_html(path: Path, records: list[dict[str, Any]], summary: dict[st
   </div>
   <script>
     const rows = {json_data};
+    const REVIEW_KEY = 'stage4a714_2d_review_decisions_v1';
+    const STATUS_VALUES = ['unreviewed', 'approve', 'reject', 'unsure', 'needs_closer_inspection'];
+    const REASON_VALUES = ['', 'local_jitter_acceptable', 'local_jitter_unacceptable', 'unsafe_outside_stuck_revisit', 'poor_uncertainty_choice', 'poor_path_choice', 'visual_mismatch', 'good_exploration_choice', 'other'];
+    const PROMOTE_VALUES = ['', 'yes', 'no'];
+    function defaultDecision(row) {{
+      return {{
+        review_id: row.review_id,
+        start_id: row.start,
+        step_id: row.step,
+        sample_id: row.sample_id,
+        human_review_status: 'unreviewed',
+        human_review_reason: '',
+        human_comment: '',
+        promote_candidate_yes_no: '',
+      }};
+    }}
+    function loadDecisions() {{
+      let saved = {{}};
+      try {{
+        saved = JSON.parse(localStorage.getItem(REVIEW_KEY) || '{{}}');
+      }} catch (err) {{
+        saved = {{}};
+      }}
+      const out = {{}};
+      rows.forEach(row => {{
+        out[row.review_id] = {{ ...defaultDecision(row), ...(saved[row.review_id] || {{}}) }};
+        if (out[row.review_id].promote_candidate_yes_no === 'yes' && out[row.review_id].human_review_status !== 'approve') {{
+          out[row.review_id].promote_candidate_yes_no = '';
+        }}
+      }});
+      return out;
+    }}
+    let decisions = loadDecisions();
     let currentStart = rows[0]?.start ?? 0;
     let currentStep = rows[0]?.step ?? 0;
     const starts = [...new Set(rows.map(r => r.start))];
@@ -330,6 +447,24 @@ def write_index_html(path: Path, records: list[dict[str, Any]], summary: dict[st
       if (active) b.classList.add('active');
       b.onclick = fn;
       return b;
+    }}
+    function currentRow() {{
+      return rows.find(r => r.start === currentStart && r.step === currentStep) || rows[0];
+    }}
+    function saveDecisions() {{
+      localStorage.setItem(REVIEW_KEY, JSON.stringify(decisions));
+    }}
+    function setDecisionField(field, value) {{
+      const row = currentRow();
+      const d = decisions[row.review_id] || defaultDecision(row);
+      d[field] = value;
+      if (d.promote_candidate_yes_no === 'yes' && d.human_review_status !== 'approve') {{
+        d.promote_candidate_yes_no = '';
+      }}
+      decisions[row.review_id] = d;
+      saveDecisions();
+      renderReviewControls(row);
+      updateCompletionSummary(false);
     }}
     function renderNav() {{
       const startsEl = document.getElementById('starts');
@@ -342,6 +477,8 @@ def write_index_html(path: Path, records: list[dict[str, Any]], summary: dict[st
     function renderDetails(row) {{
       const detailRows = [
         ['start / step', `S${{row.start}} / ${{row.step}}`],
+        ['review id', row.review_id],
+        ['sample id', row.sample_id],
         ['capture index', row.capture],
         ['source pose xyz', row.source.join(', ')],
         ['action target xyz', row.action.join(', ')],
@@ -354,21 +491,145 @@ def write_index_html(path: Path, records: list[dict[str, Any]], summary: dict[st
       ];
       document.getElementById('details').innerHTML = detailRows.map(([k,v]) => `<tr><th>${{k}}</th><td>${{v}}</td></tr>`).join('');
     }}
+    function renderReviewControls(row) {{
+      const d = decisions[row.review_id] || defaultDecision(row);
+      const statusEl = document.getElementById('human_review_status');
+      const reasonEl = document.getElementById('human_review_reason');
+      const promoteEl = document.getElementById('promote_candidate_yes_no');
+      const commentEl = document.getElementById('human_comment');
+      statusEl.value = STATUS_VALUES.includes(d.human_review_status) ? d.human_review_status : 'unreviewed';
+      reasonEl.value = REASON_VALUES.includes(d.human_review_reason) ? d.human_review_reason : '';
+      promoteEl.value = PROMOTE_VALUES.includes(d.promote_candidate_yes_no) ? d.promote_candidate_yes_no : '';
+      commentEl.value = d.human_comment || '';
+      document.getElementById('currentReviewId').value = row.review_id;
+      [...promoteEl.options].forEach(opt => {{
+        opt.disabled = opt.value === 'yes' && statusEl.value !== 'approve';
+      }});
+      const chip = document.getElementById('statusChip');
+      chip.textContent = statusEl.value;
+      chip.className = 'status-chip status-' + statusEl.value;
+      document.getElementById('validationHint').textContent =
+        statusEl.value === 'approve'
+          ? 'Only approved samples may set promote_candidate_yes_no=yes. Promotion still requires a separate Stage 4A-7.7 import decision.'
+          : 'promote_candidate_yes_no=yes is disabled unless human_review_status=approve.';
+    }}
+    function exportPayload() {{
+      return {{
+        review_schema_version: 'stage4a714_2d_manual_review_v1',
+        source_stage: 'Stage 4A-7.14',
+        packet_stage: 'Stage 4A-7.14 2D rollout review packet',
+        exported_at_local_browser_time: new Date().toISOString(),
+        reviewer_name: document.getElementById('reviewer').value || '',
+        rows: rows.map(row => decisions[row.review_id] || defaultDecision(row)),
+        negative_scope: {{
+          label_promotion: false,
+          training: false,
+          checkpoint: false,
+          isaac_startup: false,
+          map_predict: false,
+          rollout: false,
+          rl_gdpo_ppo: false,
+        }},
+      }};
+    }}
+    function csvEscape(value) {{
+      const s = String(value ?? '');
+      return /[",\\n\\r]/.test(s) ? '"' + s.replaceAll('"', '""') + '"' : s;
+    }}
+    function exportCsvText() {{
+      const fields = ['review_id', 'start_id', 'step_id', 'sample_id', 'human_review_status', 'human_review_reason', 'human_comment', 'promote_candidate_yes_no'];
+      const lines = [fields.join(',')];
+      exportPayload().rows.forEach(row => lines.push(fields.map(f => csvEscape(row[f])).join(',')));
+      return lines.join('\\n') + '\\n';
+    }}
+    function downloadText(filename, mime, text) {{
+      const blob = new Blob([text], {{ type: mime }});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }}
+    function updateCompletionSummary(showAlert) {{
+      const counts = Object.fromEntries(STATUS_VALUES.map(s => [s, 0]));
+      rows.forEach(row => {{
+        const status = (decisions[row.review_id] || defaultDecision(row)).human_review_status;
+        counts[status] = (counts[status] || 0) + 1;
+      }});
+      const reviewed = rows.length - counts.unreviewed;
+      const text = `Reviewed ${{reviewed}} / ${{rows.length}} | approve ${{counts.approve}} | reject ${{counts.reject}} | unsure ${{counts.unsure}} | needs closer inspection ${{counts.needs_closer_inspection}} | unreviewed ${{counts.unreviewed}}`;
+      document.getElementById('completionSummary').textContent = text;
+      if (showAlert) alert(text);
+    }}
     function render() {{
       renderNav();
-      const row = rows.find(r => r.start === currentStart && r.step === currentStep) || rows[0];
+      const row = currentRow();
       document.getElementById('title').textContent = `Start ${{row.start}} Step ${{row.step}}`;
       document.getElementById('map').src = row.map;
       document.getElementById('rgb').src = row.rgb;
       document.getElementById('overview').href = row.overview;
       renderDetails(row);
+      renderReviewControls(row);
     }}
+    document.getElementById('human_review_status').onchange = e => setDecisionField('human_review_status', e.target.value);
+    document.getElementById('human_review_reason').onchange = e => setDecisionField('human_review_reason', e.target.value);
+    document.getElementById('promote_candidate_yes_no').onchange = e => setDecisionField('promote_candidate_yes_no', e.target.value);
+    document.getElementById('human_comment').oninput = e => setDecisionField('human_comment', e.target.value);
+    document.getElementById('reviewer').oninput = updateCompletionSummary.bind(null, false);
+    document.getElementById('markAllUnreviewed').onclick = () => {{
+      rows.forEach(row => decisions[row.review_id] = defaultDecision(row));
+      saveDecisions();
+      render();
+      updateCompletionSummary(true);
+    }};
+    document.getElementById('showSummary').onclick = () => updateCompletionSummary(true);
+    document.getElementById('exportJson').onclick = () => {{
+      document.getElementById('exportText').value = JSON.stringify(exportPayload(), null, 2);
+      updateCompletionSummary(false);
+    }};
+    document.getElementById('copyJson').onclick = async () => {{
+      const text = JSON.stringify(exportPayload(), null, 2);
+      const box = document.getElementById('exportText');
+      box.value = text;
+      try {{
+        await navigator.clipboard.writeText(text);
+      }} catch (err) {{
+        box.focus();
+        box.select();
+        document.execCommand('copy');
+      }}
+    }};
+    document.getElementById('downloadJson').onclick = () => downloadText('stage4a714_2d_manual_review_export.json', 'application/json', JSON.stringify(exportPayload(), null, 2) + '\\n');
+    document.getElementById('downloadCsv').onclick = () => downloadText('stage4a714_2d_manual_review_export.csv', 'text/csv', exportCsvText());
     render();
+    updateCompletionSummary(false);
   </script>
 </body>
 </html>
 """
     path.write_text(body, encoding="utf-8")
+
+
+def write_how_to_save(path: Path) -> None:
+    text = """# Stage 4A-7.14 2D Manual Review Save Instructions
+
+Open `stage4a714_2d_rollout_review_index.html` in a browser.
+
+1. Use the Start and Step buttons to inspect each of the 60 samples.
+2. For each sample, set `human_review_status`.
+3. Set `human_review_reason` and `human_comment` when useful.
+4. Leave `promote_candidate_yes_no` empty unless the sample is approved and should be considered later.
+5. Click `Export review JSON`, then `Download review JSON` or `Copy review JSON to clipboard`.
+6. Click `Download review CSV` if a spreadsheet copy is easier to inspect.
+
+Human approval does not automatically promote labels. Future Stage 4A-7.7 must import the exported review and make a separate promotion decision.
+
+Negative scope: no label promotion, no training, no checkpoint, no Isaac startup, no map_predict, no rollout, no RL/GDPO/PPO.
+"""
+    path.write_text(text, encoding="utf-8")
 
 
 def write_csv(path: Path, records: list[dict[str, Any]]) -> None:
@@ -457,6 +718,7 @@ def generate_packet(args: argparse.Namespace) -> dict[str, Any]:
         "scene_metadata": str(args.scene_metadata),
         "output_dir": str(output_dir),
         "main_html": str(output_dir / "stage4a714_2d_rollout_review_index.html"),
+        "save_instructions": str(output_dir / "stage4a714_2d_human_review_how_to_save.md"),
         "review_rows": len(records),
         "start_count": len(by_start),
         "step_map_count": len(records),
@@ -484,10 +746,12 @@ def generate_packet(args: argparse.Namespace) -> dict[str, Any]:
     (output_dir / "stage4a714_2d_rollout_review_records.json").write_text(json.dumps(records, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     write_csv(output_dir / "stage4a714_2d_rollout_review_records.csv", records)
     write_index_html(output_dir / "stage4a714_2d_rollout_review_index.html", records, summary)
+    write_how_to_save(output_dir / "stage4a714_2d_human_review_how_to_save.md")
     md = [
         "# Stage 4A-7.14 2D Rollout Review Packet",
         "",
         f"- Main HTML: `{summary['main_html']}`",
+        f"- Save instructions: `{summary['save_instructions']}`",
         f"- Review rows: `{len(records)}`",
         f"- Starts: `{len(by_start)}`",
         f"- Step maps: `{len(records)}`",
@@ -501,6 +765,9 @@ def generate_packet(args: argparse.Namespace) -> dict[str, Any]:
         "- Blue dots/line: historical source camera poses projected from 3D world x/y.",
         "- Pink x markers: selected action targets projected from 3D world x/y.",
         "- Green arrow: current source pose to current action target.",
+        "- Human decision controls: `human_review_status`, `human_review_reason`, `promote_candidate_yes_no`, `human_comment`.",
+        "- Export controls: `Export review JSON`, `Copy review JSON to clipboard`, `Download review JSON`, `Download review CSV`, `Show review completion summary`.",
+        "- Human approval does not automatically promote labels; future Stage 4A-7.7 must import this review and make a separate promotion decision.",
         "",
         "## Negative Scope",
     ]

@@ -1,3 +1,23 @@
+# TODO - Stage 4A-7.14c 2D Manual Review Controls
+
+Open the upgraded review page:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a714_2d_review_packet/stage4a714_2d_rollout_review_index.html`.
+
+Human review workflow:
+- Select a start and step in the left controls.
+- Inspect the 2D map, current source-to-action arrow, historical camera path, swept areas, and right-side camera RGB.
+- Set `human_review_status` for each of the `60` samples.
+- Optionally set `human_review_reason` and `human_comment`.
+- Leave `promote_candidate_yes_no` empty unless the sample is approved and should be considered later.
+- Export the result with `Export review JSON`, `Copy review JSON to clipboard`, `Download review JSON`, or `Download review CSV`.
+
+Save instructions:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a714_2d_review_packet/stage4a714_2d_human_review_how_to_save.md`.
+
+Important boundary: reviewing or approving in the HTML does not promote labels. Future Stage 4A-7.7 must import the exported review and make a separate promotion decision. No promotion/training/checkpoint/runtime occurred.
+
+---
+
 # TODO - Stage 4A-7.14 2D Rollout Review Packet
 
 Human review can now use:

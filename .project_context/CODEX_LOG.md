@@ -1,3 +1,30 @@
+Stage 4A-7.14c 2D manual review control/export UX actions:
+
+- Upgraded `sim_explorer/generate_stage4a714_2d_review_packet.py` so the
+  Stage 4A-7.14 2D review HTML includes per-sample human decision controls:
+  `human_review_status`, `human_review_reason`, `promote_candidate_yes_no`,
+  and `human_comment`.
+- Added export/save controls in
+  `/home/ubuntu22/sc_explorer_ws/outputs/stage4a714_2d_review_packet/stage4a714_2d_rollout_review_index.html`:
+  `Mark all unreviewed`, `Export review JSON`, `Copy review JSON to clipboard`,
+  `Download review JSON`, `Download review CSV`, and
+  `Show review completion summary`.
+- Added
+  `/home/ubuntu22/sc_explorer_ws/outputs/stage4a714_2d_review_packet/stage4a714_2d_human_review_how_to_save.md`.
+- Updated `sim_explorer/test_stage4a714_2d_review_packet.py` to validate the
+  control/export UI, `60` review rows, no default promotion yes, no label
+  promotion, no training, no checkpoint, no Isaac startup, no map_predict, no
+  rollout, and lambda48 shadow/baseline-only status.
+- Regenerated the offline Stage 4A-7.14 2D review packet and synced the full
+  local Windows packet, including `70` maps and `60` RGB frames, for browser
+  review.
+- Validation passed with `all_passed=true`.
+- Important boundary: the `60` samples are ready for human review, not
+  automatically approved. No label promotion, training, checkpoint, runtime,
+  Isaac startup, map_predict, rollout, or RL/GDPO/PPO occurred.
+
+---
+
 
 - 2026-06-05T17:32:53.322864+00:00: Completed Stage 4A-7.3 promotion-gate QA, Stage 4A-7.2 compact_v1
   feature adapter, and adapter QA. Gate QA output `/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a73_promotion_gate_qa_review`; adapter output

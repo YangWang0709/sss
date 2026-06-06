@@ -1,3 +1,35 @@
+# Current State - Stage 4A-7.14c 2D Manual Review Controls Complete
+
+Stage 4A-7.14 2D rollout review HTML has been upgraded with human decision controls and export/save support.
+
+Main review HTML:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a714_2d_review_packet/stage4a714_2d_rollout_review_index.html`.
+
+Save instructions:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a714_2d_review_packet/stage4a714_2d_human_review_how_to_save.md`.
+
+The HTML now exposes per-sample fields:
+- `human_review_status`: `unreviewed`, `approve`, `reject`, `unsure`, `needs_closer_inspection`.
+- `human_review_reason`.
+- `promote_candidate_yes_no`, default empty and `yes` disabled unless status is `approve`.
+- `human_comment`.
+
+Export controls are available in the page:
+- `Export review JSON`.
+- `Copy review JSON to clipboard`.
+- `Download review JSON`.
+- `Download review CSV`.
+- `Show review completion summary`.
+- `Mark all unreviewed`.
+
+Validation:
+`python sim_explorer/test_stage4a714_2d_review_packet.py`
+passed with `all_passed=true`, `60` review rows, `70` map images, and `60` RGB references.
+
+Important boundary: the `60` Stage 4A-7.14 samples are ready for human review, not automatically approved. This was an offline review/export UX update only. It did not start Isaac, run map_predict, execute rollout, train, create checkpoints, promote labels, or run RL/GDPO/PPO. Human approval still requires a future Stage 4A-7.7 import/promotion decision.
+
+---
+
 # Current State - Stage 4A-7.14 2D Rollout Review Packet Complete
 
 Stage 4A-7.14 2D rollout review mechanism is complete for human inspection.
