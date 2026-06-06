@@ -209,11 +209,11 @@ def main() -> int:
         web_review.get("machine_readable") is True
         and web_review.get("runtime_checkpoint_training_rl_approved") is False
     )
-    context_head = (ROOT / ".project_context/CURRENT_STATE.md").read_text(encoding="utf-8")[:1800]
-    checks["context_front_updated"] = (
-        "Stage 4A-7.13 Medium Expert Rollout Design Preflight Passed" in context_head
+    context_text = (ROOT / ".project_context/CURRENT_STATE.md").read_text(encoding="utf-8")
+    checks["context_records_stage713_state"] = (
+        "Stage 4A-7.13 Medium Expert Rollout Design Preflight Passed" in context_text
         if adapter_available
-        else "Stage 4A-7.13 Medium Expert Rollout Design Preflight Complete - Runtime Blocked" in context_head
+        else "Stage 4A-7.13 Medium Expert Rollout Design Preflight Complete - Runtime Blocked" in context_text
     )
     checks["future_command_guarded"] = (OUT / "future_stage4a714_selected_bounded_execution_sketch.md").read_text(encoding="utf-8").startswith("DO NOT RUN UNTIL STAGE 4A-7.13 PREFLIGHT PASSES.")
     checks["no_outputs_tracked"] = not any(path.startswith("outputs/") or path.startswith("logs/") for path in tracked)

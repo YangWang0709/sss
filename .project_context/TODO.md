@@ -1,3 +1,14 @@
+# TODO - Stage 4A-7.13 Re-Preflight Only Complete
+
+Review:
+`/home/ubuntu22/sc_explorer_ws/outputs/autonomous_pre_rl_bridge/stage4a713_medium_expert_rollout_design_preflight/stage4a713_medium_expert_rollout_design_preflight_summary.md`.
+
+This user-approved step only revalidated the medium-capable uncertainty-bonus adapter and regenerated Stage 4A-7.13 preflight. It did not run runtime, Isaac, map_predict, training, checkpoint, label promotion, long rollout, or RL/GDPO/PPO.
+
+Runtime remains a separate future approval boundary despite `runtime_allowed=true` in the preflight packet.
+
+---
+
 # TODO - Stage 4A-7.15 Final Pre-RL Readiness Review
 
 Open:

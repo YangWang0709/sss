@@ -1,3 +1,21 @@
+# Current State - Stage 4A-7.13 Medium Adapter Re-Preflight Only Complete
+
+User-approved narrow scope: Stage 4A-7.13 medium-capable uncertainty-bonus runner/adapter fix and re-preflight only.
+
+Result: complete. The existing Stage 4A-7.14 medium adapter was revalidated and Stage 4A-7.13 preflight was regenerated. Output:
+`/home/ubuntu22/sc_explorer_ws/outputs/autonomous_pre_rl_bridge/stage4a713_medium_expert_rollout_design_preflight`.
+
+Re-preflight result: `preflight_passed=true`, `runtime_allowed=true`, `runtime_started=false`, `training=false`, `checkpoint_created=false`, `rl_gdpo_ppo=false`, and `lambda48_primary_use=false`. The adapter gates the approved medium envelope (`10` starts, `6` steps/start, `60` actions, `60` decision frames, `70` captures) while preserving close guard, finalization sentinel, no-training/no-checkpoint/no-RL scope, beta8 uncertainty-bonus primary scoring, and lambda48 shadow-only behavior.
+
+Validation passed:
+`sim_explorer/test_stage4a714_medium_uncertainty_bonus_rollout_adapter.py`
+and
+`sim_explorer/test_stage4a713_medium_expert_rollout_design_preflight.py`.
+
+No runtime, Isaac startup, capture, map_predict, action execution, training, checkpoint, label promotion, long rollout, or RL/GDPO/PPO occurred in this re-preflight-only step.
+
+---
+
 # Current State - Stage 4A-7.15 Final Pre-RL Readiness Packet Complete
 
 Stage 4A-7.15 final Pre-RL readiness packet is complete:

@@ -24,6 +24,29 @@
   jitter `8.000000` degrees. No Isaac/rollout/map_predict/training/checkpoint/RL
   executed; lambda48 remained shadow-only.
 
+Stage 4A-7.13 medium adapter re-preflight-only actions:
+
+- User-approved narrow scope:
+  Stage 4A-7.13 medium-capable uncertainty-bonus runner/adapter fix and
+  re-preflight only.
+- Revalidated the existing Stage 4A-7.14 medium adapter with
+  `sim_explorer/test_stage4a714_medium_uncertainty_bonus_rollout_adapter.py`.
+- Regenerated Stage 4A-7.13 medium expert rollout design/preflight:
+  `/home/ubuntu22/sc_explorer_ws/outputs/autonomous_pre_rl_bridge/stage4a713_medium_expert_rollout_design_preflight`.
+- Updated `sim_explorer/test_stage4a713_medium_expert_rollout_design_preflight.py`
+  so it checks that the Stage 4A-7.13 state is recorded in CURRENT_STATE without
+  requiring it to be the frontmost record after later stages have been completed.
+- Validation:
+  `sim_explorer/test_stage4a713_medium_expert_rollout_design_preflight.py`
+  passed with `preflight_passed=true`, `runtime_allowed=true`,
+  `runtime_started=false`, `training=false`, `checkpoint_created=false`,
+  `rl_gdpo_ppo=false`, and `lambda48_primary_use=false`.
+- Negative scope:
+  no runtime, Isaac startup, capture, map_predict, action execution, training,
+  checkpoint, label promotion, long rollout, or RL/GDPO/PPO occurred.
+
+---
+
 Stage 4A-7.15 final Pre-RL readiness packet actions:
 
 - Created Stage 4A-7.14b source-only medium postrun safety audit:
