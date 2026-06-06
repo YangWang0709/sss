@@ -1,3 +1,21 @@
+# TODO - Stage 4A-7.14 Runtime Only Review
+
+Review runtime output:
+`/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a714_medium_bounded_expert_rollout_runtime`.
+
+Review HTML:
+`/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a714_medium_bounded_expert_rollout_runtime/short_rollout_uncertainty_bonus_index.html`.
+
+Review MP4:
+`/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a714_medium_bounded_expert_rollout_runtime/short_rollout_flythrough.mp4`.
+
+Postrun safety audit:
+`/home/ubuntu22/sc_explorer_ws/outputs/autonomous_pre_rl_bridge/stage4a714b_medium_postrun_safety_audit/stage4a714b_medium_postrun_safety_audit_summary.md`.
+
+This runtime-only step completed and passed medium postrun validation. Do not treat it as authorization for training, checkpoint/model save, label promotion, long rollout, replay-buffer learning, or RL/GDPO/PPO.
+
+---
+
 # TODO - Stage 4A-7.13 Re-Preflight Only Complete
 
 Review:

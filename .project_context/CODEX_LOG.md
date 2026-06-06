@@ -24,6 +24,40 @@
   jitter `8.000000` degrees. No Isaac/rollout/map_predict/training/checkpoint/RL
   executed; lambda48 remained shadow-only.
 
+Stage 4A-7.14 medium bounded runtime-only actions:
+
+- User-approved narrow scope:
+  Stage 4A-7.14 medium bounded expert rollout runtime only. No training,
+  checkpoint, or RL.
+- Confirmed Stage 4A-7.13 preflight was passed and no Stage 4A-7.14/Isaac
+  processes were running before launch.
+- Launched runtime run id:
+  `stage4a714_medium_runtime_only_20260606T113547Z`.
+- Runtime output:
+  `/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a714_medium_bounded_expert_rollout_runtime`.
+- Close guard output:
+  `/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a714_medium_bounded_expert_rollout_runtime_guard_stage4a714_medium_runtime_only_20260606T113547Z`.
+- Runtime produced the approved medium envelope:
+  `10` starts, `60` executed actions, `60` decision frames, `70` captures,
+  `60` map_predict calls, `60` primary beta8 uncertainty-bonus decisions, and
+  HTML/MP4 review artifacts.
+- Close handling:
+  `simulation_app.close()` hung after required output finalization. The legacy
+  short-bound audit kept the sentinel unsafe, so the exact current run child
+  process group was manually terminated after required files were finalized.
+  Standard report:
+  `/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a714_medium_bounded_expert_rollout_runtime/manual_process_termination_report.json`.
+- Validation:
+  regenerated Stage 4A-7.14b medium postrun safety audit and
+  `sim_explorer/test_stage4a714b_medium_postrun_safety_audit.py` passed.
+- Negative scope:
+  no BC training, optimizer step, checkpoint/model save, label promotion, long
+  rollout, replay-buffer learning, or RL/GDPO/PPO occurred. Lambda48 remained
+  shadow/baseline only; primary scoring remained
+  `uncertainty_bonus_composite_beta8`.
+
+---
+
 Stage 4A-7.13 medium adapter re-preflight-only actions:
 
 - User-approved narrow scope:

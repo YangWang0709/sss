@@ -1,3 +1,36 @@
+# Current State - Stage 4A-7.14 Medium Runtime Only Complete
+
+User-approved narrow scope: Stage 4A-7.14 medium bounded expert rollout runtime only. No training, checkpoint, or RL.
+
+Runtime run id:
+`stage4a714_medium_runtime_only_20260606T113547Z`.
+
+Runtime output:
+`/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a714_medium_bounded_expert_rollout_runtime`.
+
+Close guard output:
+`/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a714_medium_bounded_expert_rollout_runtime_guard_stage4a714_medium_runtime_only_20260606T113547Z`.
+
+Result: runtime completed the approved medium envelope and Stage 4A-7.14b postrun safety audit passed. Counts: `10` starts, `60` executed actions, `60` decision frames, `70` captures, `60` map_predict calls, `60` primary beta8 uncertainty-bonus decisions, and `70` action RGB/pose records.
+
+The runtime wrote all required artifacts, including:
+`short_rollout_manifest.jsonl`,
+`primary_uncertainty_bonus_decisions.jsonl`,
+`short_rollout_dataset_uncertainty_bonus.npz`,
+`short_rollout_uncertainty_bonus_index.html`,
+and
+`short_rollout_flythrough.mp4`.
+
+Known close behavior: `simulation_app.close()` hung after output finalization. The legacy short-bound runtime audit kept the sentinel unsafe, so the exact current run child process group was manually terminated after required files were finalized. Standard runtime termination report:
+`/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a714_medium_bounded_expert_rollout_runtime/manual_process_termination_report.json`.
+
+Validation passed:
+`sim_explorer/test_stage4a714b_medium_postrun_safety_audit.py`.
+
+No BC training, optimizer step, checkpoint/model save, label promotion, long rollout, replay-buffer learning, or RL/GDPO/PPO occurred. Lambda48 remained shadow/baseline only; primary scoring remained `uncertainty_bonus_composite_beta8`.
+
+---
+
 # Current State - Stage 4A-7.13 Medium Adapter Re-Preflight Only Complete
 
 User-approved narrow scope: Stage 4A-7.13 medium-capable uncertainty-bonus runner/adapter fix and re-preflight only.
