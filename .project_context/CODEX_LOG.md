@@ -1,3 +1,46 @@
+Stage 4A-7.13 bounded checkpointed BC design/preflight actions:
+
+- Added `sim_explorer/generate_stage4a713_checkpointed_bc_design_preflight.py`.
+- Added `sim_explorer/test_stage4a713_checkpointed_bc_design_preflight.py`.
+- Generated output:
+  `/home/ubuntu22/sc_explorer_ws/outputs/stage4a713_checkpointed_bc_design_preflight`.
+- Loaded Stage 4A-7.12 decision evidence:
+  selected option `B`, approved design/preflight `true`, checkpointed BC execution
+  now `false`, checkpoint save now `false`, runtime/rollout now `false`,
+  RL/GDPO/PPO now `false`.
+- Selected dataset:
+  `/home/ubuntu22/sc_explorer_ws/outputs/stage4a79_stage4a714_compatible_no_training_import/stage4a79_stage4a714_compatible_expanded_dataset_55.npz`.
+- Dataset preflight:
+  sample count `55`, candidate count `64`, D_model `16`, provenance `30`
+  Stage 4A-7.0 original primary rows plus `25` Stage 4A-7.14 compatible
+  imported rows, no rejected/held/recheck rows, and no forbidden
+  target/ground_truth/future_observed fields.
+- Model/training design:
+  default `CandidateMLPPolicy_small` hidden_dim `64`, optional bounded hidden_dim
+  `128`, invalid candidate mask required, existing split_id train/val/test
+  `39/10/6`, CE/top1/top3/top5/MRR plus original/imported subgroup metrics.
+- Checkpoint policy:
+  future checkpoint path must stay under ignored directory
+  `/home/ubuntu22/sc_explorer_ws/checkpoints/stage4a714_checkpointed_bc_experiment`;
+  checkpoint metadata must include dataset hash, git commit, model config,
+  feature names, label policy, lambda48 shadow-only declaration, and no-RL
+  declaration.
+- Exact future approval phrase written to:
+  `/home/ubuntu22/sc_explorer_ws/outputs/stage4a713_checkpointed_bc_design_preflight/exact_approval_phrase_for_stage4a714_checkpointed_bc_execution.md`.
+- Stage 4A-7.13 safety:
+  optimizer steps `0`, backward calls `0`, training `false`, checkpoint created
+  `false`, model saved `false`, checkpoint dir created `false`, Isaac startup
+  `false`, map_predict `false`, rollout/runtime `false`, RL/GDPO/PPO `false`,
+  dataset modification `false`, label promotion `false`.
+- Validator:
+  `sim_explorer/test_stage4a713_checkpointed_bc_design_preflight.py`
+  passed with `all_passed=true`.
+- Important boundary:
+  Stage 4A-7.13 was design/preflight only. Lambda48 remained shadow/baseline
+  only and labels were not recomputed from lambda48.
+
+---
+
 Stage 4A-7.12 Stage 4A-7.9 review/readiness decision packet actions:
 
 - Added `sim_explorer/generate_stage4a712_stage4a79_review_readiness_decision_packet.py`.

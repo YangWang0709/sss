@@ -1,3 +1,35 @@
+# TODO - Stage 4A-7.13 Checkpointed BC Design/Preflight Complete
+
+Review the Stage 4A-7.13 design/preflight packet:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a713_checkpointed_bc_design_preflight/stage4a713_checkpointed_bc_design_preflight_summary.md`.
+
+Open the HTML:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a713_checkpointed_bc_design_preflight/stage4a713_checkpointed_bc_design_preflight_index.html`.
+
+Key files:
+- Dataset preflight: `/home/ubuntu22/sc_explorer_ws/outputs/stage4a713_checkpointed_bc_design_preflight/dataset_preflight_report.md`.
+- Model design: `/home/ubuntu22/sc_explorer_ws/outputs/stage4a713_checkpointed_bc_design_preflight/model_design_report.md`.
+- Training plan: `/home/ubuntu22/sc_explorer_ws/outputs/stage4a713_checkpointed_bc_design_preflight/training_plan_report.md`.
+- Split policy: `/home/ubuntu22/sc_explorer_ws/outputs/stage4a713_checkpointed_bc_design_preflight/split_policy_report.md`.
+- Metric plan: `/home/ubuntu22/sc_explorer_ws/outputs/stage4a713_checkpointed_bc_design_preflight/metric_plan_report.md`.
+- Checkpoint policy: `/home/ubuntu22/sc_explorer_ws/outputs/stage4a713_checkpointed_bc_design_preflight/checkpoint_policy_report.md`.
+- Exact future approval phrase: `/home/ubuntu22/sc_explorer_ws/outputs/stage4a713_checkpointed_bc_design_preflight/exact_approval_phrase_for_stage4a714_checkpointed_bc_execution.md`.
+- Future execution sketch: `/home/ubuntu22/sc_explorer_ws/outputs/stage4a713_checkpointed_bc_design_preflight/future_stage4a714_checkpointed_bc_execution_sketch.md`.
+
+Current result:
+- Dataset selected: Stage 4A-7.9 compatible expanded dataset with shape `[55, 64, 16]`.
+- Checkpoint policy: save only under ignored checkpoint directory in a future separately approved execution.
+- Stage 4A-7.13 optimizer steps: `0`.
+- Training/checkpoint/model save/runtime/rollout/RL: `false`.
+- Label promotion and dataset modification: `false`.
+- Lambda48 remains shadow/baseline only.
+- Validator blockers: `[]`.
+
+Next faithful step:
+User/web review of this packet. If accepted, provide the exact approval phrase before any Stage 4A-7.14 checkpointed BC execution. Do not run runtime/rollout/RL from the design packet.
+
+---
+
 # TODO - Stage 4A-7.12 Review Readiness Decision Packet Complete
 
 Review the Stage 4A-7.12 decision packet:

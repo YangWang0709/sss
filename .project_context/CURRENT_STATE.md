@@ -1,3 +1,43 @@
+# Current State - Stage 4A-7.13 Checkpointed BC Design/Preflight Complete
+
+Stage 4A-7.13 bounded checkpointed BC experiment design/preflight packet has been generated from the Stage 4A-7.12 selected option B decision and the Stage 4A-7.9 compatible expanded dataset.
+
+Output:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a713_checkpointed_bc_design_preflight`.
+
+Main HTML:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a713_checkpointed_bc_design_preflight/stage4a713_checkpointed_bc_design_preflight_index.html`.
+
+Summary:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a713_checkpointed_bc_design_preflight/stage4a713_checkpointed_bc_design_preflight_summary.md`.
+
+Selected dataset:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a79_stage4a714_compatible_no_training_import/stage4a79_stage4a714_compatible_expanded_dataset_55.npz`.
+
+Result:
+- Decision: `design_preflight_complete_ready_for_separate_stage4a714_checkpointed_bc_execution_review`.
+- Stage 4A-7.12 selected option: `B`.
+- Dataset shape: `[55, 64, 16]`.
+- Provenance: `30` Stage 4A-7.0 original primary rows plus `25` Stage 4A-7.14 compatible imported rows.
+- Model design: `CandidateMLPPolicy_small` by default, with hidden_dim `64`; optional bounded comparison hidden_dim `128`.
+- Split policy: use existing Stage 4A-7.9 `split_id` train/val/test counts `39/10/6`.
+- Metric plan: CE loss, top1, top3, top5, MRR, plus original/imported subgroup metrics.
+- Checkpoint policy: future checkpoint path must stay under ignored directory `/home/ubuntu22/sc_explorer_ws/checkpoints/stage4a714_checkpointed_bc_experiment`; Stage 4A-7.13 created no checkpoint and did not create that checkpoint directory.
+- Exact approval phrase path: `/home/ubuntu22/sc_explorer_ws/outputs/stage4a713_checkpointed_bc_design_preflight/exact_approval_phrase_for_stage4a714_checkpointed_bc_execution.md`.
+- Lambda48 role: `shadow/baseline only`; labels were not recomputed from lambda48.
+- Blockers: `[]`.
+
+Validator:
+`sim_explorer/test_stage4a713_checkpointed_bc_design_preflight.py`
+passed with `all_passed=true`.
+
+Important boundary: Stage 4A-7.13 was design/preflight only. It did not train, did not perform optimizer steps, did not save model weights, did not create a checkpoint, did not start Isaac, did not run map_predict, did not execute rollout/runtime, did not run RL/GDPO/PPO, did not modify datasets, and did not promote labels.
+
+Next faithful step:
+User/web review of the Stage 4A-7.13 design/preflight packet. If accepted, the user may provide the exact approval phrase for a separate Stage 4A-7.14 bounded checkpointed BC execution. Runtime, rollout, and RL remain separate later gates.
+
+---
+
 # Current State - Stage 4A-7.12 Review Readiness Decision Packet Complete
 
 Stage 4A-7.12 review/readiness decision packet has been generated from the Stage 4A-7.9 compatible artifact, Stage 4A-7.10 QA, and Stage 4A-7.11 bounded tiny BC dry-run evidence.
