@@ -6315,3 +6315,10 @@ Stage 4A-7.6 Stage 4A-7.2 manual topdown review packet result:
 - Designed medium bounded expert rollout envelope: starts `10`, steps per start `6`, max actions `60`, max decision frames `60`, terminal capture per start `true`.
 - Preflight blocked runtime because `current_uncertainty_bonus_runner_is_hard_gated_to_short_3_step_30_action_40_capture_envelope`.
 - No Isaac startup, capture, map_predict, action execution, rollout, training, optimizer step, model save, checkpoint, label promotion, replay-buffer learning, or RL/GDPO/PPO occurred. Lambda48 remains shadow/baseline only.
+
+## 2026-06-06T10:38:33.374751+00:00 - Stage 4A-7.13 medium expert rollout design/preflight
+
+- Created `/home/ubuntu22/sc_explorer_ws/outputs/autonomous_pre_rl_bridge/stage4a713_medium_expert_rollout_design_preflight`.
+- Designed medium bounded expert rollout envelope: starts `10`, steps per start `6`, max actions `60`, max decision frames `60`, terminal capture per start `true`.
+- Preflight passed: `True`. Main blocker: ``.
+- No Isaac startup, capture, map_predict, action execution, rollout, training, optimizer step, model save, checkpoint, label promotion, replay-buffer learning, or RL/GDPO/PPO occurred. Lambda48 remains shadow/baseline only.

@@ -1,3 +1,14 @@
+# Current State - Stage 4A-7.13 Medium Expert Rollout Design Preflight Passed
+
+Stage 4A-7.13 medium expert rollout design/preflight is complete. Output directory:
+`/home/ubuntu22/sc_explorer_ws/outputs/autonomous_pre_rl_bridge/stage4a713_medium_expert_rollout_design_preflight`.
+
+Preflight result: passed. A Stage 4A-7.14 medium-capable adapter now gates the desired `10` starts x `6` steps (`60` actions, `60` decision frames, terminal captures enabled) envelope while preserving close guard, finalization sentinel, no-training/no-checkpoint/no-RL scope, uncertainty_bonus_composite_beta8 primary scoring, and lambda48 shadow-only behavior.
+
+No Isaac startup, capture, map_predict, action execution, rollout, BC training, optimizer step, model save, checkpoint, label promotion, replay-buffer learning, or RL/GDPO/PPO occurred. Lambda48 remains shadow/baseline only and is not the primary label source.
+
+---
+
 # Current State - Stage 4A-7.13 Medium Expert Rollout Design Preflight Complete - Runtime Blocked
 
 Stage 4A-7.13 medium expert rollout design/preflight is complete. Output directory:

@@ -110,15 +110,18 @@ def main() -> int:
     tracked = git_files()
 
     medium = config.get("medium_config", {})
+    adapter_available = bool(runner.get("medium_bounds_supported_by_adapter"))
     checks["summary_completed"] = summary.get("completed") is True
-    checks["expected_runtime_blocked"] = (
-        summary.get("blocked") is True
-        and summary.get("preflight_passed") is False
-        and summary.get("runtime_allowed") is False
-        and blocker.get("blocked") is True
-        and blocker.get("runtime_allowed") is False
+    checks["preflight_state_matches_adapter"] = (
+        (summary.get("blocked") is False and summary.get("preflight_passed") is True and summary.get("runtime_allowed") is True and blocker.get("runtime_allowed") is True)
+        if adapter_available
+        else (summary.get("blocked") is True and summary.get("preflight_passed") is False and summary.get("runtime_allowed") is False and blocker.get("runtime_allowed") is False)
     )
-    checks["main_blocker_is_runner_gate"] = "hard_gated_to_short" in str(summary.get("main_blocker", ""))
+    checks["main_blocker_expected"] = (
+        summary.get("main_blocker", "") == ""
+        if adapter_available
+        else "adapter_missing_or_incomplete" in str(summary.get("main_blocker", ""))
+    )
     checks["stage712_gate_loaded"] = gate.get("stage712_completed") is True and gate.get("stage712_selected_option") == "C"
     checks["medium_config_expected"] = (
         medium.get("starts") == 10
@@ -131,11 +134,26 @@ def main() -> int:
     checks["required_paths_exist"] = all(resources.get("path_checks", {}).values())
     checks["runner_audit_detects_short_gate"] = (
         runner.get("exists") is True
-        and runner.get("medium_bounds_supported_without_source_change") is False
+        and runner.get("historical_runner_remains_short_gated") is True
         and runner.get("hard_gates", {}).get("requires_three_steps") is True
         and runner.get("hard_gates", {}).get("requires_30_30_40_totals") is True
     )
-    checks["execution_plan_no_runtime"] = execution.get("stage4a714_runtime_allowed_now") is False
+    adapter_gates = runner.get("adapter_gates", {})
+    checks["adapter_medium_support"] = (
+        adapter_available
+        and adapter_gates.get("requires_10_starts") is True
+        and adapter_gates.get("requires_6_steps") is True
+        and adapter_gates.get("requires_60_actions") is True
+        and adapter_gates.get("requires_60_decision_frames") is True
+        and adapter_gates.get("requires_70_captures") is True
+        and adapter_gates.get("requires_bounded_medium_motion_mode") is True
+        and adapter_gates.get("requires_finalization_sentinel_path") is True
+        and adapter_gates.get("requires_close_guard_run_id") is True
+        and adapter_gates.get("requires_no_training") is True
+        and adapter_gates.get("requires_no_rl") is True
+        and adapter_gates.get("patches_base_enforce_args_only") is True
+    )
+    checks["execution_plan_runtime_flag_matches_adapter"] = execution.get("stage4a714_runtime_allowed_now") is adapter_available
     checks["safety_scope_primary_beta8"] = (
         safety.get("primary_expert") == "uncertainty_bonus_composite_beta8"
         and safety.get("lambda48_role") == "shadow/baseline only"
@@ -182,16 +200,21 @@ def main() -> int:
         and negative.get("replay_buffer_training") is False
     )
     checks["forbidden_fields_not_used"] = forbidden.get("passed") is True and forbidden.get("used_as_feature_label_score_reward_filter") is False
-    checks["next_gate_blocks_runtime"] = (
-        next_gate.get("approved_to_continue") is False
-        and next_gate.get("runtime_allowed") is False
+    checks["next_gate_matches_adapter"] = (
+        next_gate.get("approved_to_continue") is adapter_available
+        and next_gate.get("runtime_allowed") is adapter_available
         and next_gate.get("rl_training_allowed") is False
     )
-    checks["web_review_json_blocks_runtime"] = (
+    checks["web_review_json_machine_readable"] = (
         web_review.get("machine_readable") is True
         and web_review.get("runtime_checkpoint_training_rl_approved") is False
     )
-    checks["context_front_updated"] = "Stage 4A-7.13 Medium Expert Rollout Design Preflight Complete - Runtime Blocked" in (ROOT / ".project_context/CURRENT_STATE.md").read_text(encoding="utf-8")[:1600]
+    context_head = (ROOT / ".project_context/CURRENT_STATE.md").read_text(encoding="utf-8")[:1800]
+    checks["context_front_updated"] = (
+        "Stage 4A-7.13 Medium Expert Rollout Design Preflight Passed" in context_head
+        if adapter_available
+        else "Stage 4A-7.13 Medium Expert Rollout Design Preflight Complete - Runtime Blocked" in context_head
+    )
     checks["future_command_guarded"] = (OUT / "future_stage4a714_selected_bounded_execution_sketch.md").read_text(encoding="utf-8").startswith("DO NOT RUN UNTIL STAGE 4A-7.13 PREFLIGHT PASSES.")
     checks["no_outputs_tracked"] = not any(path.startswith("outputs/") or path.startswith("logs/") for path in tracked)
     checks["no_checkpoint_files_tracked"] = not any(path.startswith("checkpoints/") or path.endswith((".pt", ".pth", ".ckpt", ".tar")) for path in tracked)
@@ -215,7 +238,8 @@ def main() -> int:
     (qa_dir / "qa_validator_agent_report.md").write_text(
         "# QA Validator Agent Report\n\n"
         + f"- all_passed: `{result['all_passed']}`\n"
-        + f"- expected_runtime_blocked: `{checks['expected_runtime_blocked']}`\n"
+        + f"- adapter_available: `{adapter_available}`\n"
+        + f"- preflight_state_matches_adapter: `{checks['preflight_state_matches_adapter']}`\n"
         + f"- blockers: `{', '.join(blockers) or 'none'}`\n"
         + f"- main_blocker: `{result['main_blocker']}`\n",
         encoding="utf-8",

@@ -1,3 +1,12 @@
+# TODO - Stage 4A-7.13 Medium Expert Rollout Design Preflight Passed
+
+Review:
+`/home/ubuntu22/sc_explorer_ws/outputs/autonomous_pre_rl_bridge/stage4a713_medium_expert_rollout_design_preflight/stage4a713_medium_expert_rollout_design_preflight_summary.md`.
+
+Next step: run Stage 4A-7.14 medium bounded expert rollout runtime with `run_with_isaac_close_guard.py`, the Stage 4A-7.14 adapter, and the exact preflighted medium bounds. No training/checkpoint/RL.
+
+---
+
 # TODO - Stage 4A-7.13 Medium Expert Rollout Design Preflight Complete - Runtime Blocked
 
 Review:

@@ -18,6 +18,7 @@ STAGE711 = ROOT / "outputs/isaac_stage4a711_expanded_tiny_no_checkpoint_eval"
 STAGE710 = ROOT / "outputs/isaac_stage4a710_expanded_dataset_qa"
 STAGE72_OVERLAY = ROOT / "outputs/isaac_stage4a72_runtime_start_variants_camera_pose_fix_overlay"
 RUNNER = ROOT / "sim_explorer/run_stage4a613_uncertainty_bonus_short_rollout_pilot.py"
+MEDIUM_RUNNER = ROOT / "sim_explorer/run_stage4a714_medium_uncertainty_bonus_rollout.py"
 CLOSE_GUARD = ROOT / "sim_explorer/run_with_isaac_close_guard.py"
 FIXED_USD = ROOT / "assets/home_like_scene_v1/current_environment_localized_defaultprim/home_like_scene_v1.usd"
 SSCNET_CHECKPOINT = ROOT / "checkpoints/full_train/cpBest_SSCNet_NYU_full_train.pth.tar"
@@ -146,26 +147,50 @@ def scan_stale_runtime_processes() -> list[dict[str, str]]:
 
 def runner_support_audit() -> dict[str, Any]:
     text = RUNNER.read_text(encoding="utf-8") if RUNNER.is_file() else ""
+    adapter_text = MEDIUM_RUNNER.read_text(encoding="utf-8") if MEDIUM_RUNNER.is_file() else ""
     hard_gates = {
         "requires_exactly_10_starts": "Stage 4A-6.13 requires exactly 10 starts" in text,
         "requires_three_steps": "requires max_decision_steps_per_start=3" in text,
         "requires_30_30_40_totals": "actions=30, decision_frames=30, captures=40" in text,
         "requires_bounded_short_motion_mode": "requires motion_mode=bounded_short_rollout" in text,
     }
-    medium_supported = not (
-        hard_gates["requires_three_steps"]
-        or hard_gates["requires_30_30_40_totals"]
-        or hard_gates["requires_bounded_short_motion_mode"]
-    )
+    adapter_gates = {
+        "exists": MEDIUM_RUNNER.is_file(),
+        "requires_10_starts": "MEDIUM_NUM_STARTS = 10" in adapter_text,
+        "requires_6_steps": "MEDIUM_STEPS_PER_START = 6" in adapter_text,
+        "requires_60_actions": "MEDIUM_TOTAL_ACTIONS = 60" in adapter_text,
+        "requires_60_decision_frames": "MEDIUM_TOTAL_DECISION_FRAMES = 60" in adapter_text,
+        "requires_70_captures": "MEDIUM_TOTAL_CAPTURES = 70" in adapter_text,
+        "requires_bounded_medium_motion_mode": "bounded_medium_rollout" in adapter_text,
+        "requires_close_guard_run_id": "close_guard_run_id" in adapter_text,
+        "requires_finalization_sentinel_path": "finalization_sentinel_path" in adapter_text,
+        "requires_finalization_write_flag": "write_finalization_sentinel_before_close" in adapter_text,
+        "requires_no_training": "no_training" in adapter_text,
+        "requires_no_rl": "no_rl_gdpo" in adapter_text,
+        "patches_base_enforce_args_only": "base.enforce_args = enforce_stage4a714_medium_args" in adapter_text,
+        "delegates_to_base_main": "base.main()" in adapter_text,
+        "mentions_lambda48_shadow_only": "shadow/baseline only" in adapter_text,
+        "mentions_primary_beta8": "uncertainty_bonus_composite_beta8" in adapter_text,
+    }
+    adapter_supported = bool(adapter_gates["exists"] and all(adapter_gates.values()))
+    medium_supported = adapter_supported
+    blocker = None
+    if not adapter_supported:
+        blocker = "stage4a714_medium_runner_adapter_missing_or_incomplete"
     return {
         "runner_path": str(RUNNER),
         "exists": RUNNER.is_file(),
+        "medium_runner_adapter_path": str(MEDIUM_RUNNER),
+        "adapter_gates": adapter_gates,
         "hard_gates": hard_gates,
         "requested_medium_config": MEDIUM_CONFIG,
-        "medium_bounds_supported_without_source_change": medium_supported,
-        "preflight_blocker": None
-        if medium_supported
-        else "current_uncertainty_bonus_runner_is_hard_gated_to_short_3_step_30_action_40_capture_envelope",
+        "historical_runner_remains_short_gated": bool(
+            hard_gates["requires_three_steps"]
+            and hard_gates["requires_30_30_40_totals"]
+            and hard_gates["requires_bounded_short_motion_mode"]
+        ),
+        "medium_bounds_supported_by_adapter": medium_supported,
+        "preflight_blocker": blocker,
     }
 
 
@@ -205,7 +230,7 @@ python sim_explorer/run_with_isaac_close_guard.py \\
   --required_output "$OUT/expert_data_quality_audit.json" \\
   --required_output "$OUT/dataset_integrity_report.json" \\
   -- \\
-  python sim_explorer/run_stage4a613_uncertainty_bonus_short_rollout_pilot.py \\
+  python sim_explorer/run_stage4a714_medium_uncertainty_bonus_rollout.py \\
     --camera_pose_fix_dir outputs/isaac_stage4a72_runtime_start_variants_camera_pose_fix_overlay \\
     --output_dir "$OUT" \\
     --num_starts 10 \\
@@ -216,6 +241,7 @@ python sim_explorer/run_with_isaac_close_guard.py \\
     --lambda_sc 48 \\
     --beta_uncertainty 8 \\
     --primary_formula uncertainty_bonus_composite_beta8 \\
+    --motion_mode bounded_medium_rollout \\
     --max_total_actions 60 \\
     --max_total_decision_frames 60 \\
     --max_total_captures 70 \\
@@ -250,13 +276,27 @@ def update_context(summary: dict[str, Any]) -> None:
     current = ROOT / ".project_context/CURRENT_STATE.md"
     todo = ROOT / ".project_context/TODO.md"
     log = ROOT / ".project_context/CODEX_LOG.md"
-    marker = "Stage 4A-7.13 Medium Expert Rollout Design Preflight Complete - Runtime Blocked"
+    marker = (
+        "Stage 4A-7.13 Medium Expert Rollout Design Preflight Passed"
+        if not summary.get("blocked")
+        else "Stage 4A-7.13 Medium Expert Rollout Design Preflight Complete - Runtime Blocked"
+    )
+    status_line = (
+        "Preflight result: passed. A Stage 4A-7.14 medium-capable adapter now gates the desired `10` starts x `6` steps (`60` actions, `60` decision frames, terminal captures enabled) envelope while preserving close guard, finalization sentinel, no-training/no-checkpoint/no-RL scope, uncertainty_bonus_composite_beta8 primary scoring, and lambda48 shadow-only behavior."
+        if not summary.get("blocked")
+        else "Preflight result: blocked for runtime. The desired medium envelope is `10` starts x `6` steps (`60` actions, `60` decision frames, terminal captures enabled), but no reviewed medium-capable runner/adapter is available. Stage 4A-7.14 runtime must not start until this preflight is rerun to pass."
+    )
+    todo_line = (
+        "Next step: run Stage 4A-7.14 medium bounded expert rollout runtime with `run_with_isaac_close_guard.py`, the Stage 4A-7.14 adapter, and the exact preflighted medium bounds. No training/checkpoint/RL."
+        if not summary.get("blocked")
+        else "Blocked next step: implement or review a medium-capable uncertainty-bonus expert rollout runner/adapter that preserves `uncertainty_bonus_composite_beta8`, close guard, terminal finalization sentinel, lambda48 shadow-only behavior, and no-training/no-checkpoint/no-RL scope. Then rerun Stage 4A-7.13 preflight before any Stage 4A-7.14 runtime."
+    )
     current_text = f"""# Current State - {marker}
 
 Stage 4A-7.13 medium expert rollout design/preflight is complete. Output directory:
 `{OUT}`.
 
-Preflight result: blocked for runtime. The desired medium envelope is `10` starts x `6` steps (`60` actions, `60` decision frames, terminal captures enabled), but the current uncertainty-bonus runner is hard-gated to the previous short `3 step / 30 action / 40 capture` envelope. Stage 4A-7.14 runtime must not start until a reviewed medium-capable runner or adapter exists and this preflight is rerun to pass.
+{status_line}
 
 No Isaac startup, capture, map_predict, action execution, rollout, BC training, optimizer step, model save, checkpoint, label promotion, replay-buffer learning, or RL/GDPO/PPO occurred. Lambda48 remains shadow/baseline only and is not the primary label source.
 """
@@ -265,13 +305,13 @@ No Isaac startup, capture, map_predict, action execution, rollout, BC training, 
 Review:
 `{OUT / "stage4a713_medium_expert_rollout_design_preflight_summary.md"}`.
 
-Blocked next step: implement or review a medium-capable uncertainty-bonus expert rollout runner/adapter that preserves `uncertainty_bonus_composite_beta8`, close guard, terminal finalization sentinel, lambda48 shadow-only behavior, and no-training/no-checkpoint/no-RL scope. Then rerun Stage 4A-7.13 preflight before any Stage 4A-7.14 runtime.
+{todo_line}
 """
     log_text = f"""## {utc_now()} - Stage 4A-7.13 medium expert rollout design/preflight
 
 - Created `{OUT}`.
 - Designed medium bounded expert rollout envelope: starts `10`, steps per start `6`, max actions `60`, max decision frames `60`, terminal capture per start `true`.
-- Preflight blocked runtime because `{summary.get("main_blocker")}`.
+- Preflight passed: `{not summary.get("blocked")}`. Main blocker: `{summary.get("main_blocker")}`.
 - No Isaac startup, capture, map_predict, action execution, rollout, training, optimizer step, model save, checkpoint, label promotion, replay-buffer learning, or RL/GDPO/PPO occurred. Lambda48 remains shadow/baseline only.
 """
     prepend_once(current, marker, current_text)
@@ -317,6 +357,7 @@ def main() -> int:
         "camera_pose_overlay_exists": STAGE72_OVERLAY.is_dir(),
         "close_guard_exists": CLOSE_GUARD.is_file(),
         "uncertainty_bonus_runner_exists": RUNNER.is_file(),
+        "stage4a714_medium_runner_adapter_exists": MEDIUM_RUNNER.is_file(),
         "stage4a711_summary_exists": (STAGE711 / "stage4a711_expanded_tiny_eval_summary.json").is_file(),
         "stage4a710_summary_exists": (STAGE710 / "stage4a710_expanded_dataset_qa_summary.json").is_file(),
         "stage4a79_expanded_dataset_exists": DATASET79.is_file(),
@@ -339,9 +380,9 @@ def main() -> int:
 
     execution_plan = {
         "stage": "Stage 4A-7.13",
-        "stage4a714_runtime_allowed_now": False,
+        "stage4a714_runtime_allowed_now": bool(runner_audit["medium_bounds_supported_by_adapter"]),
         "future_command_file": str(OUT / "future_stage4a714_selected_bounded_execution_sketch.md"),
-        "must_rerun_preflight_after_runner_change": True,
+        "must_rerun_preflight_after_runner_change": False,
         "required_runtime_wrapper": str(CLOSE_GUARD),
         "required_finalization_sentinel": "stage_finalized_before_isaac_close.json",
         "required_review_after_runtime": "Stage 4A-7.15 Chrome/web visual review packet",
@@ -442,6 +483,7 @@ def main() -> int:
             "stage4a713_generator": ROOT / "sim_explorer/generate_stage4a713_medium_expert_rollout_design_preflight.py",
             "stage4a713_validator": ROOT / "sim_explorer/test_stage4a713_medium_expert_rollout_design_preflight.py",
             "uncertainty_bonus_runner": RUNNER,
+            "stage4a714_medium_runner_adapter": MEDIUM_RUNNER,
             "close_guard": CLOSE_GUARD,
         }
     )
@@ -464,7 +506,7 @@ def main() -> int:
     blockers.extend(f"missing_or_unavailable:{key}" for key in missing_paths)
     if stale_processes:
         blockers.append("stale_isaac_or_runtime_process_detected")
-    if not runner_audit["medium_bounds_supported_without_source_change"]:
+    if not runner_audit["medium_bounds_supported_by_adapter"]:
         blockers.append(str(runner_audit["preflight_blocker"]))
 
     preflight_passed = not blockers
@@ -597,7 +639,7 @@ def main() -> int:
     )
     (BRIDGE / "stage_request_to_web_reviewer.md").write_text(
         "# Stage 4A-7.13 Web Reviewer Request\n\n"
-        "Review the medium expert rollout preflight. The key question is whether runtime may proceed. Current preflight blocks runtime because the existing runner is hard-gated to the older short envelope.\n",
+        f"Review the medium expert rollout preflight. The key question is whether runtime may proceed. Current preflight passed: {preflight_passed}. Main blocker: {blocker_report['main_blocker'] or 'none'}.\n",
         encoding="utf-8",
     )
     write_json(
@@ -609,7 +651,7 @@ def main() -> int:
         },
     )
     (BRIDGE / "web_review_transcript.md").write_text(
-        "# Stage 4A-7.13 Web Review Transcript\n\nFallback machine-readable review: runtime remains blocked until a medium-capable runner or adapter is reviewed and preflight passes.\n",
+        f"# Stage 4A-7.13 Web Review Transcript\n\nFallback machine-readable review: runtime_allowed={preflight_passed}; main_blocker={blocker_report['main_blocker'] or 'none'}. No checkpoint/training/RL approved.\n",
         encoding="utf-8",
     )
 
