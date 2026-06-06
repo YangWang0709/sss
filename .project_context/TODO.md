@@ -1,3 +1,14 @@
+# TODO - After Stage 4A-7.8 Decision Packet
+
+Review:
+`/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a78_promotion_candidate_decision_packet/stage4a78_promotion_candidate_decision_summary.md`.
+
+Recommended next: explicitly approve future Stage 4A-7.9 no-training promotion implementation using `clean_promotion_candidates.csv/json` only, or keep hold/no-promotion/no-training. Stage 4A-7.8 did not promote labels or create `expert_action_index_primary`.
+
+Do not train, checkpoint, run Isaac/map_predict/rollout, or run RL/GDPO/PPO unless a future goal explicitly approves that scope.
+
+---
+
 # TODO - Stage 4A-7.7 Promotion Decision Still Pending After Revised Review Import
 
 Review the revised import audit output:

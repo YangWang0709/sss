@@ -1,3 +1,14 @@
+# Current State - Stage 4A-7.8 Promotion Candidate Decision Packet Complete
+
+Stage 4A-7.8 no-training promotion-candidate decision packet is complete. Output directory:
+`/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a78_promotion_candidate_decision_packet`.
+
+Result from revised Stage 4A-7.7 review import: imported rows=30, approve=18, reject=11, unsure=1, promote=yes=17, warnings=0. Stage 4A-7.8 decision buckets: clean promotion candidates=17, conflict rows=0, rejected rows=11, unsure rows=1, manual recheck rows=1.
+
+No expert_action_index_primary was created. No label promotion, BC training, optimizer step, checkpoint, Isaac startup, map_predict, rollout, or RL/GDPO/PPO occurred. Lambda48 remains shadow/baseline only. Stage 4A-7.8 only prepares a decision packet for possible future Stage 4A-7.9 no-training promotion implementation.
+
+---
+
 # Current State - Stage 4A-7.7 Revised Manual Review Import Audit Complete
 
 The revised user-provided Stage 4A-7.6c exported review JSON was imported and audited without label promotion. Output directory:

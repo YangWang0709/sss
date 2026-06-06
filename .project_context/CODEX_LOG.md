@@ -6188,3 +6188,10 @@ Stage 4A-7.6 Stage 4A-7.2 manual topdown review packet result:
 - Re-ran `sim_explorer/test_stage4a77_manual_review_import_audit.py`; validation passed in `logs/stage4a77_manual_review_import_audit_test.log`.
 - No expert_action_index_primary creation, label promotion, training, checkpoint, Isaac startup, map_predict, rollout, or RL/GDPO/PPO occurred. Lambda48 remains shadow/baseline only.
 
+## 2026-06-06 08:00:35 UTC - Stage 4A-7.8 promotion candidate decision packet
+
+- Created `/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a78_promotion_candidate_decision_packet` from revised Stage 4A-7.7 import audit.
+- Decision result: imported rows=30, approve=18, reject=11, unsure=1, promote=yes=17, warnings=0, clean promotion candidates=17, conflict rows=0, manual recheck rows=1.
+- Added `sim_explorer/generate_stage4a78_promotion_candidate_decision_packet.py` and `sim_explorer/test_stage4a78_promotion_candidate_decision_packet.py`; validation passed in `logs/stage4a78_promotion_candidate_decision_packet_test.log`.
+- No expert_action_index_primary creation, label promotion, training, optimizer step, checkpoint, Isaac startup, map_predict, rollout, or RL/GDPO/PPO occurred. Lambda48 remains shadow/baseline only.
+
