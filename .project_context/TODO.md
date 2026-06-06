@@ -3053,3 +3053,24 @@ Stage 4A-6.6c-camera-pose-fix result:
 - Gates: `human_visual_inspection_done=false`, `user_needs_to_review_visuals=true`, `formal_expert_sampling_ready=false`, `full_expert_dataset_ready=false`, `stage4a66d_executed=false`, `stage4a67_executed=false`.
 - Next: user should review corrected HTML/MP4. If accepted, proceed to Stage 4A-6.6d USD scene audit + human visual review. If rejected, manually adjust camera/start poses or revise USD.
 - No rollout, expert sampling, map_predict, SSCNet inference, selected action, prediction NPZ, checkpoint change, or RL/GDPO/PPO/BC/IL was run.
+Stage 4A-7.9 result / current next:
+
+- Stage 4A-7.9 no-training promotion implementation is complete:
+  `/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a79_no_training_promotion_implementation`.
+- Expanded primary BC dataset:
+  `/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a79_no_training_promotion_implementation/expanded_primary_bc_dataset.npz`.
+- Counts:
+  original primary samples `30`; promoted Stage 4A-7.2 clean candidates
+  `17`; excluded Stage 4A-7.2 rows `12`; expanded primary samples `47`;
+  `D_model=16`.
+- Label lineage:
+  promoted primary labels come from Stage 4A-7.2
+  `candidate_action_index_uncertainty_bonus_executed`
+  / uncertainty-bonus composite beta8 executed selection. Lambda48 remains
+  shadow/baseline only.
+- Negative scope:
+  no training, optimizer step, checkpoint, Isaac startup, map_predict,
+  rollout, or RL/GDPO/PPO occurred.
+- Next faithful task:
+  Stage 4A-7.10 expanded dataset QA only, before any BC dry-run or training
+  discussion.

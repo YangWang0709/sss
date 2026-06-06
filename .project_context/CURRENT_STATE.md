@@ -4060,3 +4060,31 @@ Stage 4A-6.6c-camera-pose-fix result:
 - Gates: `human_visual_inspection_done=false`, `user_needs_to_review_visuals=true`, `formal_expert_sampling_ready=false`, `full_expert_dataset_ready=false`, `stage4a66d_executed=false`, `stage4a67_executed=false`.
 - Next: user should review corrected HTML/MP4. If accepted, proceed to Stage 4A-6.6d USD scene audit + human visual review. If rejected, manually adjust camera/start poses or revise USD.
 - No rollout, expert sampling, map_predict, SSCNet inference, selected action, prediction NPZ, checkpoint change, or RL/GDPO/PPO/BC/IL was run.
+Stage 4A-7.9 no-training promotion implementation result:
+
+- Output:
+  `/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a79_no_training_promotion_implementation`.
+- Expanded primary BC dataset:
+  `/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a79_no_training_promotion_implementation/expanded_primary_bc_dataset.npz`.
+- Result:
+  original Stage 4A-7.0 primary samples `30`, Stage 4A-7.8 clean promoted
+  Stage 4A-7.2 samples `17`, excluded Stage 4A-7.2 rows `12`, expanded
+  primary samples `47`, `D_model=16`.
+- Promotion rule:
+  only `clean_promotion_candidates.csv` rows were promoted. Rejected,
+  unsure, conflict, and manual-recheck-only rows were excluded.
+- Primary label lineage:
+  original rows preserve Stage 4A-7.0 / Stage 4A-6.13
+  `stage4a613_uncertainty_bonus_executed_primary`; promoted rows use
+  Stage 4A-7.2 `candidate_action_index_uncertainty_bonus_executed`
+  from the uncertainty-bonus composite beta8 executed selection.
+  Lambda48 remains shadow/baseline only and was not used as primary.
+- Safety:
+  no BC training, optimizer step, checkpoint, Isaac startup, map_predict,
+  rollout, or RL/GDPO/PPO occurred. Prior datasets were not modified.
+- Validation:
+  `/home/ubuntu22/sc_explorer_ws/sim_explorer/test_stage4a79_no_training_promotion_implementation.py`
+  passed with all checks true; log:
+  `/home/ubuntu22/sc_explorer_ws/logs/stage4a79_no_training_promotion_implementation_test.log`.
+- Current recommended next small task:
+  Stage 4A-7.10 expanded dataset QA, not training yet.

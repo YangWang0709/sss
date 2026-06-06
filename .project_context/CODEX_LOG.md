@@ -6194,4 +6194,25 @@ Stage 4A-7.6 Stage 4A-7.2 manual topdown review packet result:
 - Decision result: imported rows=30, approve=18, reject=11, unsure=1, promote=yes=17, warnings=0, clean promotion candidates=17, conflict rows=0, manual recheck rows=1.
 - Added `sim_explorer/generate_stage4a78_promotion_candidate_decision_packet.py` and `sim_explorer/test_stage4a78_promotion_candidate_decision_packet.py`; validation passed in `logs/stage4a78_promotion_candidate_decision_packet_test.log`.
 - No expert_action_index_primary creation, label promotion, training, optimizer step, checkpoint, Isaac startup, map_predict, rollout, or RL/GDPO/PPO occurred. Lambda48 remains shadow/baseline only.
+## 2026-06-06 08:32:00 UTC - Stage 4A-7.9 no-training promotion implementation
 
+- Created `/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a79_no_training_promotion_implementation`.
+- Built expanded primary BC dataset from Stage 4A-7.0 primary samples plus
+  Stage 4A-7.8 clean promotion candidates only:
+  original `30`, promoted `17`, excluded `12`, expanded `47`, `D_model=16`.
+- Wrote `expanded_primary_bc_dataset.npz`, metadata, manifest, sample index,
+  promoted/excluded row tables, mapping, lineage, forbidden-field, integrity,
+  split-policy, feature-schema, source-hash, prior-dataset-hash, no-training,
+  no-runtime, no-RL/GDPO/PPO, future-QA, and recommendation reports.
+- Promoted primary labels use Stage 4A-7.2
+  `candidate_action_index_uncertainty_bonus_executed` from the
+  uncertainty-bonus composite beta8 executed action lineage. Lambda48 remains
+  shadow/baseline only and was not used as the primary source.
+- Added `sim_explorer/generate_stage4a79_no_training_promotion_implementation.py`
+  and `sim_explorer/test_stage4a79_no_training_promotion_implementation.py`.
+- Validation passed in
+  `/home/ubuntu22/sc_explorer_ws/logs/stage4a79_no_training_promotion_implementation_test.log`.
+- No BC training, optimizer step, checkpoint, Isaac startup, map_predict,
+  rollout, or RL/GDPO/PPO occurred. Prior datasets were not modified.
+- Recommended next:
+  Stage 4A-7.10 expanded dataset QA, not training yet.
