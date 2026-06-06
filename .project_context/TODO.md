@@ -1,3 +1,14 @@
+# TODO - Stage 4A-7.7 Promotion Decision Still Pending After Revised Review Import
+
+Review the revised import audit output:
+`/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a77_manual_review_import_audit/stage4a77_manual_review_import_audit_summary.md`.
+
+The revised export has 30 valid rows, approve=18, reject=11, unsure=1, promote=yes=17, warnings=0. Future Stage 4A-7.7 may use these imported review rows to make a separate promotion decision. Do not auto-promote labels from the review JSON without an explicit future promotion goal.
+
+Do not train, checkpoint, run Isaac/map_predict/rollout, or run RL/GDPO/PPO unless a future goal explicitly approves that scope.
+
+---
+
 # TODO - Stage 4A-7.7 Promotion Decision Still Pending
 
 Review import audit output:

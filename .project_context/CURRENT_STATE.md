@@ -1,3 +1,14 @@
+# Current State - Stage 4A-7.7 Revised Manual Review Import Audit Complete
+
+The revised user-provided Stage 4A-7.6c exported review JSON was imported and audited without label promotion. Output directory:
+`/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a77_manual_review_import_audit`.
+
+Revised import summary: 30 rows valid; statuses approve=18, reject=11, unsure=1; human requested promote_candidate_yes_no=yes for 17 rows; warnings=0. The prior approve/promote warning on `stage4a72_start000_step000` is resolved in the revised export.
+
+No expert_action_index_primary was created from Stage 4A-7.2. No label promotion, training, checkpoint, Isaac startup, map_predict, rollout, or RL/GDPO/PPO occurred. Lambda48 remains shadow/baseline only.
+
+---
+
 # Current State - Stage 4A-7.7 Manual Review Import Audit Complete
 
 The user-provided Stage 4A-7.6c exported review JSON was imported and audited without label promotion. Output directory:
