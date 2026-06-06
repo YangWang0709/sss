@@ -4131,3 +4131,46 @@ Stage 4A-7.10 expanded dataset QA result:
 - Current recommended next small task:
   Stage 4A-7.11 tiny no-checkpoint evaluation on the expanded dataset, not
   full training, only if explicitly approved by the user.
+
+Stage 4A-7.11 expanded tiny no-checkpoint evaluation result:
+
+- Output:
+  `/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a711_expanded_tiny_no_checkpoint_eval`.
+- Scope:
+  bounded tiny supervised candidate-set BC evaluation / plumbing-and-signal
+  check only. This was not full BC training and did not create a checkpoint or
+  save model weights.
+- Input:
+  Stage 4A-7.10 QA-passed expanded dataset
+  `/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a79_no_training_promotion_implementation/expanded_primary_bc_dataset.npz`.
+- Dataset:
+  samples `47`, candidate count `64`, `D_model=16`, all primary labels valid,
+  lambda48 primary use `false`.
+- Tiny eval settings:
+  `CandidateMLPPolicy`, hidden_dim `64`, batch_size `8`, lr `1e-3`, CPU,
+  one epoch per split, leave-one-`source_start_id`-out with `10` folds.
+- Counts:
+  forward calls `254`, backward calls `164`, optimizer steps `164`; no
+  model save and no checkpoint creation.
+- LOOSO/grouped eval summary:
+  eval loss mean/stdev `3.901580476760864 / 0.41193673100843736`,
+  eval top1/top3/top5 `0.15166666805744172 / 0.3700000062584877 /
+  0.4433333396911621`, eval MRR `0.2998319737613201`, zero-top1 folds `5`.
+- Baseline comparison against Stage 4A-7.1b:
+  top1 delta `+0.01833333472410839`, top3 delta
+  `+0.0033333395918211384`, MRR delta `+0.020384345026940365`, eval loss
+  delta `-0.006326961517334251`, zero-top1 fold delta `-1`. This is useful
+  tiny-eval signal only, not a generalization or deployment-readiness claim.
+- Overfit sanity:
+  subset size `8`, initial loss `4.1579766273498535`, final loss
+  `1.2834500074386597`, final top1 `0.75`, passed.
+- Negative scope:
+  no checkpoint, no model save, no Isaac startup, no capture, no map_predict,
+  no SSCNet inference, no action execution, no rollout/long rollout, no
+  replay buffer, and no RL/GDPO/PPO occurred. Prior datasets and the Stage
+  4A-7.9 expanded dataset were not modified.
+- Current recommended next small task:
+  Stage 4A-7.12 decision packet choosing between controlled no-checkpoint/
+  checkpointless deeper BC, controlled BC checkpoint experiment, or medium
+  bounded expert rollout for more data. Do not jump directly to long rollout
+  or RL.

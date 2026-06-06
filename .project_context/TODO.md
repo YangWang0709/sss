@@ -3097,3 +3097,33 @@ Stage 4A-7.10 result / current next:
 - Next faithful task:
   Stage 4A-7.11 tiny no-checkpoint evaluation on the expanded dataset, not
   full training, only if explicitly approved.
+
+Stage 4A-7.11 result / current next:
+
+- Stage 4A-7.11 expanded tiny no-checkpoint evaluation is complete:
+  `/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a711_expanded_tiny_no_checkpoint_eval`.
+- Dataset:
+  expanded samples `47`, candidate count `64`, `D_model=16`, valid labels
+  true, lambda48 primary use false.
+- Tiny eval settings:
+  `CandidateMLPPolicy`, hidden_dim `64`, batch_size `8`, lr `1e-3`, CPU,
+  one epoch per split, leave-one-`source_start_id`-out `10` folds.
+- Metrics:
+  eval top1/top3/top5/MRR `0.15166666805744172 /
+  0.3700000062584877 / 0.4433333396911621 / 0.2998319737613201`;
+  eval loss mean/stdev `3.901580476760864 / 0.41193673100843736`;
+  zero-top1 folds `5`.
+- Baseline comparison:
+  tiny signal improves over Stage 4A-7.1b on top1, top3, MRR, eval-loss
+  mean, and zero-top1 fold count, but this is not a generalization or
+  deployment-readiness claim.
+- Overfit sanity:
+  subset size `8`, loss `4.1579766273498535 -> 1.2834500074386597`,
+  final top1 `0.75`, passed.
+- Safety:
+  forward calls `254`, backward calls `164`, optimizer steps `164`; no
+  checkpoint/model save/runtime/rollout/RL occurred.
+- Next faithful task:
+  Stage 4A-7.12 decision packet choosing between controlled no-checkpoint
+  deeper BC, controlled BC checkpoint experiment, or medium bounded expert
+  rollout for more data. Do not jump directly to long rollout or RL.

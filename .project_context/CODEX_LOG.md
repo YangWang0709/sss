@@ -6251,3 +6251,46 @@ Stage 4A-7.6 Stage 4A-7.2 manual topdown review packet result:
 - Recommended next:
   Stage 4A-7.11 tiny no-checkpoint evaluation on the expanded dataset, not
   full training, only if explicitly approved by the user.
+
+## 2026-06-06 09:35:00 UTC - Stage 4A-7.11 expanded tiny no-checkpoint evaluation
+
+- Created `/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a711_expanded_tiny_no_checkpoint_eval`.
+- Ran bounded tiny supervised candidate-set BC evaluation on the Stage
+  4A-7.10 QA-passed expanded dataset:
+  `/home/ubuntu22/sc_explorer_ws/outputs/isaac_stage4a79_no_training_promotion_implementation/expanded_primary_bc_dataset.npz`.
+- Dataset:
+  samples `47`, candidate count `64`, `D_model=16`, valid labels true,
+  lambda48 primary use false.
+- Tiny eval settings:
+  `CandidateMLPPolicy`, hidden_dim `64`, batch_size `8`, lr `1e-3`, CPU,
+  one epoch per split, masked 64-way CE, leave-one-`source_start_id`-out
+  `10` folds.
+- Results:
+  initial/final train loss `4.087020516395569 / 4.069492161273956`;
+  eval loss mean/stdev `3.901580476760864 / 0.41193673100843736`;
+  eval top1/top3/top5/MRR `0.15166666805744172 /
+  0.3700000062584877 / 0.4433333396911621 / 0.2998319737613201`;
+  zero-top1 folds `5`.
+- Stage 4A-7.1b baseline comparison:
+  top1 delta `+0.01833333472410839`, top3 delta
+  `+0.0033333395918211384`, MRR delta `+0.020384345026940365`, eval loss
+  delta `-0.006326961517334251`, zero-top1 folds delta `-1`. This is a tiny
+  no-checkpoint signal only, not a generalization or deployment-readiness
+  claim.
+- Overfit sanity:
+  subset size `8`, loss `4.1579766273498535 -> 1.2834500074386597`,
+  final top1 `0.75`, passed.
+- Safety:
+  forward calls `254`, backward calls `164`, optimizer steps `164`; no model
+  save, checkpoint, replay buffer, Isaac startup, capture, map_predict,
+  SSCNet inference, action execution, rollout/long rollout, or RL/GDPO/PPO.
+  Prior datasets and the Stage 4A-7.9 expanded dataset were unchanged.
+- Added `ssc_exploration/ssc_network/il/eval_expanded_bc_tiny_no_checkpoint.py`
+  and `sim_explorer/test_stage4a711_expanded_tiny_no_checkpoint_eval.py`;
+  validation passed in
+  `/home/ubuntu22/sc_explorer_ws/logs/stage4a711_expanded_tiny_eval_test.log`.
+- Recommended next:
+  Stage 4A-7.12 decision packet choosing between controlled no-checkpoint
+  checkpointless deeper BC, controlled BC checkpoint experiment, or medium
+  bounded expert rollout for more data. Do not jump directly to long rollout
+  or RL.
