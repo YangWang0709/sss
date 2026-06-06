@@ -1,3 +1,41 @@
+# Current State - Stage 4A-7.14d Manual Review Export Audit Complete
+
+The uploaded manual review export was copied into the project and audited.
+
+Input export:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a714_2d_manual_review_import_audit/stage4a714_2d_manual_review_export.json`.
+
+Audit output:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a714_2d_manual_review_import_audit/stage4a714_2d_manual_review_import_audit.md`.
+
+Audit JSON:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a714_2d_manual_review_import_audit/stage4a714_2d_manual_review_import_audit.json`.
+
+Decision CSV:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a714_2d_manual_review_import_audit/stage4a714_2d_manual_review_decisions.csv`.
+
+Result:
+- Total rows: `60`.
+- Approved: `28`.
+- Rejected: `27`.
+- Unreviewed: `5`.
+- `promote_candidate_yes_no=yes`: `26`, all legally attached to approved rows.
+- Illegal promote yes rows: `0`.
+- Manual review complete: `false`.
+- Promotion/import ready: `false`.
+- Main blocker: `manual_review_incomplete_unreviewed_rows`.
+
+Unreviewed rows:
+- `stage4a714_s002_step003` / `start_002_step_003`.
+- `stage4a714_s004_step000` / `start_004_step_000`.
+- `stage4a714_s006_step003` / `start_006_step_003`.
+- `stage4a714_s007_step001` / `start_007_step_001`.
+- `stage4a714_s009_step000` / `start_009_step_000`.
+
+Important boundary: this was an audit/import-readiness check only. It did not promote labels, did not create `expert_action_index_primary`, did not modify datasets, did not train, did not create checkpoints, did not start Isaac, did not run map_predict, did not execute rollout, and did not run RL/GDPO/PPO.
+
+---
+
 # Current State - Stage 4A-7.14c 2D Manual Review Controls Complete
 
 Stage 4A-7.14 2D rollout review HTML has been upgraded with human decision controls and export/save support.

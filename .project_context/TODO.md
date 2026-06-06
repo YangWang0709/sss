@@ -1,3 +1,31 @@
+# TODO - Stage 4A-7.14d Manual Review Export Audit
+
+The uploaded Stage 4A-7.14 2D manual review export has been audited.
+
+Audit:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a714_2d_manual_review_import_audit/stage4a714_2d_manual_review_import_audit.md`.
+
+Current result:
+- `28` approved.
+- `27` rejected.
+- `5` unreviewed.
+- `26` approved rows have `promote_candidate_yes_no=yes`.
+- `0` illegal promote-yes rows.
+
+Before any future Stage 4A-7.7 import/promotion gate, finish reviewing these rows:
+- `start_002_step_003`.
+- `start_004_step_000`.
+- `start_006_step_003`.
+- `start_007_step_001`.
+- `start_009_step_000`.
+
+Current blocker:
+`manual_review_incomplete_unreviewed_rows`.
+
+No label promotion, dataset modification, training, checkpoint, Isaac startup, map_predict, rollout, or RL/GDPO/PPO occurred.
+
+---
+
 # TODO - Stage 4A-7.14c 2D Manual Review Controls
 
 Open the upgraded review page:
