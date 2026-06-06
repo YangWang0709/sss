@@ -1,3 +1,34 @@
+# Current State - Stage 4A-7.14 2D Rollout Review Packet Complete
+
+Stage 4A-7.14 2D rollout review mechanism is complete for human inspection.
+
+Main review HTML:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a714_2d_review_packet/stage4a714_2d_rollout_review_index.html`.
+
+Packet output:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a714_2d_review_packet`.
+
+The review packet projects existing Stage 4A-7.14 3D rollout world coordinates directly onto the USD-derived 2D map using the contract:
+`2D = (world_x, world_y)`, with `z` ignored only for top-down display.
+
+The packet includes:
+- `60` per-step 2D review maps.
+- `10` per-start overview maps.
+- Current camera RGB next to each step map.
+- Blue historical source camera pose traces.
+- Pink action target markers.
+- Green source-pose-to-action arrows.
+- Blue historical observed/swept area from `observed_state != -1`.
+- Cyan newly observed/swept area since the previous saved step within the same start.
+
+Validator:
+`python sim_explorer/test_stage4a714_2d_review_packet.py`
+passed with `all_passed=true`.
+
+Important boundary: this was an offline visualization/review mechanism only. It did not start Isaac, did not capture new frames, did not run map_predict, did not execute rollout, did not train, did not create checkpoints, did not promote labels, and did not run RL/GDPO/PPO.
+
+---
+
 # Current State - Stage 4A-7.15 Final Pre-RL Readiness Packet Complete
 
 Stage 4A-7.15 final Pre-RL readiness packet has been refreshed after the latest Stage 4A-7.14 runtime-only execution and context updates.

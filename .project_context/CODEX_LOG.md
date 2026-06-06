@@ -6464,3 +6464,13 @@ Stage 4A-7.6 Stage 4A-7.2 manual topdown review packet result:
 - Designed medium bounded expert rollout envelope: starts `10`, steps per start `6`, max actions `60`, max decision frames `60`, terminal capture per start `true`.
 - Preflight passed: `True`. Main blocker: ``.
 - No Isaac startup, capture, map_predict, action execution, rollout, training, optimizer step, model save, checkpoint, label promotion, replay-buffer learning, or RL/GDPO/PPO occurred. Lambda48 remains shadow/baseline only.
+- 2026-06-06T13:33:07+00:00: Completed Stage 4A-7.14 2D rollout review packet mechanism.
+  Added offline USD-to-2D top-down map generator `sim_explorer/generate_usd_topdown_map.py`,
+  Stage 4A-7.14 2D review packet generator `sim_explorer/generate_stage4a714_2d_review_packet.py`,
+  and validator `sim_explorer/test_stage4a714_2d_review_packet.py`.
+  Generated review packet `/home/ubuntu22/sc_explorer_ws/outputs/stage4a714_2d_review_packet`,
+  including main HTML `stage4a714_2d_rollout_review_index.html`, `60` per-step maps, `10` per-start
+  overview maps, historical observed/swept area, newly observed/swept area, source pose history,
+  source-to-action arrows, action target markers, and current camera RGB references. Validator
+  passed with `all_passed=true`. No Isaac startup, runtime/action execution, capture, map_predict,
+  rollout, training, checkpoint/model save, label promotion, or RL/GDPO/PPO occurred.

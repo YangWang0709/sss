@@ -1,3 +1,23 @@
+# TODO - Stage 4A-7.14 2D Rollout Review Packet
+
+Human review can now use:
+`/home/ubuntu22/sc_explorer_ws/outputs/stage4a714_2d_review_packet/stage4a714_2d_rollout_review_index.html`.
+
+Review workflow:
+- Select a start and step in the left controls.
+- Inspect the USD-derived 2D floor map, historical pose path, action target, source-to-action arrow, historical swept area, and newly swept area.
+- Compare the map with the current camera RGB shown on the right.
+- Use the records CSV/JSON if a future import/export decision layer is needed.
+
+Supporting files:
+- Summary: `/home/ubuntu22/sc_explorer_ws/outputs/stage4a714_2d_review_packet/stage4a714_2d_rollout_review_summary.md`.
+- Records CSV: `/home/ubuntu22/sc_explorer_ws/outputs/stage4a714_2d_review_packet/stage4a714_2d_rollout_review_records.csv`.
+- Records JSON: `/home/ubuntu22/sc_explorer_ws/outputs/stage4a714_2d_review_packet/stage4a714_2d_rollout_review_records.json`.
+
+No promotion/training/checkpoint/runtime occurred. Future label promotion remains a separate explicit gate.
+
+---
+
 # TODO - Stage 4A-7.15 Final Pre-RL Readiness Review
 
 Open refreshed packet:
