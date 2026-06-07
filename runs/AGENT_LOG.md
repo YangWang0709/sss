@@ -41,3 +41,16 @@
 - Ran point-cloud metadata smoke against scenes/minimal_indoor_smoke.usda.
 - Point-cloud smoke status: passed.
 - Smoke log: /home/ubuntu22/pi/runs/isaac_3d_active_explore_20260607_150529/phase1_pointcloud_smoke/pointcloud_smoke.log
+
+## Phase 2 partial map smoke
+
+- Added scripts/phase2_partial_map_smoke.py.
+- Generated BEV occupancy map summary from fallback scene geometry and robot marker path.
+- Partial map smoke status: failed.
+- Smoke artifacts: /home/ubuntu22/pi/runs/isaac_3d_active_explore_20260607_150529/phase2_mapping_smoke/
+
+## Phase 2 partial map smoke retry
+
+- Fixed CSV first_seen_pose_id field handling in scripts/phase2_partial_map_smoke.py.
+- Partial map smoke retry status: passed.
+- Smoke artifacts: /home/ubuntu22/pi/runs/isaac_3d_active_explore_20260607_150529/phase2_mapping_smoke/
