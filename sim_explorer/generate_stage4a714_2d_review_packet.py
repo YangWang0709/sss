@@ -222,7 +222,7 @@ def render_start_overview(
     plt.close(fig)
 
 
-def build_records(manifest: Path) -> list[dict[str, Any]]:
+def build_records(manifest: Path, rollout_dir: Path, output_dir: Path) -> list[dict[str, Any]]:
     records = load_rollout_alignment_records(manifest)
     for row in records:
         pose_path = Path(row["source_pose_file"])
@@ -232,12 +232,12 @@ def build_records(manifest: Path) -> list[dict[str, Any]]:
         ax, ay, az = row["action_world_xyz"]
         distance_xy = math.hypot(float(ax) - float(sx), float(ay) - float(sy))
         distance_3d = math.sqrt((float(ax) - float(sx)) ** 2 + (float(ay) - float(sy)) ** 2 + (float(az) - float(sz)) ** 2)
-        sample_dir = DEFAULT_ROLLOUT_DIR / "samples" / f"start_{start:03d}"
+        sample_dir = rollout_dir / "samples" / f"start_{start:03d}"
         row["observed_state_reference"] = str(sample_dir / f"step_{step:03d}_observed_state.npy")
         row["map_image"] = f"maps/start_{start:03d}_step_{step:03d}_2d_review.png"
         row["overview_image"] = f"maps/start_{start:03d}_overview_2d_review.png"
-        row["relative_rgb"] = rel_to_output(row["rgb"], DEFAULT_OUTPUT_DIR)
-        row["relative_pose"] = rel_to_output(pose_path, DEFAULT_OUTPUT_DIR)
+        row["relative_rgb"] = rel_to_output(row["rgb"], output_dir)
+        row["relative_pose"] = rel_to_output(pose_path, output_dir)
         row["source_to_action_distance_m"] = float(distance_xy)
         row["source_to_action_distance_3d_m"] = float(distance_3d)
         if distance_xy < VERY_CLOSE_ACTION_DISTANCE_M:
@@ -756,7 +756,7 @@ def generate_packet(args: argparse.Namespace) -> dict[str, Any]:
     bounds = scene_metadata["map_bounds"]
     voxel_size = float(scene_metadata.get("voxel_size", args.voxel_size))
     footprints = extract_footprints(parse_usda_xforms(args.usd))
-    records = build_records(args.manifest)
+    records = build_records(args.manifest, args.rollout_dir, output_dir)
     by_start: dict[int, list[dict[str, Any]]] = defaultdict(list)
     for row in records:
         by_start[row["start_variant_id"]].append(row)

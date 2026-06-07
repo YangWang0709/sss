@@ -185,6 +185,51 @@ def _long_rollout_safety(args: Any, bundle: dict[str, Any], reports: dict[str, A
     return safety
 
 
+def dataset_integrity_long(
+    output_dir: Path,
+    dataset_path: Path,
+    prediction_safety: dict[str, Any],
+    uncertainty_safety: dict[str, Any],
+    rollout_safety: dict[str, Any],
+    quality: dict[str, Any],
+) -> dict[str, Any]:
+    """Use the base dataset checks, replacing the legacy short n<=30 limit."""
+    integrity = base.dataset_integrity(output_dir, dataset_path, prediction_safety, uncertainty_safety, rollout_safety, quality)
+    long_required = [
+        "long_rollout_dataset_uncertainty_bonus.npz",
+        "long_rollout_manifest.jsonl",
+        "long_rollout_uncertainty_bonus_index.html",
+        "long_rollout_alias_manifest.json",
+        "bounded_long_rollout_report.json",
+    ]
+    missing_long = [name for name in long_required if not (output_dir / name).is_file()]
+    n = int(integrity.get("dataset_transition_count", 0))
+    long_checks = {
+        "legacy_short_rollout_n_le_30_replaced": True,
+        "expected_transition_count": LONG_TOTAL_ACTIONS,
+        "dataset_transition_count_matches_long_bound": n == LONG_TOTAL_ACTIONS,
+        "long_required_outputs_present": not missing_long,
+        "candidate_scores_finite": bool(integrity.get("candidate_scores_finite")),
+        "dataset_exists": bool(integrity.get("dataset_exists")),
+        "no_forbidden_dataset_keys": not integrity.get("forbidden_dataset_keys_present"),
+        "prediction_safety_audit_passed": bool(prediction_safety.get("passed")),
+        "uncertainty_safety_audit_passed": bool(uncertainty_safety.get("passed")),
+        "rollout_safety_audit_passed": bool(rollout_safety.get("passed")),
+        "expert_data_quality_audit_passed": bool(quality.get("passed")),
+        "no_missing_per_start_outputs": not integrity.get("missing_per_start_outputs"),
+    }
+    integrity.update(
+        {
+            "legacy_short_rollout_limit_ignored_for_bounded_long": True,
+            "expected_transition_count": LONG_TOTAL_ACTIONS,
+            "missing_long_required_outputs": missing_long,
+            "long_checks": long_checks,
+            "passed": all(long_checks.values()),
+        }
+    )
+    return integrity
+
+
 def write_datasets_and_reports_long(args: Any, output_dir: Path, inputs: dict[str, Any], bundle: dict[str, Any], video_report: dict[str, Any]) -> dict[str, Any]:
     reports = _orig_write_datasets_and_reports(args, output_dir, inputs, bundle, video_report)
     rollout_safety = _long_rollout_safety(args, bundle, reports)
@@ -222,7 +267,7 @@ def write_datasets_and_reports_long(args: Any, output_dir: Path, inputs: dict[st
         },
         "No Training Checkpoint RL Report",
     )
-    integrity = base.dataset_integrity(output_dir, Path(reports["dataset_path"]), reports["prediction_safety"], reports["uncertainty_safety"], rollout_safety, reports["quality"])
+    integrity = dataset_integrity_long(output_dir, Path(reports["dataset_path"]), reports["prediction_safety"], reports["uncertainty_safety"], rollout_safety, reports["quality"])
     base.save_report_pair(output_dir, "dataset_integrity_report", integrity, "Bounded Long Dataset Integrity Report")
     reports["rollout_safety"] = rollout_safety
     reports["integrity"] = integrity

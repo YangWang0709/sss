@@ -3536,3 +3536,27 @@ Stage 4A-7.11 result / current next:
   Stage 4A-7.12 decision packet choosing between controlled no-checkpoint
   deeper BC, controlled BC checkpoint experiment, or medium bounded expert
   rollout for more data. Do not jump directly to long rollout or RL.
+
+Autonomous bounded long expert rollout / current next:
+
+- LR-5 bounded long expert-rule rollout produced `150` actions under
+  `uncertainty_bonus_composite_beta8` primary scoring:
+  `/home/ubuntu22/sc_explorer_ws/outputs/stage4a_long_bounded_expert_rollout_runtime`.
+- LR-6 postrun audit passed:
+  `/home/ubuntu22/sc_explorer_ws/outputs/autonomous_long_rollout_bridge/stage_lr6_postrun_safety_audit`.
+- LR-7 human review packet is ready:
+  `/home/ubuntu22/sc_explorer_ws/outputs/autonomous_long_rollout_bridge/stage_lr7_long_rollout_review_packet`.
+- User-facing files to open/review:
+  `/home/ubuntu22/sc_explorer_ws/outputs/autonomous_long_rollout_bridge/stage_lr7_long_rollout_review_packet/long_rollout_2d_review_index.html`,
+  `/home/ubuntu22/sc_explorer_ws/outputs/autonomous_long_rollout_bridge/stage_lr7_long_rollout_review_packet/long_rollout_action_story_index.html`,
+  `/home/ubuntu22/sc_explorer_ws/outputs/autonomous_long_rollout_bridge/stage_lr7_long_rollout_review_packet/long_rollout_flythrough.mp4`.
+- Review workflow:
+  inspect all `150` steps, use `human_review_status`,
+  `human_review_reason`, `promote_candidate_yes_no`, and `human_comment`,
+  then export JSON or CSV from the HTML.
+- Future Stage 4A-7.7-style import/promotion must be a separate decision after
+  the user returns the exported review. Human approval in the HTML does not
+  automatically promote labels.
+- Negative scope remains:
+  no training, checkpoint/model save, label promotion, RL/GDPO/PPO, unbounded
+  rollout, or learned-policy rollout until explicitly approved.

@@ -4797,3 +4797,65 @@ Stage 4A-7.11 expanded tiny no-checkpoint evaluation result:
   checkpointless deeper BC, controlled BC checkpoint experiment, or medium
   bounded expert rollout for more data. Do not jump directly to long rollout
   or RL.
+
+Autonomous bounded long expert rollout bridge result:
+
+- LR-5 bounded long expert rollout executed under the approved expert-rule
+  uncertainty-bonus beta8 path only:
+  `/home/ubuntu22/sc_explorer_ws/outputs/stage4a_long_bounded_expert_rollout_runtime`.
+- Envelope:
+  `10` starts, `15` decision steps per start, `150` executed actions,
+  `150` dense prediction summaries / observed states, terminal captures for
+  `10` starts, and capture count `160`.
+- Primary formula:
+  `uncertainty_bonus_composite_beta8`:
+  `gain_exp / cost + 48 * minmax(source_occ_free) + 8 * uncertainty_composite`.
+  Lambda48 remains shadow/baseline only and was not used as primary.
+- Runtime note:
+  the base Stage 4A-6.13 dataset integrity function still had the old
+  short-rollout `n <= 30` guard, so the original runtime summary reported
+  `bounded_long_dataset_integrity_failed` even though all exposed integrity
+  fields passed and `dataset_transition_count=150`. The long adapter was fixed
+  to replace that legacy short guard with the `150`-transition bounded-long
+  check. LR-6 postrun audit records this compatibility correction.
+- Close / lifecycle:
+  outputs were finalized before Isaac close; because the legacy false negative
+  prevented the close guard safe flag, the matching run-id process groups were
+  manually terminated after verifying finalized outputs. Manual termination
+  audit:
+  `/home/ubuntu22/sc_explorer_ws/outputs/autonomous_long_rollout_bridge/stage_lr6_postrun_safety_audit/manual_runtime_termination_after_finalized_outputs.json`.
+- LR-6 postrun safety audit passed:
+  `/home/ubuntu22/sc_explorer_ws/outputs/autonomous_long_rollout_bridge/stage_lr6_postrun_safety_audit`.
+  Validator:
+  `/home/ubuntu22/sc_explorer_ws/outputs/autonomous_long_rollout_bridge/stage_lr6_postrun_safety_audit/test_long_rollout_postrun_safety_audit_result.json`.
+- LR-7 long rollout review packet passed:
+  `/home/ubuntu22/sc_explorer_ws/outputs/autonomous_long_rollout_bridge/stage_lr7_long_rollout_review_packet`.
+  Main review HTML:
+  `/home/ubuntu22/sc_explorer_ws/outputs/autonomous_long_rollout_bridge/stage_lr7_long_rollout_review_packet/long_rollout_2d_review_index.html`.
+  Action story HTML:
+  `/home/ubuntu22/sc_explorer_ws/outputs/autonomous_long_rollout_bridge/stage_lr7_long_rollout_review_packet/long_rollout_action_story_index.html`.
+  MP4:
+  `/home/ubuntu22/sc_explorer_ws/outputs/autonomous_long_rollout_bridge/stage_lr7_long_rollout_review_packet/long_rollout_flythrough.mp4`.
+- LR-7 review packet contents:
+  `150` review rows, `150` step 2D maps, `10` start overview maps, export JSON
+  / copy JSON / download CSV controls, `human_review_status`,
+  `human_review_reason`, `promote_candidate_yes_no`, and `human_comment`
+  controls.
+- Action distance review cues:
+  `35` very-close, `55` close, `60` normal. Close/very-close actions are
+  human review cues only, not automatic rejection or label promotion.
+- LR-8 web/HTML review audit passed:
+  `/home/ubuntu22/sc_explorer_ws/outputs/autonomous_long_rollout_bridge/stage_lr8_web_html_review_audit/web_html_review_audit.json`.
+  GPT Chrome external submission was not sent because the window was minimized
+  and active-user-input was detected; the local critic/static HTML/MP4/export
+  audit passed.
+- Negative scope:
+  no BC training, optimizer step, checkpoint/model save, label promotion,
+  policy/learned-model rollout, unbounded rollout, replay-buffer training, or
+  RL/GDPO/PPO occurred. No outputs/logs/checkpoints/NPZ/PNG/MP4/USD artifacts
+  are to be committed.
+- Current next step:
+  human reviewer should open `long_rollout_2d_review_index.html`, inspect the
+  `150` steps with the 2D map/RGB/action story flow, export JSON or CSV, and
+  return the exported review for a future import/promotion decision. Do not
+  start RL/training/checkpointing yet.

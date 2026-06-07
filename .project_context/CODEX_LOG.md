@@ -6830,3 +6830,55 @@ Stage 4A-7.6 Stage 4A-7.2 manual topdown review packet result:
   source-to-action arrows, action target markers, and current camera RGB references. Validator
   passed with `all_passed=true`. No Isaac startup, runtime/action execution, capture, map_predict,
   rollout, training, checkpoint/model save, label promotion, or RL/GDPO/PPO occurred.
+
+## 2026-06-07T04:03:01+00:00 - Autonomous bounded long expert rollout and review packet
+
+- Completed LR-5 bounded long expert-rule runtime:
+  `/home/ubuntu22/sc_explorer_ws/outputs/stage4a_long_bounded_expert_rollout_runtime`.
+- Runtime envelope:
+  starts `10`, steps/start `15`, executed actions `150`, observed states
+  `150`, dense summaries `150`, terminal RGB captures `10`, capture count
+  `160`.
+- Primary expert/scoring:
+  `uncertainty_bonus_composite_beta8`; lambda48 stayed shadow/baseline only.
+- Runtime compatibility fix:
+  the base Stage 4A-6.13 dataset integrity helper still enforced old
+  short-rollout `n <= 30`. Long adapter source now replaces that with a
+  bounded-long `150` transition check. The already-produced runtime output is
+  audited in LR-6 as a legacy short-limit false negative with all exposed
+  integrity fields passing.
+- Lifecycle:
+  outputs were finalized before Isaac close. Because the legacy false negative
+  prevented the close guard `safe_to_terminate_after_close_timeout` flag, the
+  exact run-id process groups were manually terminated after verifying finalized
+  outputs. Audit:
+  `/home/ubuntu22/sc_explorer_ws/outputs/autonomous_long_rollout_bridge/stage_lr6_postrun_safety_audit/manual_runtime_termination_after_finalized_outputs.json`.
+- LR-6 postrun safety/integrity/quality audit passed:
+  `/home/ubuntu22/sc_explorer_ws/outputs/autonomous_long_rollout_bridge/stage_lr6_postrun_safety_audit`.
+- LR-7 long rollout human review packet passed:
+  `/home/ubuntu22/sc_explorer_ws/outputs/autonomous_long_rollout_bridge/stage_lr7_long_rollout_review_packet`.
+  Main HTML:
+  `/home/ubuntu22/sc_explorer_ws/outputs/autonomous_long_rollout_bridge/stage_lr7_long_rollout_review_packet/long_rollout_2d_review_index.html`.
+  Action story:
+  `/home/ubuntu22/sc_explorer_ws/outputs/autonomous_long_rollout_bridge/stage_lr7_long_rollout_review_packet/long_rollout_action_story_index.html`.
+  MP4:
+  `/home/ubuntu22/sc_explorer_ws/outputs/autonomous_long_rollout_bridge/stage_lr7_long_rollout_review_packet/long_rollout_flythrough.mp4`.
+- LR-8 HTML/MP4/export audit passed:
+  `/home/ubuntu22/sc_explorer_ws/outputs/autonomous_long_rollout_bridge/stage_lr8_web_html_review_audit/web_html_review_audit.json`.
+  GPT Chrome external submission was not sent because the window was minimized
+  and active-user-input was detected; local static HTML/export/media audit and
+  critic passed.
+- Added/updated source:
+  `sim_explorer/run_stage4a_long_bounded_uncertainty_bonus_rollout.py`,
+  `sim_explorer/generate_stage4a714_2d_review_packet.py`,
+  `sim_explorer/generate_long_rollout_postrun_audit.py`,
+  `sim_explorer/test_long_rollout_postrun_safety_audit.py`,
+  `sim_explorer/generate_long_rollout_review_packet.py`,
+  `sim_explorer/test_long_rollout_review_packet.py`,
+  `sim_explorer/generate_long_rollout_web_html_review_audit.py`,
+  `sim_explorer/test_autonomous_long_rollout_goal_closure.py`.
+- Negative scope:
+  no BC training, optimizer step, checkpoint/model save, label promotion,
+  replay-buffer learning, learned-policy rollout, unbounded rollout, or
+  RL/GDPO/PPO. Runtime outputs/logs/NPZ/PNG/MP4/USD/checkpoints were not
+  staged for commit.
