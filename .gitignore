@@ -32,3 +32,5 @@ runs/**/closed_loop_smoke/raw/
 *.pem
 id_rsa*
 id_ed25519*
+runs/**/large_file_check.txt
+runs/**/secret_scan_limited.txt

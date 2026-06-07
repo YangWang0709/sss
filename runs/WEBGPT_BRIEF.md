@@ -1,20 +1,22 @@
 ## ????
 
-Phase 0: environment and project audit
+Phase 0: environment and project audit, blocked on primary USD load
 
 ## ???
 
 * Confirmed PI_WORKSPACE: /home/ubuntu22/pi
 * Audited git, Ubuntu system, conda env_isaaclab, GPU, ROS2 availability, USD assets, source files, Isaac imports, and Isaac headless startup.
-* Created Phase 0 reports and multi-agent status files under PI_WORKSPACE/runs.
+* Confirmed Isaac headless starts.
+* Confirmed primary USD exists but crashes during Isaac/Omniverse USD context loading.
 
 ## ????
 
-* USD asset count: 1
 * Primary USD: /home/ubuntu22/pi/building_scene.usd
-* USD opened through pxr.Usd: false
+* Primary USD sha256: 11e4a3f55af816bc8b9dba3888498612295e6635e29198c6e5e40d6131bc7b8b
+* Primary USD file type: USD crate, version 0.8.0
 * IsaacSim Python module found: true
 * Isaac headless started: true
+* Primary USD opened through Isaac/Omniverse USD context: false, core dump exit code 134
 * Existing source file count: 0
 * Files over 50MB: 0
 
@@ -28,7 +30,7 @@ Phase 0: environment and project audit
 
 * run_dir: /home/ubuntu22/pi/runs/isaac_3d_active_explore_20260607_150529
 * logs: /home/ubuntu22/pi/runs/isaac_3d_active_explore_20260607_150529/logs
-* reports: /home/ubuntu22/pi/ENVIRONMENT_AUDIT.md, /home/ubuntu22/pi/runs/CRITIC_REPORT.md
+* reports: /home/ubuntu22/pi/ENVIRONMENT_AUDIT.md, /home/ubuntu22/pi/runs/CRITIC_REPORT.md, /home/ubuntu22/pi/runs/FAILURE_DIAGNOSIS.md
 * data: no rollout data collected in Phase 0
 
 ## ??
@@ -36,23 +38,23 @@ Phase 0: environment and project audit
 * start_count: 0
 * actions_per_start: 0
 * coverage: not measured yet
-* failure_count: 0 for rollout
+* failure_count: 1 Phase 0 scene-load blocker
 * stuck_count: 0
 * candidate_count: 0
 * average_information_gain: not measured yet
 
 ## ????
 
-* Phase 1 smoke-test implementation is still pending.
-* PI_WORKSPACE currently has the USD scene but no robot/sensor/mapping/rollout source code yet.
+* The primary USDC scene crashes Isaac/Omniverse when opened.
+* PI_WORKSPACE has no robot/sensor/mapping/rollout source code yet.
 
 ## Critic ????
 
-* ????: yes, continue to Phase 1.
+* ????: continue only with minimal scene-load repair/fallback.
 * ??????: no.
-* ????????: not yet; human review is needed after long rollout packet is generated.
+* ????????: no rollout review yet; human review comes after long rollout packet exists.
 
 ## ????? ChatGPT ?????
 
-1. Is this Phase 0 audit sufficient to proceed to a minimal Isaac USD sensor smoke test?
-2. Should Phase 1 first inspect/annotate the USD geometry or directly instantiate a minimal robot + RGB-D/LiDAR smoke setup?
+1. Is it acceptable to preserve  and add a separate minimal indoor USDA smoke scene to unblock Phase 1?
+2. Should the original USDC be treated as corrupted/incompatible until converted or repaired?
