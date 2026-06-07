@@ -1,3 +1,15 @@
+# TODO - LR-4 Web/Critic Gate Before Long Runtime
+
+Updated: `2026-06-07T03:08:43.123832+00:00`
+
+- Send LR-2/LR-3 bounded long expert rollout design/preflight to web mentor.
+- Save web review raw/structured response under `outputs/autonomous_long_rollout_bridge/stage_lr4_web_design_preflight_review`.
+- Critic must accept or veto web instructions before runtime.
+- Runtime remains forbidden until LR-4 passes.
+- Preserve negative scope: no RL/GDPO/PPO, no BC training/checkpoint, no label promotion, no lambda48 primary, no unbounded/policy long rollout.
+
+---
+
 # TODO - Stage 4A-7.13 Checkpointed BC Design/Preflight Complete
 
 Review the Stage 4A-7.13 design/preflight packet:

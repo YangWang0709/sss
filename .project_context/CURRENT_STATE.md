@@ -1,3 +1,41 @@
+# Current State - LR-2/LR-3 Bounded Long Expert Rollout Design/Preflight Complete
+
+Generated: `2026-06-07T03:08:43.123832+00:00`
+
+Autonomous bounded long expert rollout bridge is active under:
+`/home/ubuntu22/sc_explorer_ws/outputs/autonomous_long_rollout_bridge`.
+
+Completed substages:
+- LR-0 current state verification: passed, no blockers.
+- LR-1 web mentor kickoff: web response was prose, not JSON; critic structured it as `approve` with medium confidence.
+- LR-2 bounded long expert rollout design: complete.
+- LR-3 bounded long expert rollout preflight: complete with `all_passed=true` after fixing a process-scan false positive.
+
+Source added:
+- `sim_explorer/run_stage4a_long_bounded_uncertainty_bonus_rollout.py`
+- `sim_explorer/generate_long_rollout_design_preflight.py`
+- `sim_explorer/test_long_rollout_design_preflight.py`
+
+Design/preflight output:
+`/home/ubuntu22/sc_explorer_ws/outputs/autonomous_long_rollout_bridge/stage_lr2_bounded_long_expert_rollout_design`
+`/home/ubuntu22/sc_explorer_ws/outputs/autonomous_long_rollout_bridge/stage_lr3_bounded_long_expert_rollout_preflight`
+
+Validated long expert envelope:
+- starts: `10`
+- steps per start: `15`
+- max expert actions: `150`
+- max decision frames: `150`
+- expected captures: `160`
+- primary expert: `uncertainty_bonus_composite_beta8`
+- lambda48 role: `shadow/baseline only`
+
+Important boundary: LR-2/LR-3 did not start Isaac, did not run map_predict, did not execute runtime/rollout, did not train, did not create checkpoints, did not promote labels, and did not run RL/GDPO/PPO. Runtime is still not allowed until LR-4 web review and critic gate both approve.
+
+Next allowed substage:
+LR-4 web/critic review of the bounded long rollout design/preflight. If and only if LR-4 approves, LR-5 may run the bounded expert long rollout runtime with close guard.
+
+---
+
 # Current State - Stage 4A-7.13 Checkpointed BC Design/Preflight Complete
 
 Stage 4A-7.13 bounded checkpointed BC experiment design/preflight packet has been generated from the Stage 4A-7.12 selected option B decision and the Stage 4A-7.9 compatible expanded dataset.

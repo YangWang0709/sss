@@ -1,3 +1,18 @@
+# CODEX LOG - LR-2/LR-3 Complete
+
+Time: `2026-06-07T03:08:43.123832+00:00`
+
+- Read current project state and GitHub context.
+- Created autonomous long rollout bridge outputs for LR-0/LR-1.
+- Used Computer Use to send LR-1 web mentor kickoff; web answered in prose, so critic structured it.
+- Added long bounded uncertainty-bonus expert rollout adapter.
+- Added offline LR-2/LR-3 design/preflight generator.
+- Added LR-2/LR-3 validator.
+- Ran py_compile, generated design/preflight, and validator passed with `all_passed=true`.
+- No Isaac/runtime/map_predict/training/checkpoint/RL/label promotion occurred.
+
+---
+
 Stage 4A-7.13 bounded checkpointed BC design/preflight actions:
 
 - Added `sim_explorer/generate_stage4a713_checkpointed_bc_design_preflight.py`.
