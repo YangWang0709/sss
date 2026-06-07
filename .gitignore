@@ -1,0 +1,34 @@
+# Large or generated rollout/runtime payloads
+runs/**/logs/
+runs/**/long_rollout/
+runs/**/sensor_smoke/raw/
+runs/**/mapping_smoke/raw/
+runs/**/candidate_smoke/raw/
+runs/**/closed_loop_smoke/raw/
+
+# Heavy data and model artifacts
+*.npz
+*.hdf5
+*.h5
+*.ckpt
+*.pt
+*.pth
+*.onnx
+*.usd.tmp
+*.mp4
+*.avi
+*.mov
+*.png
+*.jpg
+*.jpeg
+*.exr
+*.ply
+*.pcd
+*.bag
+*.db3
+
+# Local credentials and environment files
+.env
+*.pem
+id_rsa*
+id_ed25519*

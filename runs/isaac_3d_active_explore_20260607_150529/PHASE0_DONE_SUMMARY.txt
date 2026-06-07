@@ -1,0 +1,10 @@
+PI_WORKSPACE=/home/ubuntu22/pi
+RUN_DIR=/home/ubuntu22/pi/runs/isaac_3d_active_explore_20260607_150529
+USD_COUNT=1
+USD_FILE=/home/ubuntu22/pi/building_scene.usd
+PY_COUNT=0
+LARGE_COUNT=0
+ISAAC_IMPORT=true
+USD_OPEN=false
+HEADLESS_OK=true
+PHASE0_PASS=false
