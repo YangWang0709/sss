@@ -1,7 +1,7 @@
 # Active Task Board
 
 - PI_WORKSPACE: /home/ubuntu22/pi
-- current_phase: Phase 1 camera sensor smoke passed
+- current_phase: Phase 1 robot pose smoke failed
 - current_goal: Isaac Sim 3D active exploration long rollout data collection closed loop
 - latest_run_dir: /home/ubuntu22/pi/runs/isaac_3d_active_explore_20260607_150529
 - latest_commit: 361ba9f phase 0: clean USD blocker reports
