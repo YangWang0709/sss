@@ -2,40 +2,38 @@
 
 ## Current Phase
 
-Phase 7 primary-scene sensor smoke passed.
+Phase 8 primary-scene mapping smoke passed.
 
 ## Primary Scene
 
 - scene: /home/ubuntu22/pi/scenes/primary_building_scene_repaired/home_like_scene_v1.usd
 - scene bundle size: 490M
 - dependencies present: yes
-- original /home/ubuntu22/pi/building_scene.usd preserved: true
 - scene bundle committed to Git: false
 - scene bundle ignored by local Git exclude: true
+- original /home/ubuntu22/pi/building_scene.usd preserved: true
 
-## Phase 7 Result
+## Phase 8 Result
 
-- run_dir: /home/ubuntu22/pi/runs/primary_scene_sensor_smoke_20260607_165109
+- run_dir: /home/ubuntu22/pi/runs/primary_scene_mapping_smoke_20260607_170019
+- script: /home/ubuntu22/pi/scripts/phase8_primary_scene_mapping_smoke.py
 - stage_load_exit_code: 0
-- smoke_exit_code: 0
+- mapping_smoke_exit_code: 0
 - open_stage_result: true
 - stage_available: true
-- prim_count: 1324
-- Cube count: 279
-- Mesh count: 127
-- Material count: 124
-- core_dump: false
-- robot_spawned: true
 - robot_pose_readable: true
-- robot_fell: false
-- large_scale_collision: false
-- RGB metadata/proxy visible frames: 8/8
-- finite depth frames: 8/8
-- non-empty pointcloud/lidar frames: 8/8
-- short control actions: 8
-- moved actions: 8
-- collision actions: 0
-- stuck actions: 0
+- step_count: 10
+- valid_observation_steps: 10
+- final_known_ratio: 0.48057726
+- final_occupied_cells: 124
+- final_free_cells: 4305
+- final_unknown_cells: 4787
+- total_new_known_cells: 4429
+- known_ratio_monotonic_non_decreasing: true
+- map_snapshots_saved: 10
+- plots_saved: 4
+- collision_count: 0
+- stuck_count: 0
 
 ## Scope Status
 
@@ -43,20 +41,19 @@ Phase 7 primary-scene sensor smoke passed.
 - RL: false
 - checkpoint: false
 - PI/openpi/VLM fine-tuning: false
-- primary long rollout: false
+- primary long rollout: not started
 - map_predict: false
 
-## Caveat
+## Reports And Review Artifacts
 
-Phase 7 used a lightweight USD geometry visibility/depth/pointcloud proxy and did not commit raw PNG, NPZ, HDF5, or large sensor assets. This is enough for the bounded sensor smoke gate. A future rendered camera gate can be added before any training-data use if visual fidelity matters.
+- primary mapping smoke report: /home/ubuntu22/pi/runs/PRIMARY_SCENE_MAPPING_SMOKE_REPORT.md
+- mapping summary: /home/ubuntu22/pi/runs/primary_scene_mapping_smoke_20260607_170019/summary/mapping_summary.json
+- mapping steps: /home/ubuntu22/pi/runs/primary_scene_mapping_smoke_20260607_170019/summary/mapping_steps.csv
+- final BEV map: /home/ubuntu22/pi/runs/primary_scene_mapping_smoke_20260607_170019/plots/bev_map_final.png
+- known ratio curve: /home/ubuntu22/pi/runs/primary_scene_mapping_smoke_20260607_170019/plots/known_ratio_curve.png
+- occupancy/free/unknown curve: /home/ubuntu22/pi/runs/primary_scene_mapping_smoke_20260607_170019/plots/occupied_free_unknown_by_step.png
+- robot trace: /home/ubuntu22/pi/runs/primary_scene_mapping_smoke_20260607_170019/plots/robot_xy_trace.png
 
-## Reports
+## Next Phase
 
-- primary scene sensor smoke report: /home/ubuntu22/pi/runs/PRIMARY_SCENE_SENSOR_SMOKE_REPORT.md
-- sensor smoke run summary: /home/ubuntu22/pi/runs/primary_scene_sensor_smoke_20260607_165109/smoke/phase7_primary_scene_sensor_smoke_summary.json
-- trajectory CSV: /home/ubuntu22/pi/runs/primary_scene_sensor_smoke_20260607_165109/smoke/trajectory.csv
-- sensor frame stats CSV: /home/ubuntu22/pi/runs/primary_scene_sensor_smoke_20260607_165109/smoke/sensor_frame_stats.csv
-
-## Next Step
-
-Proceed to Phase 8 mapping smoke on /home/ubuntu22/pi/scenes/primary_building_scene_repaired/home_like_scene_v1.usd. Do not run primary long rollout until mapping smoke, candidate gain smoke, and closed-loop smoke pass. Do not train, start RL, checkpoint, or fine-tune PI/openpi/VLM.
+Phase 9 candidate viewpoint + information gain smoke may begin only as a bounded smoke. Do not run primary long rollout, training, RL, checkpointing, or PI/openpi/VLM fine-tuning.
