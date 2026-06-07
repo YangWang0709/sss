@@ -37,3 +37,4 @@ runs/**/secret_scan_limited.txt
 runs/**/phase1_scene_smoke/
 runs/**/phase1_sensor_smoke/
 runs/**/phase1_robot_pose_smoke/
+runs/**/phase1_pointcloud_smoke/
