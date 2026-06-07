@@ -54,3 +54,10 @@
 - Fixed CSV first_seen_pose_id field handling in scripts/phase2_partial_map_smoke.py.
 - Partial map smoke retry status: passed.
 - Smoke artifacts: /home/ubuntu22/pi/runs/isaac_3d_active_explore_20260607_150529/phase2_mapping_smoke/
+
+## Phase 3 candidate gain smoke
+
+- Added scripts/phase3_candidate_gain_smoke.py.
+- Sampled candidate viewpoints around the current robot marker pose.
+- Candidate gain smoke status: passed.
+- Smoke artifacts: /home/ubuntu22/pi/runs/isaac_3d_active_explore_20260607_150529/phase3_candidate_smoke/
