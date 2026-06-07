@@ -1,34 +1,54 @@
 # Critic Report
 
-- phase: Phase 0
-- result: audit complete, gate blocked
+- phase: Phase 5 fallback long rollout
+- result: fallback pipeline passed; waiting for human review
 - scope_check: passed
 - drift_to_training_or_RL: false
 - PI_workspace_used: true
 - original_USD_deleted: false
-- large_data_committed_intent: false
+- primary_usd_used: false
+- fallback_scene: scenes/minimal_indoor_smoke.usda
 
-## Findings
+## Conclusion
 
-- The task is correctly rooted at /home/ubuntu22/pi.
-- env_isaaclab can be activated and isaacsim is available.
-- Isaac headless can start.
-- Current primary scene /home/ubuntu22/pi/building_scene.usd is a USDC crate file, sha256 11e4a3f55af816bc8b9dba3888498612295e6635e29198c6e5e40d6131bc7b8b.
-- Direct Python pxr import is not available before Isaac startup.
-- Loading the primary USD through Isaac/Omniverse USD context aborts with core dump exit code 134.
-- No robot/sensor/mapping/rollout code exists yet in PI_WORKSPACE.
+- The fallback pipeline passed through Phase 5.
+- The fallback rollout packet is suitable for schema and pipeline sanity review.
+- This data must not be treated as final primary-scene training data.
+- The original /home/ubuntu22/pi/building_scene.usd is still preserved, but remains blocked because Isaac/Omniverse crashes while opening it.
+- The original building_scene.usd still needs repair, conversion, or replacement before final primary-scene rollout collection.
+- Current state is waiting for human review.
 
-## Gate
+## Phase 5 Metrics
 
-- proceed_to_phase_1_on_primary_usd: false
-- blocker: primary USD load crash in Isaac/Omniverse context
-- allowed_next_fix: preserve original USD and create or validate a minimal fallback indoor USDA smoke scene before Phase 1 sensor work
+- start_count: 10
+- total_action_count: 143
+- total_step_rows: 149
+- candidate_rows: 3576
+- average_final_known_ratio: 0.8947
+- starts_with_failures: 6
+- primary_usd_used: false
 
 ## Negative Scope
 
-- PI training: false
-- openpi training: false
-- VLM training: false
+- training: false
 - RL: false
 - checkpoint: false
-- rollout: false
+- PI fine-tuning: false
+- openpi fine-tuning: false
+- primary-scene label promotion: false
+
+## Required Human Review
+
+- Inspect trajectory continuity per start.
+- Inspect candidate validity and selected viewpoint behavior.
+- Confirm known_ratio growth.
+- Review 6 failure starts and decide whether failures are acceptable.
+- Check for repeated same-point selection, wall collision, unreachable targets, or local spinning.
+- Compare candidate score against actual coverage gain.
+
+## Gate
+
+- proceed_to_training: false
+- proceed_to_RL: false
+- proceed_to_PI_finetuning: false
+- proceed_to_primary_scene_collection: false until building_scene.usd is repaired/replaced and a primary-scene rollout packet is collected.
