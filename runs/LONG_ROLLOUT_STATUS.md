@@ -9,4 +9,4 @@
 - training_started: false
 - RL_started: false
 - checkpoint_created: false
-- next_phase: fix/validate USD scene loading before Phase 1
+- next_phase: fix or validate USD scene loading before Phase 1

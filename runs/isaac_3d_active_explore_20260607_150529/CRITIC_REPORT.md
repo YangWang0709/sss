@@ -10,11 +10,11 @@
 
 ## Findings
 
-- The task is correctly rooted at .
--  can be activated and  is available.
+- The task is correctly rooted at /home/ubuntu22/pi.
+- env_isaaclab can be activated and isaacsim is available.
 - Isaac headless can start.
-- Current primary scene  is a USDC crate file, sha256 .
-- Direct Python  import is not available before Isaac startup.
+- Current primary scene /home/ubuntu22/pi/building_scene.usd is a USDC crate file, sha256 11e4a3f55af816bc8b9dba3888498612295e6635e29198c6e5e40d6131bc7b8b.
+- Direct Python pxr import is not available before Isaac startup.
 - Loading the primary USD through Isaac/Omniverse USD context aborts with core dump exit code 134.
 - No robot/sensor/mapping/rollout code exists yet in PI_WORKSPACE.
 

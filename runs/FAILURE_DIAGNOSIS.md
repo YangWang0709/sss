@@ -11,11 +11,11 @@
 
 ## What Happened
 
-Isaac headless  starts successfully, but opening the primary  through  aborts the Python process with a core dump. The crash stack is inside USD crate/layer loading.
+Isaac headless SimulationApp starts successfully, but opening /home/ubuntu22/pi/building_scene.usd through omni.usd.get_context().open_stage aborts the Python process with a core dump. The crash stack is inside USD crate and layer loading.
 
 ## Minimal Repair Plan
 
-1. Do not delete or overwrite .
+1. Do not delete or overwrite /home/ubuntu22/pi/building_scene.usd.
 2. Add a separate minimal indoor USDA smoke scene under PI_WORKSPACE for controlled Phase 1 validation.
-3. If the fallback scene loads, use it to build the robot/sensor smoke pipeline while separately diagnosing whether the original USDC can be converted or repaired.
-4. Do not start training, RL, checkpointing, or long rollout until the scene/sensor smoke path is reliable.
+3. If the fallback scene loads, use it to build the robot and sensor smoke pipeline while separately diagnosing whether the original USDC can be converted or repaired.
+4. Do not start training, RL, checkpointing, or long rollout until the scene and sensor smoke path is reliable.

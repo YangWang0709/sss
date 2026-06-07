@@ -1,12 +1,12 @@
 # Phase 0 Environment Audit
 
 - phase: Phase 0 environment and project audit
-- generated_at: 2026-06-07T15:10:54+08:00
+- generated_at: 2026-06-07T15:12:36+08:00
 - host: ubuntu22
 - PI_WORKSPACE: /home/ubuntu22/pi
 - run_dir: /home/ubuntu22/pi/runs/isaac_3d_active_explore_20260607_150529
 - conda_env: env_isaaclab
-- env_activation_command: `source /home/ubuntu22/miniconda3/etc/profile.d/conda.sh && conda activate env_isaaclab`
+- env_activation_command: source /home/ubuntu22/miniconda3/etc/profile.d/conda.sh && conda activate env_isaaclab
 - git_root: /home/ubuntu22/pi
 - remote_origin: git@github.com:YangWang0709/sss.git
 
@@ -38,8 +38,8 @@
 
 ## Minimal Fix Direction
 
-1. Preserve the original  exactly as-is.
-2. Create a small fallback indoor USDA smoke scene for Phase 1, or repair/convert the current USDC if a reliable converter path becomes available.
+1. Preserve the original /home/ubuntu22/pi/building_scene.usd exactly as-is.
+2. Add a separate minimal indoor USDA smoke scene for Phase 1, or repair/convert the current USDC if a reliable converter path becomes available.
 3. Run Phase 1 only after at least one USD scene can be loaded without crashing Isaac.
 
 ## Key Logs
