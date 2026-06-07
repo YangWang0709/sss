@@ -2,49 +2,61 @@
 
 ## Current Phase
 
-Phase 6 primary USD repair decision complete.
+Phase 7 primary-scene sensor smoke passed.
 
-## Decision
+## Primary Scene
 
-- conclusion: replacement_primary_scene_created
-- original primary USD: /home/ubuntu22/pi/building_scene.usd
-- original sha256: 11e4a3f55af816bc8b9dba3888498612295e6635e29198c6e5e40d6131bc7b8b
-- original status: preserved, not deleted, not overwritten
-- original Isaac open_stage: still aborts with exit code 134
-- final usable temporary primary scene: /home/ubuntu22/pi/scenes/primary_indoor_scene.usda
-- temporary primary scene headless open: passed
-- ready_for_primary_scene_sensor_smoke: true
-- ready_for_primary_long_rollout: false
+- scene: /home/ubuntu22/pi/scenes/primary_building_scene_repaired/home_like_scene_v1.usd
+- scene bundle size: 490M
+- dependencies present: yes
+- original /home/ubuntu22/pi/building_scene.usd preserved: true
+- scene bundle committed to Git: false
+- scene bundle ignored by local Git exclude: true
+
+## Phase 7 Result
+
+- run_dir: /home/ubuntu22/pi/runs/primary_scene_sensor_smoke_20260607_165109
+- stage_load_exit_code: 0
+- smoke_exit_code: 0
+- open_stage_result: true
+- stage_available: true
+- prim_count: 1324
+- Cube count: 279
+- Mesh count: 127
+- Material count: 124
+- core_dump: false
+- robot_spawned: true
+- robot_pose_readable: true
+- robot_fell: false
+- large_scale_collision: false
+- RGB metadata/proxy visible frames: 8/8
+- finite depth frames: 8/8
+- non-empty pointcloud/lidar frames: 8/8
+- short control actions: 8
+- moved actions: 8
+- collision actions: 0
+- stuck actions: 0
+
+## Scope Status
+
 - training: false
 - RL: false
 - checkpoint: false
 - PI/openpi/VLM fine-tuning: false
+- primary long rollout: false
+- map_predict: false
 
-## Why Replacement Was Needed
+## Caveat
 
-- usdchecker/usdcat/usdzip/usdedit are not available in PATH.
-- env_isaaclab does not expose standalone pxr for non-Isaac USD API repair.
-- original building_scene.usd still aborts inside USD crate / SdfLayer loading when opened by Isaac/Kit.
-- clean/flattened/sanitized variants could not be produced safely from the original USDC.
-
-## Replacement Scene
-
-- path: /home/ubuntu22/pi/scenes/primary_indoor_scene.usda
-- sha256: a52f6fedb5393c8fd6001d5ec71643228d47b48bf77883aca9b0a1e15728453d
-- prim_count: 52
-- cube_count: 37
-- up_axis: Z
-- meters_per_unit: 1.0
-- structure: multi-room indoor layout with two corridor axes, door gaps, walls, floor, ceiling, and obstacle/furniture proxy cubes.
+Phase 7 used a lightweight USD geometry visibility/depth/pointcloud proxy and did not commit raw PNG, NPZ, HDF5, or large sensor assets. This is enough for the bounded sensor smoke gate. A future rendered camera gate can be added before any training-data use if visual fidelity matters.
 
 ## Reports
 
-- decision: /home/ubuntu22/pi/runs/USD_REPAIR_DECISION.md
-- repair report: /home/ubuntu22/pi/runs/usd_repair_building_scene_20260607_162058/USD_REPAIR_REPORT.md
-- commands: /home/ubuntu22/pi/runs/usd_repair_building_scene_20260607_162058/USD_REPAIR_COMMANDS.sh
-- original probe: /home/ubuntu22/pi/runs/usd_repair_building_scene_20260607_162058/probes/isaac_open_original.json
-- replacement probe: /home/ubuntu22/pi/runs/usd_repair_building_scene_20260607_162058/probes/isaac_open_primary_indoor_scene.json
+- primary scene sensor smoke report: /home/ubuntu22/pi/runs/PRIMARY_SCENE_SENSOR_SMOKE_REPORT.md
+- sensor smoke run summary: /home/ubuntu22/pi/runs/primary_scene_sensor_smoke_20260607_165109/smoke/phase7_primary_scene_sensor_smoke_summary.json
+- trajectory CSV: /home/ubuntu22/pi/runs/primary_scene_sensor_smoke_20260607_165109/smoke/trajectory.csv
+- sensor frame stats CSV: /home/ubuntu22/pi/runs/primary_scene_sensor_smoke_20260607_165109/smoke/sensor_frame_stats.csv
 
 ## Next Step
 
-Run primary-scene sensor smoke on /home/ubuntu22/pi/scenes/primary_indoor_scene.usda. Do not run primary long rollout until sensor smoke, mapping smoke, candidate gain smoke, and closed-loop smoke pass.
+Proceed to Phase 8 mapping smoke on /home/ubuntu22/pi/scenes/primary_building_scene_repaired/home_like_scene_v1.usd. Do not run primary long rollout until mapping smoke, candidate gain smoke, and closed-loop smoke pass. Do not train, start RL, checkpoint, or fine-tune PI/openpi/VLM.
