@@ -1,3 +1,21 @@
+# Current State - LR-5 Import Path Launch Failure Fixed Before Retry
+
+Generated: `2026-06-07T03:20:47.659293+00:00`
+
+The first LR-5 bounded long expert rollout launch exited before Isaac startup because the child process could not import `ssc_network.models` / `models`.
+
+Fix applied:
+- `sim_explorer/run_stage4a_long_bounded_uncertainty_bonus_rollout.py` now prepends the required project import paths before importing the Stage 4A-6.13 base runner.
+- `sim_explorer/generate_long_rollout_design_preflight.py` future command now exports the same `PYTHONPATH`.
+- The failed small runtime output was archived, not deleted, under `outputs/stage4a_long_bounded_expert_rollout_runtime_failed_importpath_*`.
+- LR-3 design/preflight validator was rerun and passed with `all_passed=true`.
+
+No training, checkpoint, label promotion, or RL/GDPO/PPO occurred. The failed launch did not write a finalization sentinel and did not execute rollout actions.
+
+Next allowed action remains LR-5 bounded long expert-rule runtime retry with close guard.
+
+---
+
 # Current State - LR-2/LR-3 Bounded Long Expert Rollout Design/Preflight Complete
 
 Generated: `2026-06-07T03:08:43.123832+00:00`

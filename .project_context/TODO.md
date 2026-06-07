@@ -1,3 +1,14 @@
+# TODO - Retry LR-5 Bounded Long Runtime
+
+Updated: `2026-06-07T03:20:47.659293+00:00`
+
+- Retry LR-5 using the fixed import path environment.
+- Monitor close guard, sentinel, child logs, and output counts.
+- If runtime completes, proceed to LR-6 postrun safety audit.
+- If runtime fails again, stop and write blocker report before any further retry.
+
+---
+
 # TODO - LR-4 Web/Critic Gate Before Long Runtime
 
 Updated: `2026-06-07T03:08:43.123832+00:00`

@@ -19,15 +19,25 @@ from __future__ import annotations
 
 import json
 import shutil
+import sys
 import time
 from pathlib import Path
 from typing import Any
+
+WORKSPACE = Path("/home/ubuntu22/sc_explorer_ws")
+for _path in (
+    WORKSPACE / "sim_explorer",
+    WORKSPACE / "ssc_exploration",
+    WORKSPACE / "ssc_exploration" / "ssc_network",
+):
+    _text = str(_path)
+    if _text not in sys.path:
+        sys.path.insert(0, _text)
 
 import run_stage4a613_uncertainty_bonus_short_rollout_pilot as base
 from isaac_lifecycle_guard import _audit_passed, validate_required_outputs
 
 
-WORKSPACE = Path("/home/ubuntu22/sc_explorer_ws")
 STAGE = "Stage LR-5-bounded-long-uncertainty-bonus-expert-rollout"
 OUTPUT_NAME = "stage4a_long_bounded_expert_rollout_runtime"
 DEFAULT_OUTPUT_DIR = WORKSPACE / "outputs" / OUTPUT_NAME

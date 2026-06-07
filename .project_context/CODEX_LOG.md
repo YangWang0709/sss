@@ -1,3 +1,15 @@
+# CODEX LOG - LR-5 Import Path Fix
+
+Time: `2026-06-07T03:20:47.659293+00:00`
+
+- Diagnosed first LR-5 child exit: missing `ssc_network.models` / `models` import path.
+- Confirmed conda env can import successfully when `ssc_exploration` and `ssc_exploration/ssc_network` are on path.
+- Patched long adapter and future command.
+- Archived failed small output directory without deleting evidence.
+- Reran py_compile, design/preflight generator, and validator successfully.
+
+---
+
 # CODEX LOG - LR-2/LR-3 Complete
 
 Time: `2026-06-07T03:08:43.123832+00:00`

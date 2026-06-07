@@ -121,6 +121,7 @@ set -euo pipefail
 cd /home/ubuntu22/sc_explorer_ws
 source /home/ubuntu22/miniconda3/etc/profile.d/conda.sh
 conda activate env_isaaclab
+export PYTHONPATH=/home/ubuntu22/sc_explorer_ws/sim_explorer:/home/ubuntu22/sc_explorer_ws/ssc_exploration:/home/ubuntu22/sc_explorer_ws/ssc_exploration/ssc_network:${{PYTHONPATH:-}}
 RUN_ID=stage4a_long_bounded_$(date -u +%Y%m%dT%H%M%SZ)
 OUT=/home/ubuntu22/sc_explorer_ws/{out}
 mkdir -p "$OUT" /home/ubuntu22/sc_explorer_ws/logs
