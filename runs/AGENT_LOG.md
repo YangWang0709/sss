@@ -26,5 +26,11 @@
 
 - Added scripts/phase1_robot_pose_smoke.py.
 - Validated robot marker pose read/write against scenes/minimal_indoor_smoke.usda.
-- Robot pose smoke status: failed.
+- Robot pose smoke status: passed after synchronous retry.
 - Smoke log: /home/ubuntu22/pi/runs/isaac_3d_active_explore_20260607_150529/phase1_robot_pose_smoke/robot_pose_smoke.log
+
+## Phase 1 robot pose smoke retry
+
+- Replaced robot pose smoke with synchronous omni.usd/app.update implementation.
+- Robot pose smoke retry status: passed.
+- Retry log: /home/ubuntu22/pi/runs/isaac_3d_active_explore_20260607_150529/phase1_robot_pose_smoke/robot_pose_smoke_retry.log

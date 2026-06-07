@@ -1,10 +1,10 @@
 # Long Rollout Status
 
-- current_phase: Phase 1 robot pose smoke failed
+- current_phase: Phase 1 robot pose smoke passed
 - primary_usd_status: load crash, preserved for diagnosis
 - fallback_scene_status: scene-load smoke passed
 - camera_sensor_smoke: passed
-- robot_pose_smoke: failed
+- robot_pose_smoke: passed
 - long_rollout_started: false
 - start_count_completed: 0
 - actions_collected: 0

@@ -1,11 +1,11 @@
 # Phase 1 Robot Pose Smoke Report
 
 - phase: Phase 1 robot marker pose/control smoke
-- generated_at: 2026-06-07T15:21:12.594239+08:00
+- generated_at: 2026-06-07T15:22:48.532942+08:00
 - PI_WORKSPACE: /home/ubuntu22/pi
 - scene: /home/ubuntu22/pi/scenes/minimal_indoor_smoke.usda
 - robot_prim: None
-- smoke_exit_code: 124
+- smoke_exit_code: 0
 - simulation_app_started: None
 - stage_opened: None
 - robot_prim_found: None
