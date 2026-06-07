@@ -68,3 +68,10 @@
 - Ran bounded selector loop on fallback BEV map.
 - Closed-loop smoke status: passed.
 - Smoke artifacts: /home/ubuntu22/pi/runs/isaac_3d_active_explore_20260607_150529/phase4_closed_loop_smoke/
+
+## Phase 5 fallback long rollout
+
+- Added scripts/phase5_fallback_long_rollout.py.
+- Generated 10-start bounded fallback rollout metadata packet.
+- Fallback long rollout status: passed.
+- Rollout artifacts: /home/ubuntu22/pi/runs/isaac_3d_active_explore_20260607_150529/phase5_fallback_long_rollout/
