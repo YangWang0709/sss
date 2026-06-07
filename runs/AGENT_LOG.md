@@ -61,3 +61,10 @@
 - Sampled candidate viewpoints around the current robot marker pose.
 - Candidate gain smoke status: passed.
 - Smoke artifacts: /home/ubuntu22/pi/runs/isaac_3d_active_explore_20260607_150529/phase3_candidate_smoke/
+
+## Phase 4 closed-loop smoke
+
+- Added scripts/phase4_closed_loop_smoke.py.
+- Ran bounded selector loop on fallback BEV map.
+- Closed-loop smoke status: passed.
+- Smoke artifacts: /home/ubuntu22/pi/runs/isaac_3d_active_explore_20260607_150529/phase4_closed_loop_smoke/

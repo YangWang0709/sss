@@ -40,3 +40,4 @@ runs/**/phase1_robot_pose_smoke/
 runs/**/phase1_pointcloud_smoke/
 runs/**/phase2_mapping_smoke/
 runs/**/phase3_candidate_smoke/
+runs/**/phase4_closed_loop_smoke/
