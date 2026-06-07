@@ -31,3 +31,11 @@ This packet is a bounded fallback-scene rollout metadata packet using the determ
 ## Human Review Note
 
 This packet can be inspected for action/coverage schema sanity, but it should not be promoted as final Isaac primary-scene data because /home/ubuntu22/pi/building_scene.usd still crashes on Isaac/Omniverse load.
+
+## Per-Start Directories
+
+The packet also includes per-start CSV directories start_000 through start_009 under:
+
+- /home/ubuntu22/pi/runs/isaac_3d_active_explore_20260607_150529/phase5_fallback_long_rollout
+
+Each start directory contains trajectory.csv and candidates.csv.
