@@ -35,3 +35,4 @@ id_ed25519*
 runs/**/large_file_check.txt
 runs/**/secret_scan_limited.txt
 runs/**/phase1_scene_smoke/
+runs/**/phase1_sensor_smoke/

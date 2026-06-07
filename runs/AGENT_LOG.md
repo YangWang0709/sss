@@ -14,3 +14,10 @@
 - Added scripts/phase1_scene_load_probe.py.
 - Fallback scene-load smoke status: passed.
 - Smoke log: /home/ubuntu22/pi/runs/isaac_3d_active_explore_20260607_150529/phase1_scene_smoke/minimal_scene_load.log
+
+## Phase 1 camera sensor smoke
+
+- Added scripts/phase1_camera_sensor_smoke.py.
+- Ran RGB-D camera smoke against scenes/minimal_indoor_smoke.usda.
+- Camera sensor smoke status: passed.
+- Smoke log: /home/ubuntu22/pi/runs/isaac_3d_active_explore_20260607_150529/phase1_sensor_smoke/camera_sensor_smoke.log
