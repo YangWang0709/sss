@@ -1,54 +1,34 @@
 # Critic Report
 
-- phase: Phase 5 fallback long rollout
-- result: fallback pipeline passed; waiting for human review
+- phase: Phase 6 primary USD repair decision
+- result: replacement_primary_scene_created
 - scope_check: passed
-- drift_to_training_or_RL: false
-- PI_workspace_used: true
 - original_USD_deleted: false
-- primary_usd_used: false
-- fallback_scene: scenes/minimal_indoor_smoke.usda
-
-## Conclusion
-
-- The fallback pipeline passed through Phase 5.
-- The fallback rollout packet is suitable for schema and pipeline sanity review.
-- This data must not be treated as final primary-scene training data.
-- The original /home/ubuntu22/pi/building_scene.usd is still preserved, but remains blocked because Isaac/Omniverse crashes while opening it.
-- The original building_scene.usd still needs repair, conversion, or replacement before final primary-scene rollout collection.
-- Current state is waiting for human review.
-
-## Phase 5 Metrics
-
-- start_count: 10
-- total_action_count: 143
-- total_step_rows: 149
-- candidate_rows: 3576
-- average_final_known_ratio: 0.8947
-- starts_with_failures: 6
-- primary_usd_used: false
-
-## Negative Scope
-
+- original_USD_overwritten: false
 - training: false
 - RL: false
 - checkpoint: false
-- PI fine-tuning: false
-- openpi fine-tuning: false
-- primary-scene label promotion: false
+- PI_finetuning: false
 
-## Required Human Review
+## Conclusion
 
-- Inspect trajectory continuity per start.
-- Inspect candidate validity and selected viewpoint behavior.
-- Confirm known_ratio growth.
-- Review 6 failure starts and decide whether failures are acceptable.
-- Check for repeated same-point selection, wall collision, unreachable targets, or local spinning.
-- Compare candidate score against actual coverage gain.
+The original /home/ubuntu22/pi/building_scene.usd remains preserved but is not usable in Isaac/Kit: the open_stage probe still aborts with exit code 134 inside the USD crate read path. The environment also lacks standalone USD repair tooling, so a safe clean/flatten/sanitize conversion could not be produced.
 
-## Gate
+A replacement temporary primary scene was created at /home/ubuntu22/pi/scenes/primary_indoor_scene.usda and passed Isaac headless open_stage with prim_count=52. This is now the recommended scene for the next primary-scene sensor smoke gate.
 
+## Gates
+
+- proceed_to_primary_scene_sensor_smoke: true
+- proceed_to_primary_mapping_smoke: false until sensor smoke passes
+- proceed_to_primary_candidate_gain_smoke: false until mapping smoke passes
+- proceed_to_primary_closed_loop_smoke: false until candidate gain smoke passes
+- proceed_to_primary_long_rollout: false until all smoke gates pass
 - proceed_to_training: false
 - proceed_to_RL: false
 - proceed_to_PI_finetuning: false
-- proceed_to_primary_scene_collection: false until building_scene.usd is repaired/replaced and a primary-scene rollout packet is collected.
+
+## Risks
+
+- The replacement scene is procedural and simpler than a production building asset, although it is more complex than the fallback smoke scene.
+- The original USDC still needs manual rebuild, external USD tooling, or replacement by a production-ready primary USD if fidelity becomes important.
+- Fallback Phase 5 data remains schema/pipeline sanity data only and is not training data.
